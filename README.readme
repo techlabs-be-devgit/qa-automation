@@ -15,6 +15,7 @@ git clone https://github.com/techlabs-be-devgit/qa-automation.git
 cd your-repo-name
 2. Install dependencies
 Once in the project directory, install all dependencies by running:
+3.C2C application testing
 
 bash
 
