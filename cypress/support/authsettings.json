@@ -1,0 +1,9 @@
+
+{
+	"authority": "https://login.microsoftonline.com/e15c95b5-9ae2-467d-9de3-ab244bad2e78",
+	"clientId": "[app-client-id]",
+	"clientSecret": "[app-client-secret]",
+	"apiScopes": "[api://api-client-id/Your-Scopes]",
+	"username": "c2c_demo@matchps.com",
+	"password": "GunsR0s3sBlvd" 
+}
