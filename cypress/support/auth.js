@@ -2,20 +2,12 @@
 
 // import authSettings from './authSettings.json';
 
-// const { apiScopes, 
-//         authority, 
-//         clientId, 
-//         clientSecret, 
-//         password,
-//         username,
-//     } = authSettings;
-
 const authority = Cypress.env("authority");
 const clientId = Cypress.env("clientId");
 const clientSecret = Cypress.env("clientSecret");
 const password = Cypress.env("password");
 const username = Cypress.env("username");
-const scopes = Cypress.env("scopes");
+const apiScopes = Cypress.env("scopes");
 
 const environment = "login.windows.net";
 
