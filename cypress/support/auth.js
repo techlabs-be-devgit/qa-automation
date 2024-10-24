@@ -2,18 +2,22 @@
 
 import {decode} from 'jsonwebtoken';
 
-const authority = Cypress.env("authority");
+const authority = Cypress.env("authorityBaseUrl") + "/" + Cypress.env("tenantId");
 const clientId = Cypress.env("clientId");
 const clientSecret = Cypress.env("clientSecret");
 const password = Cypress.env("password");
 const username = Cypress.env("username");
 const apiScopes = ["user.read", "openid", "profile", "email"];
+const tenantId = Cypress.env("tenantId");
+const getRoleEndpoint = Cypress.env("getRoleEndpoint");
 
 const environment = "login.windows.net";
 
 // Functions to build the required entities for authentication
 const buildAccountEntity = (
     homeAccountId,
+    clientInfo,
+    idTokenClaims,
     realm,
     localAccountId,
     username,
@@ -21,8 +25,8 @@ const buildAccountEntity = (
   ) => {
     return {
         authorityType: "MSSTS",
-        // This value does not seem to get used, so we can leave it out.
-        clientInfo: "",
+        clientInfo: clientInfo,
+        idTokenClaims: idTokenClaims,
         homeAccountId: homeAccountId,
         environment: environment,
         realm: realm,
@@ -67,8 +71,9 @@ const buildAccessTokenEntity = (
       environment: environment,
       clientId: clientId,
       realm: realm,
-      target: scopes.map((s) => s.toLowerCase()).join(" "),
+      target: scopes,
       // Scopes _must_ be lowercase or the token won't be found
+      tokenType : "Bearer"
     };
   };
   
@@ -87,29 +92,65 @@ const buildAccessTokenEntity = (
     };
 };
 
+const buildUserDataEntity = (
+  userInfo,
+  userRoles
+) => {
+  return {
+    user_info : userInfo,
+    user_roles : userRoles
+  };
+};
+
 
 // Function to inject the tokens into localStorage for testing
 const injectTokens = (tokenResponse) => {
+
+
   const idToken = decode(tokenResponse.id_token);
+
+  console.log("Injecting tokens into localStorage");
+  console.log("id_token:", idToken);
+
+
+  const accessToken = tokenResponse.access_token;
   const localAccountId = idToken.oid || idToken.sid;
   const realm = idToken.tid;
   const homeAccountId = `${localAccountId}.${realm}`
   const username = idToken.preferred_username;
   const name = idToken.name;
+  const scope = tokenResponse.scope;
+
+  // find a way to get clientInfo and idTokenClaims
+
+  const clientInfoJSON = {
+    uid : idToken.oid,
+    utid : tenantId,
+  };
+
+  // Encode the JSON object into base64
+  const jsonString = JSON.stringify(clientInfoJSON);
+  let base64String = btoa(jsonString);
+  const clientInfo = base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const idTokenClaims = idToken;
 
   const accountKey = `${homeAccountId}-${environment}-${realm}`;
   const accountEntity = buildAccountEntity(
-      homeAccountId, 
+      homeAccountId,
+      clientInfo,
+      idTokenClaims,
       realm, 
       localAccountId, 
       username, 
-      name);
+      name
+    );
 
   const idTokenKey = `${homeAccountId}-${environment}-idtoken-${clientId}-${realm}-`;
   const idTokenEntity = buildIdTokenEntity(
       homeAccountId, 
       tokenResponse.id_token, 
-      realm);
+      realm
+    );
 
   const accessTokenKey = `${homeAccountId}-${environment}-accesstoken-${clientId}-${realm}-${apiScopes.join(" ")}`;
   const accessTokenEntity = buildAccessTokenEntity(
@@ -118,7 +159,7 @@ const injectTokens = (tokenResponse) => {
       tokenResponse.expires_in,
       tokenResponse.ext_expires_in,
       realm,
-      apiScopes
+      scope
   );
 
   const refreshTokenKey = `${homeAccountId}-${environment}-refreshtoken-${clientId}--`;
@@ -129,11 +170,21 @@ const injectTokens = (tokenResponse) => {
       tokenResponse.refresh_token
   );
 
+  const microsoftCodeKey = 'microsoft_code';
+
+  userData(accessToken).then((response) => {
+    const userDataKey = 'userData';
+    const userDataEntity = buildUserDataEntity(response.user_info, response.user_roles);
+    localStorage.setItem(userDataKey, JSON.stringify(userDataEntity));
+  });
+  
   sessionStorage.setItem(accountKey, JSON.stringify(accountEntity));
   sessionStorage.setItem(idTokenKey, JSON.stringify(idTokenEntity));
   sessionStorage.setItem(accessTokenKey, JSON.stringify(accessTokenEntity));
   sessionStorage.setItem(refreshTokenKey, JSON.stringify(refreshTokenEntity));
-}
+  localStorage.setItem(microsoftCodeKey, accessToken);
+};
+
 
 export const login = () => {
     return cy.visit("/").request({
@@ -152,3 +203,20 @@ export const login = () => {
         injectTokens(response.body);
 }).reload();
 };
+
+export const userData = (accessToken) => {
+  return cy.request({
+    url: getRoleEndpoint,
+    method : "POST",
+    body: {
+      auth_token : accessToken,
+    },
+    form: true
+  }).then((response) => {
+    return {
+      user_info : response.body.user_info,
+      user_roles : response.body.user_roles
+    }
+  });
+};
+
