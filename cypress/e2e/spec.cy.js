@@ -1,11 +1,5 @@
 import { login } from "../support/auth";
 
-
-const DEMO_URL = "https://c2c-demo.matchps.com/login/";
-const LOGIN_URL = "https://login.microsoftonline.com/"
-const USER_EMAIL = 'c2c_demo@matchps.com';
-const PASSWORD = '';
-
 // describe('template spec', () => {
 //   it('TC_LF_001', () => {
 
@@ -41,10 +35,11 @@ const PASSWORD = '';
 
 context("viewDashboard", () => {
   beforeEach(() => {
-    login.visit("/dashboard")
+    login();
   });
   
-  it("shows something", () => {
-      
+  it("goes to dashboard", () => {
+    cy.visit("/")
+    cy.visit("/dashboard")
   })
 })

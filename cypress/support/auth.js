@@ -1,18 +1,17 @@
 /// <reference types="cypress" />
 
-// import authSettings from './authSettings.json';
+import {decode} from 'jsonwebtoken';
 
 const authority = Cypress.env("authority");
 const clientId = Cypress.env("clientId");
 const clientSecret = Cypress.env("clientSecret");
 const password = Cypress.env("password");
 const username = Cypress.env("username");
-const apiScopes = Cypress.env("scopes");
+const apiScopes = ["user.read", "openid", "profile", "email"];
 
 const environment = "login.windows.net";
 
 // Functions to build the required entities for authentication
-
 const buildAccountEntity = (
     homeAccountId,
     realm,
@@ -91,49 +90,49 @@ const buildAccessTokenEntity = (
 
 // Function to inject the tokens into localStorage for testing
 const injectTokens = (tokenResponse) => {
-    const idToken = decode(tokenResponse.id_token);
-    const localAccountId = idToken.oid || idToken.sid;
-    const realm = idToken.tid;
-    const homeAccountId = '${localAccountId}.${realm}';
-    const username = idToken.preferred_username;
-    const name = idToken.name;
+  const idToken = decode(tokenResponse.id_token);
+  const localAccountId = idToken.oid || idToken.sid;
+  const realm = idToken.tid;
+  const homeAccountId = `${localAccountId}.${realm}`
+  const username = idToken.preferred_username;
+  const name = idToken.name;
 
-    const accountKey = '${homeAccountId}-${environment}-${realm}';
-    const accountEntity = buildAccountEntity(
-        homeAccountId, 
-        realm, 
-        localAccountId, 
-        username, 
-        name);
-    
-    const idTokenKey = `${homeAccountId}-${environment}-idtoken-${clientId}-${realm}-`;
-    const idTokenEntity = buildIdTokenEntity(
-        homeAccountId, 
-        tokenResponse.id_token, 
-        realm);
+  const accountKey = `${homeAccountId}-${environment}-${realm}`;
+  const accountEntity = buildAccountEntity(
+      homeAccountId, 
+      realm, 
+      localAccountId, 
+      username, 
+      name);
 
-    const accessTokenKey = `${homeAccountId}-${environment}-accesstoken-${clientId}-${realm}-${apiScopes.join(" ")}`;
-    const accessTokenEntity = buildAccessTokenEntity(
-        homeAccountId,
-        tokenResponse.access_token,
-        tokenResponse.expires_in,
-        tokenResponse.ext_expires_in,
-        realm,
-        apiScopes
-    );
+  const idTokenKey = `${homeAccountId}-${environment}-idtoken-${clientId}-${realm}-`;
+  const idTokenEntity = buildIdTokenEntity(
+      homeAccountId, 
+      tokenResponse.id_token, 
+      realm);
 
-    const refreshTokenKey = `${homeAccountId}-${environment}-refreshtoken-${clientId}--`;
-    const refreshTokenEntity = buildRefreshTokenEntity(
-        clientId,
-        environment,
-        homeAccountId,
-        tokenResponse.refresh_token
-    );
+  const accessTokenKey = `${homeAccountId}-${environment}-accesstoken-${clientId}-${realm}-${apiScopes.join(" ")}`;
+  const accessTokenEntity = buildAccessTokenEntity(
+      homeAccountId,
+      tokenResponse.access_token,
+      tokenResponse.expires_in,
+      tokenResponse.ext_expires_in,
+      realm,
+      apiScopes
+  );
 
-    localStorage.setItem(accountKey, JSON.stringify(accountEntity));
-    localStorage.setItem(idTokenKey, JSON.stringify(idTokenEntity));
-    localStorage.setItem(accessTokenKey, JSON.stringify(accessTokenEntity));
-    localStorage.setItem(refreshTokenKey, JSON.stringify(refreshTokenEntity));
+  const refreshTokenKey = `${homeAccountId}-${environment}-refreshtoken-${clientId}--`;
+  const refreshTokenEntity = buildRefreshTokenEntity(
+      clientId,
+      environment,
+      homeAccountId,
+      tokenResponse.refresh_token
+  );
+
+  sessionStorage.setItem(accountKey, JSON.stringify(accountEntity));
+  sessionStorage.setItem(idTokenKey, JSON.stringify(idTokenEntity));
+  sessionStorage.setItem(accessTokenKey, JSON.stringify(accessTokenEntity));
+  sessionStorage.setItem(refreshTokenKey, JSON.stringify(refreshTokenEntity));
 }
 
 export const login = () => {
@@ -146,7 +145,7 @@ export const login = () => {
             client_secret: clientSecret,
             username: username,
             password: password,
-            scope: ["openid profile"].concat(apiScopes).join(" "),
+            scope: "user.read openid profile offline_access",
         },
         form: true
     }).then((response) => {
