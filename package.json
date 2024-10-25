@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "cypress": "^13.15.0"
+  },
+  "dependencies": {
+    "@azure/msal-browser": "^3.26.1",
+    "@azure/msal-node": "^1.18.4",
+    "jsonwebtoken": "^9.0.2",
+    "msal": "^1.4.18"
+  },
+  "scripts": {
+    "cy:open": "cypress open"
+  }
+}
