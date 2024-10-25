@@ -1,6 +1,5 @@
 import { login } from "../support/auth";
 
-
 context("viewDashboard", () => {
   beforeEach(() => {
     login();
@@ -9,7 +8,7 @@ context("viewDashboard", () => {
   it("goes to dashboard", () => {
     cy.visit("/dashboard")
     cy.wait(1000)
-    cy.visit("/dashboard")
-    cy.reload()
+    cy.url().should("include", "/dashboard");
+    cy.get('p')
   })
 })

@@ -9,7 +9,7 @@ module.exports = defineConfig({
     chromeWebSecurity: false, // Disable chrome web security to handle cross-origin issues
     experimentalSessionAndOrigin: true, // Enable experimental feature to handle multiple origins
     experimentalModifyObstructiveThirdPartyCode : true,
-    chromeWebSecurity: false,
+    experimentalStudio: true,
   },
 });
 

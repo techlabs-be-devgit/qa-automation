@@ -2,7 +2,10 @@
 
 ## Dependencies
 
-1. `npm install @azure/msal-browser`
-2. `npm install jsonwebtoken`
+1. Cypress 
+2. `npm install @azure/msal-browser`
+3. `npm install jsonwebtoken`
+
+## Getting Started
 
 
