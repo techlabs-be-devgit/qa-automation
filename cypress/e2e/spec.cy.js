@@ -6,7 +6,6 @@ context("viewDashboard", () => {
     login();
   });
   
-
   it("goes to dashboard", () => {
     cy.visit("/dashboard")
     cy.wait(1000)
