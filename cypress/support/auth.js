@@ -2,15 +2,14 @@
 
 import {decode} from 'jsonwebtoken';
 
-const authority = Cypress.env("authorityBaseUrl") + "/" + Cypress.env("tenantId");
+const authority = Cypress.env("authBaseUrl") + "/" + Cypress.env("tenantId");
 const clientId = Cypress.env("clientId");
 const clientSecret = Cypress.env("clientSecret");
 const password = Cypress.env("password");
 const username = Cypress.env("username");
 const apiScopes = ["user.read", "openid", "profile", "email"];
 const tenantId = Cypress.env("tenantId");
-const getRoleEndpoint = Cypress.env("getRoleEndpoint");
-
+const registerUrl = Cypress.env("registerUrl");
 const environment = "login.windows.net";
 
 // Functions to build the required entities for authentication
@@ -171,6 +170,7 @@ const injectTokens = (tokenResponse) => {
   );
 
   const microsoftCodeKey = 'microsoft_code';
+  const microsoftCodeValue = accessToken;
 
   userData(accessToken).then((response) => {
     const userDataKey = 'userData';
@@ -182,12 +182,12 @@ const injectTokens = (tokenResponse) => {
   sessionStorage.setItem(idTokenKey, JSON.stringify(idTokenEntity));
   sessionStorage.setItem(accessTokenKey, JSON.stringify(accessTokenEntity));
   sessionStorage.setItem(refreshTokenKey, JSON.stringify(refreshTokenEntity));
-  localStorage.setItem(microsoftCodeKey, accessToken);
+  localStorage.setItem(microsoftCodeKey, microsoftCodeValue);
 };
 
 
 export const login = () => {
-    return cy.visit("/").request({
+    return cy.visit("/login").request({
         url: authority + "/oauth2/v2.0/token",
         method : "POST",
         body: {
@@ -206,7 +206,7 @@ export const login = () => {
 
 export const userData = (accessToken) => {
   return cy.request({
-    url: getRoleEndpoint,
+    url: registerUrl,
     method : "POST",
     body: {
       auth_token : accessToken,
