@@ -9,7 +9,7 @@ class Action {
         this.element = null;
     }
 
-    c2cLogin(){
+    c2cLogin() {
         this.element = cy.login();
         return this;
     }
@@ -18,29 +18,32 @@ class Action {
      * 
      * @param url The url to visit.
      */
-    visitPage(url){
+    visitPage(url) {
         this.element = cy.visit(url).wait(2000);
         return this;
     }
-    
 
-    clickElement(){
-        if(this.element){
+    /**
+     * Clicks element associated with current element.
+     * @returns an instance of Action class to enable chaining.
+     */
+    clickElement() {
+        if (this.element) {
             this.element.click();
         }
-        else{
-            throw new Error('No element selected to click.')   
+        else {
+            throw new Error('No element selected to click.')
         }
         return this;
     }
 
     /**
      * 
-     * @param {*} element HTML tag of the element to find.
-     * @param {*} label Label of the element to find.
-     * @returns 
+     * @param element HTML tag of the element to find.
+     * @param label Label of the element to find.
+     * @returns an instance of Action class to enable chaining.
      */
-    getElementByLabel(element, label){
+    getElementMatching(element, label) {
         const regex = new RegExp(`^${label}$`);
         this.element = cy.get(element).contains(regex)
         return this;
@@ -48,21 +51,32 @@ class Action {
 
     /**
      * 
-     * @param {*} id ID of the element to find.
-     * @returns 
+     * @param element HTML tag of the element to find.
+     * @param label Label of the element to find.
+     * @returns an instance of Action class to enable chaining.
+     * */
+    getElementContaining(element, label) {
+        this.element = cy.get(element).contains(label)
+        return this;
+    }
+
+    /**
+     * 
+     * @param id ID of the element to find.
+     * @returns an instance of Action class to enable chaining.
      */
-    getElementById(id){
+    getElementWithId(id) {
         this.element = cy.get(`#${id}`)
         return this;
     }
 
     /**
      * 
-     * @param {*} text Text to type into the element.
-     * @returns 
+     * @param text Text to type into the element.
+     * @returns an instance of Action class to enable chaining.
      */
-    typeText(text){
-        if (this.element){
+    typeText(text) {
+        if (this.element) {
             this.element.type(text);
         } else {
             throw new Error('No element selected to type in');
@@ -70,20 +84,32 @@ class Action {
         return this;
     }
 
-    inputDate(day, month, year){
+    /**
+     * 
+     * @param day Day of the month.
+     * @param month Month of the year.
+     * @param year Year.
+     * @returns an instance of Action class to enable chaining.
+     */
+    inputDate(day, month, year) {
         dateString = `${year}-${month}-${day}`;
         this.element.type(dateString);
         return this;
     }
-    
-    selectFromDropdown(option){
+
+    /**
+     * 
+     * @param option The option to select from the dropdown.
+     * @returns an instance of Action class to enable chaining.
+     */
+    selectFromDropdown(option) {
         this.getElementByLabel('li', option).element.scrollIntoView().click();
         return this;
     }
 
     // Assertions
-    shouldBeVisible(){
-        if(this.element){
+    shouldBeVisible() {
+        if (this.element) {
             this.element.should('be.visible');
         }
         else {
@@ -92,8 +118,8 @@ class Action {
         return this;
     }
 
-    shouldContain(text){
-        if(this.element){
+    shouldContain(text) {
+        if (this.element) {
             this.element.should('contain', text);
         }
         else {
