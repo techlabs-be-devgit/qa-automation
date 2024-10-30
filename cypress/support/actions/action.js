@@ -41,7 +41,8 @@ class Action {
      * @returns 
      */
     getElementByLabel(element, label){
-        this.element = cy.get(element).contains(label)
+        const regex = new RegExp(`^${label}$`);
+        this.element = cy.get(element).contains(regex)
         return this;
     }
 
@@ -69,16 +70,18 @@ class Action {
         return this;
     }
 
-    selectDateFromDropdown(){
-        if(this.element){
-            this.element.select();
-        }
-        else{
-            throw new Error('No dropdown selected to select.')   
-        }
+    inputDate(day, month, year){
+        dateString = `${year}-${month}-${day}`;
+        this.element.type(dateString);
         return this;
-    } 
+    }
+    
+    selectFromDropdown(option){
+        this.getElementByLabel('li', option).element.scrollIntoView().click();
+        return this;
+    }
 
+    // Assertions
     shouldBeVisible(){
         if(this.element){
             this.element.should('be.visible');
