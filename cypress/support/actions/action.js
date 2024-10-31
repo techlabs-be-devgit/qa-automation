@@ -16,7 +16,7 @@ class Action {
 
     /**
      * 
-     * @param url The url to visit.
+     * Visit page at @url
      */
     visitPage(url) {
         this.element = cy.visit(url).wait(2000);
@@ -24,8 +24,8 @@ class Action {
     }
 
     /**
-     * Clicks element associated with current element.
-     * @returns an instance of Action class to enable chaining.
+     * 
+     * Click selected element
      */
     clickElement() {
         if (this.element) {
@@ -39,9 +39,7 @@ class Action {
 
     /**
      * 
-     * @param element HTML tag of the element to find.
-     * @param label Label of the element to find.
-     * @returns an instance of Action class to enable chaining.
+     * Select an @element that has the text @label on it - for exact matches.
      */
     getElementMatching(element, label) {
         const regex = new RegExp(`^${label}$`);
@@ -51,9 +49,7 @@ class Action {
 
     /**
      * 
-     * @param element HTML tag of the element to find.
-     * @param label Label of the element to find.
-     * @returns an instance of Action class to enable chaining.
+     * Select an @element with text @label in it.
      * */
     getElementContaining(element, label) {
         this.element = cy.get(element).contains(label)
@@ -62,8 +58,7 @@ class Action {
 
     /**
      * 
-     * @param id ID of the element to find.
-     * @returns an instance of Action class to enable chaining.
+     * Select an element with @id
      */
     getElementWithId(id) {
         this.element = cy.get(`#${id}`)
@@ -72,8 +67,16 @@ class Action {
 
     /**
      * 
-     * @param text Text to type into the element.
-     * @returns an instance of Action class to enable chaining.
+     * Select an element with @attribute that has @value.
+     */
+    getElementWithAttribute(attribute, value) {
+        this.element = cy.get(`[${attribute}="${value}"]`);
+        return this;
+    }
+
+    /**
+     * 
+     * Type @text into the selected element.
      */
     typeText(text) {
         if (this.element) {
@@ -86,24 +89,23 @@ class Action {
 
     /**
      * 
-     * @param day Day of the month.
-     * @param month Month of the year.
-     * @param year Year.
-     * @returns an instance of Action class to enable chaining.
+     * input Date with @day @month and @year
      */
     inputDate(day, month, year) {
-        dateString = `${year}-${month}-${day}`;
+        const dateString = `${String(year)}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         this.element.type(dateString);
         return this;
     }
 
     /**
      * 
-     * @param option The option to select from the dropdown.
-     * @returns an instance of Action class to enable chaining.
+     * Select @option from a dropdown menu
      */
     selectFromDropdown(option) {
-        this.getElementByLabel('li', option).element.scrollIntoView().click();
+        this
+            .clickElement()
+            .getElementMatching('li', option)
+            .element.scrollIntoView().click();
         return this;
     }
 
