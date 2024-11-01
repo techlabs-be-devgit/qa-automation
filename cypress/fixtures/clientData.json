@@ -1,0 +1,12 @@
+{
+    "clientName" : "Test client",
+    "clientAddress" : "Test Address",
+    "country" : "United States",
+    "state" : "California",
+    "city"  : "San Francisco",
+    "zipCode" : "94105",
+    "contractName" : "Test Contract",
+    "contractType" : "MSA",
+    "contractStartDate" : "2022-01-01",
+    "contractEndDate" : "2022-12-31"
+}

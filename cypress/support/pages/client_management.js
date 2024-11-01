@@ -21,9 +21,14 @@ class ClientManagement {
         nextButton : () => ClientManagement.action.getElementMatching('button', 'Next'),
         contractNameInput : () => ClientManagement.action.getElementWithId('outlined-adornment-contractname'),
         contractTypeSelect : () => ClientManagement.action.getElementWithId('demo-simple-select'),
-        contractStartDateInput : () => ClientManagement.action.getElementWithId('\\:ro\\:'),
+        contractStartDateInput : () => ClientManagement.action.getElementWithAttribute('placeholder', 'yyyy-mm-dd'),
         contractEndDateInput : () => ClientManagement.action.getElementWithId('\\:rp\\:'),
         createClientButton : () => ClientManagement.action.getElementMatching('button', 'Create Client'),
+        clientDeleteButton : (clientName) => ClientManagement
+                                            .action
+                                            .getElementWithXpath(`//span[text()="${clientName}"]/ancestor::td/ancestor::tr//td//span//button`),
+        clientDeleteConfirmButton : () => ClientManagement.action.getElementContaining('button', 'Delete'),
+        clientRecord : (clientName) => ClientManagement.action.getElementContaining('span', clientName)
     }
 
     visit(){
@@ -119,6 +124,33 @@ class ClientManagement {
             .elements
             .createClientButton()
             .clickElement();
+    }
+
+    
+    deleteClient(clientName){
+        ClientManagement.action.waitFor(4000)
+        this
+        .elements
+        .clientDeleteButton(clientName)
+        .clickElement();
+        this
+        .elements
+        .clientDeleteConfirmButton()
+        .clickElement();
+    }
+    
+    expectClientAdded(clientName){
+        this
+            .elements
+            .clientRecord(clientName)
+            .shouldBeVisible();
+    }
+
+    expectClientDeleted(clientName){
+        this
+            .elements
+            .clientRecord(clientName)
+            .shouldNotExist();
     }
 }
 

@@ -187,21 +187,24 @@ const injectTokens = (tokenResponse) => {
 
 
 export const login = () => {
-    return cy.visit("/login").request({
-        url: authority + "/oauth2/v2.0/token",
-        method : "POST",
-        body: {
-            grant_type: "password",
-            client_id: clientId,
-            client_secret: clientSecret,
-            username: username,
-            password: password,
-            scope: "user.read openid profile offline_access",
-        },
-        form: true
-    }).then((response) => {
-        injectTokens(response.body);
-}).reload();
+  return cy.session('auth-session', () => {
+
+      return cy.visit("/login").request({
+          url: authority + "/oauth2/v2.0/token",
+          method : "POST",
+          body: {
+              grant_type: "password",
+              client_id: clientId,
+              client_secret: clientSecret,
+              username: username,
+              password: password,
+              scope: "user.read openid profile offline_access",
+          },
+          form: true
+      }).then((response) => {
+          injectTokens(response.body);
+  }).reload();
+  });
 };
 
 export const userData = (accessToken) => {
