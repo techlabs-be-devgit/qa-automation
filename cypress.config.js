@@ -1,5 +1,6 @@
 const { defineConfig } = require("Cypress");
  
+
 module.exports = defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
@@ -10,6 +11,7 @@ module.exports = defineConfig({
     experimentalSessionAndOrigin: true, // Enable experimental feature to handle multiple origins
     experimentalModifyObstructiveThirdPartyCode : true,
     experimentalStudio: true,
+    testIsolation: false,
   },
 });
 

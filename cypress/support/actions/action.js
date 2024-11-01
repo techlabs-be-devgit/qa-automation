@@ -69,8 +69,13 @@ class Action {
      * 
      * Select an element with @attribute that has @value.
      */
-    getElementWithAttribute(attribute, value) {
-        this.element = cy.get(`[${attribute}="${value}"]`);
+    getElementWithAttribute(attribute, value, index = 0) {
+        this.element = cy.get(`[${attribute}="${value}"]`).eq(index);
+        return this;
+    }
+
+    getElementWithXpath(xpath) {
+        this.element = cy.xpath(xpath);
         return this;
     }
 
@@ -109,6 +114,15 @@ class Action {
         return this;
     }
 
+    waitFor(milliseconds){
+        this.element = cy.wait(milliseconds);
+        return this;
+    }
+
+    loadFixture(fixtureName) {
+        return cy.fixture(fixtureName);
+    }
+
     // Assertions
     shouldBeVisible() {
         if (this.element) {
@@ -117,7 +131,6 @@ class Action {
         else {
             throw new Error('No element selected')
         }
-        return this;
     }
 
     shouldContain(text) {
@@ -127,7 +140,24 @@ class Action {
         else {
             throw new Error('No element selected')
         }
-        return this;
+    }
+
+    urlShouldContain(url) {
+        if(this.element){
+            this.element.url().should('contain', url);
+        }
+        else {
+            throw new Error('No element selected')
+        }
+    }
+
+    shouldNotExist() {
+        if (this.element) {
+            this.element.should('not.exist');
+        }
+        else {
+            throw new Error('No element selected')
+        }
     }
 }
 
