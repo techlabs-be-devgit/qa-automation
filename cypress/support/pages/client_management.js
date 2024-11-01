@@ -41,7 +41,7 @@ class ClientManagement {
         this
             .elements
             .clientNameInput()
-            .typeText('Test Client');
+            .typeText(clientName);
     }
 
     fillClientAddress(clientAddress){
