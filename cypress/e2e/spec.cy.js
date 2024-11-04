@@ -16,33 +16,34 @@ describe("Client Management", () => {
   
   it("Adds a new client", () => {
     const client = new ClientManagement();
-        client.visit();
-        client.openAddClientPopup();
-        client.fillClientName(data.clientName);
-        client.fillClientAddress(data.clientAddress);
-        client.selectClientCountry(data.country);
-        client.selectClientState(data.state);
-        client.selectClientCity(data.city);
-        client.fillClientZipCode(data.zipCode);
-        client.clickNextButton();
-        client.fillContractName(data.contractName);
-        client.selectContractType(data.contractType);
-        client.fillContractStartDate(data.contractStartDate);
-        client.clickNextButton();
-        client.clickCreateClientButton();
-        client.expectClientAdded(data.clientName);
+      client.visit();
+      client.openAddClientPopup();
+      client.fillClientName(data.client.name);
+      client.fillClientAddress(data.client.address);
+      client.selectClientCountry(data.client.country);
+      client.selectClientState(data.client.state);
+      client.selectClientCity(data.client.city);
+      client.fillClientZipCode(data.client.zipCode);
+      client.clickNextButton();
+      client.fillContractName(data.orgLevelContract.name);
+      client.selectContractType(data.orgLevelContract.type);
+      client.fillContractStartDate(data.orgLevelContract.startDate);
+      client.clickNextButton();
+      client.clickCreateClientButton();
+      client.expectClientAdded(data.client.name);
   });
 
   it(("Opens the pricings for a client"), () => {
-    
+    const pricing = new Pricing();
+    pricing.visit(data.client.name);
   })
 
 
   after(() => {
-        const client = new ClientManagement();
-        client.visit();
-        client.deleteClient(data.clientName)
-        client.expectClientDeleted(data.clientName);
+    const client = new ClientManagement();
+    client.visit();
+    client.deleteClient(data.client.name)
+    client.expectClientDeleted(data.client.name);
   });
 })
 
