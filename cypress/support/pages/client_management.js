@@ -105,18 +105,18 @@ class ClientManagement {
             .selectFromDropdown(contractType);
     }
 
-    fillContractStartDate(day, month, year){
+    fillContractStartDate(date){
         this
             .elements
             .contractStartDateInput()
-            .inputDate(day, month, year);
+            .typeText(date);
     }
 
-    fillContractEndDate(day, month, year){
+    fillContractEndDate(date){
         this
             .elements
             .contractEndDateInput()
-            .inputDate(day, month, year);
+            .typeText(date);
     }
 
     clickCreateClientButton(){
