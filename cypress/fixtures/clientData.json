@@ -21,7 +21,28 @@
     },
 
     "resourceRoles" : {
-        "UXEngineer": ""
+        "uxEng": "UX Engineer",
+        "uxArch" : "UX Architect",
+        "uxSME" : "UX SME",
+        "fullstackEng" : "Fullstack Engineer",
+        "fullstackArch" : "Fullstack Architect",
+        "fullstackSME" : "Fullstack SME",
+        "dataEng" : "Data Engineer",
+        "dataArch" : "Data Architect",
+        "dataSME" : "Data SME",
+        "cloudDevOpsEng" : "Cloud-Devops Engineer",
+        "cloudDevOpsArch" : "Cloud-Devops Architect",
+        "cloudDevOpsSME" : "Cloud-Devops SME",
+        "productManager" : "Product Manager",
+        "QAEng" : "QA Engineer",
+        "QAArch" : "QA Architect",
+        "QASME" : "QA SME",
+        "salesforceEng" : "Salesforce Engineer",
+        "salesforceArch" : "Salesforce Architect",
+        "salesforceSME" : "Salesforce SME",
+        "IAMEng" : "IAM Engineer",
+        "IAMArch" : "IAM Architect",
+        "IAMSME" : "IAM SME"
     },
 
     "pricing" : {
