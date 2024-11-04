@@ -59,7 +59,7 @@ describe("Client Management", () => {
     const pricing = new Pricing();
     pricing.visit(data.client.name);
   })
- 
+
  
   after(() => {
     const client = new ClientManagement();
