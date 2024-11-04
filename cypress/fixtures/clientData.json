@@ -8,5 +8,8 @@
     "contractName" : "Test Contract",
     "contractType" : "MSA",
     "contractStartDate" : "2022-01-01",
-    "contractEndDate" : "2022-12-31"
+    "contractEndDate" : "2022-12-31",
+    "estimationName" : "Test Estimation",
+    "pricingName" : "Test Pricing",
+    "discount" : 5.5
 }

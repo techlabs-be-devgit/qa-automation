@@ -1,8 +1,8 @@
 import { Action } from '../actions/action';
 
 class ClientManagement {
-    static action = new Action();
     static url = '/dashboard';
+    static action = new Action();
 
     /**
      * Define the elements for the Client Management page
@@ -27,7 +27,7 @@ class ClientManagement {
         clientDeleteButton : (clientName) => ClientManagement
                                             .action
                                             .getElementWithXpath(`//span[text()="${clientName}"]/ancestor::td/ancestor::tr//td//span//button`),
-        clientDeleteConfirmButton : () => ClientManagement.action.getElementContaining('button', 'Delete'),
+        deleteConfirmButton : () => ClientManagement.action.getElementContaining('button', 'Delete'),
         clientRecord : (clientName) => ClientManagement.action.getElementContaining('span', clientName)
     }
 
@@ -135,7 +135,7 @@ class ClientManagement {
         .clickElement();
         this
         .elements
-        .clientDeleteConfirmButton()
+        .deleteConfirmButton()
         .clickElement();
     }
     
