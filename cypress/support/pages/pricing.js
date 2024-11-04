@@ -7,6 +7,7 @@ class Pricing {
         clientRecord : (clientName) => Pricing.action.getElementContaining('span', clientName),
         effortEstimationTab : () => Pricing.action.getElementMatching('div', 'Estimation'),
         pricingTab : () => Pricing.action.getElementMatching('div', 'Pricing'),
+        pricingHeader : () => Pricing.action.getElementMatching('p', 'Pricing'),
         addPricingButton : () => Pricing.action.getElementMatching('button', 'Add Pricing'),
         addPricingHeader : () => Pricing.action.getElementMatching('span', 'Add Pricing'),
         pricingNameInput : () => Pricing.action.getElementWithAttribute('name', 'pricingName'),
@@ -80,6 +81,13 @@ class Pricing {
             .clickElement()
             .getElementMatching('button', 'Delete')
             .clickElement()
+    }
+
+    expectPricingHeaderVisible() {
+        this
+            .elements
+            .pricingHeader()
+            .shouldBeVisible();
     }
 
     expectPricingAdded(pricingName) {

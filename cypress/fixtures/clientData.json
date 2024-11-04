@@ -1,15 +1,54 @@
 {
-    "clientName" : "Test client",
-    "clientAddress" : "Test Address",
-    "country" : "United States",
-    "state" : "California",
-    "city"  : "San Francisco",
-    "zipCode" : "94105",
-    "contractName" : "Test Contract",
-    "contractType" : "MSA",
-    "contractStartDate" : "2022-01-01",
-    "contractEndDate" : "2022-12-31",
-    "estimationName" : "Test Estimation",
-    "pricingName" : "Test Pricing",
-    "discount" : 5.5
+    "client" : {
+        "name" : "Test client",
+        "address" : "Test Address",
+        "country" : "United States",
+        "countryShort" : "US",
+        "state" : "California",
+        "city" : "San Francisco",
+        "zipCode" : "94105"
+    },
+
+    "orgLevelContract" : {
+        "name" : "Test contract",
+        "type" : "MSA",
+        "startDate" : "2022-01-01",
+        "endDate" : "2022-12-31"
+    },
+
+    "estimation" : {
+        "name" : "Test estimation",
+        "pricingName" : "Test pricing"
+    },
+
+    "resourceRoles" : {
+        "uxEng": "UX Engineer",
+        "uxArch" : "UX Architect",
+        "uxSME" : "UX SME",
+        "fullstackEng" : "Fullstack Engineer",
+        "fullstackArch" : "Fullstack Architect",
+        "fullstackSME" : "Fullstack SME",
+        "dataEng" : "Data Engineer",
+        "dataArch" : "Data Architect",
+        "dataSME" : "Data SME",
+        "cloudDevOpsEng" : "Cloud-Devops Engineer",
+        "cloudDevOpsArch" : "Cloud-Devops Architect",
+        "cloudDevOpsSME" : "Cloud-Devops SME",
+        "productManager" : "Product Manager",
+        "QAEng" : "QA Engineer",
+        "QAArch" : "QA Architect",
+        "QASME" : "QA SME",
+        "salesforceEng" : "Salesforce Engineer",
+        "salesforceArch" : "Salesforce Architect",
+        "salesforceSME" : "Salesforce SME",
+        "IAMEng" : "IAM Engineer",
+        "IAMArch" : "IAM Architect",
+        "IAMSME" : "IAM SME"
+    },
+
+    "pricing" : {
+        "name" : "Test pricing",
+        "estimationName" : "Test estimation",
+        "discount" : 5.5
+    }
 }
