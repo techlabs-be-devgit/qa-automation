@@ -27,9 +27,14 @@ class Action {
      * 
      * Click selected element
      */
-    clickElement() {
+    clickElement(position = '') {
         if (this.element) {
-            this.element.click();
+            if (position == ''){
+                this.element.click();
+            }
+            else{
+                this.element.click(position);
+            }
         }
         else {
             throw new Error('No element selected to click.')
