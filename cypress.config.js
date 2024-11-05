@@ -12,6 +12,8 @@ module.exports = defineConfig({
     experimentalModifyObstructiveThirdPartyCode : true,
     experimentalStudio: true,
     testIsolation: false,
+    defaultCommandTimeout : 8000,
+    projectId : "u6nzwt",
   },
 });
 

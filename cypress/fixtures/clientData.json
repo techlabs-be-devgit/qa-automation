@@ -3,11 +3,11 @@
         "name" : "Test client",
         "address" : "Test Address",
         "country" : "United States",
+        "countryShort" : "US",
         "state" : "California",
         "city" : "San Francisco",
         "zipCode" : "94105"
     },
- 
     "orgLevelContract" : {
         "name" : "Test contract",
         "type" : "MSA",
