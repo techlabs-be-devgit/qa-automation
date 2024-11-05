@@ -3,6 +3,10 @@ import { Action } from '../actions/action';
 class ClientManagement {
     static url = '/dashboard';
     static action = new Action();
+    static  streetAddressLeadingTrailingSpacesWarning = 'Street address should not have leading or trailing spaces.';
+    static emptyAddressFieldWarning = 'Street address cannot be empty. Please enter a valid address.';
+    static randomCharactersInAddressFieldWarning = 'Address appears to contain random characters. Please enter a valid address.';
+    static invalidZipCodeWarning = 'Zip code should be min 5 or max 8 digits (alphanumeric) long.';
 
     /**
      * Define the elements for the Client Management page
@@ -17,20 +21,20 @@ class ClientManagement {
         clientAddressInput : () => ClientManagement.action.getElementWithId('outlined-adornment-clientaddress'),
         addressLeadingTrailingSpacesWarning : () => ClientManagement
                                                     .action
-                                                    .getElementContaining('p', 'Street address should not have leading or trailing spaces.'),
+                                                    .getElementContaining('p', ClientManagement.streetAddressLeadingTrailingSpacesWarning),
         emptyAddressFieldWarning : () => ClientManagement
                                             .action
-                                            .getElementMatching('p', 'Street address cannot be empty. Please enter a valid address.'),
+                                            .getElementMatching('p', ClientManagement.emptyAddressFieldWarning),
         randomCharactersInAddressFieldWarning : () => ClientManagement
                                                     .action
-                                                    .getElementMatching('p', 'Address appears to contain random characters. Please enter a valid address.'),
+                                                    .getElementMatching('p', ClientManagement.randomCharactersInAddressFieldWarning),
         countrySelect : () => ClientManagement.action.getElementWithId('country-select'),
         stateSelect : () => ClientManagement.action.getElementWithId('state-select'),
         citySelect : () => ClientManagement.action.getElementWithId('city-select'),
         clientZipCodeInput : () => ClientManagement.action.getElementWithId('outlined-adornment-zipcode'),
         invalidZipCodeWarning : () => ClientManagement
                                         .action
-                                        .getElementContaining('p', 'Zip code should be min 5 or max 8 digits (alphanumeric) long.'),
+                                        .getElementContaining('p', ClientManagement.invalidZipCodeWarning),
         nextButton : () => ClientManagement.action.getElementMatching('button', 'Next'),
         contractNameInput : () => ClientManagement.action.getElementWithId('outlined-adornment-contractname'),
         contractTypeSelect : () => ClientManagement.action.getElementWithId('demo-simple-select'),
@@ -163,7 +167,7 @@ class ClientManagement {
 
     
     deleteClient(clientName){
-        ClientManagement.action.waitFor(4000)
+        ClientManagement.action.waitFor(2000)
         this
         .elements
         .clientDeleteButton(clientName)
@@ -224,7 +228,7 @@ class ClientManagement {
     }
 
     expectInvalidZipCodeWarning() {
-        ClientManagement.action.waitFor(4000);
+        ClientManagement.action.waitFor(2000);
         this
             .elements
             .invalidZipCodeWarning()
