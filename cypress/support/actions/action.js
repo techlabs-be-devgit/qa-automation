@@ -48,7 +48,7 @@ class Action {
      */
     getElementMatching(element, label) {
         const regex = new RegExp(`^${label}$`);
-        this.element = cy.get(element).contains(regex);
+        this.element = cy.get(element).contains(regex)
         return this;
     }
 
@@ -57,7 +57,7 @@ class Action {
      * Select an @element with text @label in it.
      * */
     getElementContaining(element, label) {
-        this.element = cy.get(element).contains(label);
+        this.element = cy.get(element).contains(label)
         return this;
     }
 
@@ -88,7 +88,7 @@ class Action {
         this.element = this.element.siblings().eq(n);
         return this;
     }
-
+    
     /**
      * 
      * Type @text into the selected element.
@@ -129,14 +129,6 @@ class Action {
         return this;
     }
 
-    clearField(){
-        if (this.element) {
-            this.element.clear();
-        } else {
-            throw new Error('No element selected to clear');
-        }
-    }
-
     loadFixture(fixtureName) {
         return cy.fixture(fixtureName);
     }
@@ -147,9 +139,8 @@ class Action {
             this.element.should('be.visible');
         }
         else {
-            throw new Error('No element selected');
+            throw new Error('No element selected')
         }
-        return this;
     }
 
     shouldContain(text) {
@@ -157,9 +148,8 @@ class Action {
             this.element.should('contain', text);
         }
         else {
-            throw new Error('No element selected');
+            throw new Error('No element selected')
         }
-        return this;
     }
 
     urlShouldContain(url) {
@@ -167,9 +157,8 @@ class Action {
             this.element.url().should('contain', url);
         }
         else {
-            throw new Error('No element selected');
+            throw new Error('No element selected')
         }
-        return this;
     }
 
     shouldNotExist() {
@@ -177,9 +166,8 @@ class Action {
             this.element.should('not.exist');
         }
         else {
-            throw new Error('No element selected');
+            throw new Error('No element selected')
         }
-        return this;
     }
 }
 
