@@ -149,6 +149,7 @@ class Action {
         else {
             throw new Error('No element selected');
         }
+        return this;
     }
 
     shouldContain(text) {
@@ -158,6 +159,7 @@ class Action {
         else {
             throw new Error('No element selected');
         }
+        return this;
     }
 
     urlShouldContain(url) {
@@ -167,6 +169,7 @@ class Action {
         else {
             throw new Error('No element selected');
         }
+        return this;
     }
 
     shouldNotExist() {
@@ -176,6 +179,7 @@ class Action {
         else {
             throw new Error('No element selected');
         }
+        return this;
     }
 }
 
