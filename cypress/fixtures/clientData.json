@@ -8,6 +8,7 @@
         "city" : "San Francisco",
         "zipCode" : "94105"
     },
+
     "orgLevelContract" : {
         "name" : "Test contract",
         "type" : "MSA",
@@ -19,12 +20,32 @@
         "name" : "Test estimation",
         "billing" : "Enterprise",
         "skill" : "User Experience Design",
-        "region" : "IND",
         "startDate" : "2024-10-01",
         "endDate" : "2024-10-31"
     },
+
+    "region" : {
+        "ind" : "IND",
+        "latam" : "LATAM",
+        "usa" : "USA"
+    },
+
+    "paymentTerm" : {
+        "net15" : "Net 15",
+        "net30" : "Net 30",
+        "net45" : "Net 45",
+        "net60" : "Net 60",
+        "net90" : "Net 90",
+        "dueOnReceipt" : "Due on receipt"
+    },
+
+    "contractType" : {
+        "fixed" : "FIXED",
+        "capacity" : "CAPACITY",
+        "timeAndMaterial" : "TIME AND MATERIAL"
+    },
  
-    "resourceRoles" : {
+    "resourceRole" : {
         "uxEng": "UX Engineer",
         "uxArch" : "UX Architect",
         "uxSME" : "UX SME",
