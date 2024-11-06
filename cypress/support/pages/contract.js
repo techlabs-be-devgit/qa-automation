@@ -29,7 +29,14 @@ class Contract {
             paymentTerms: () => Contract.action.getElementContaining('p', 'Payment Terms Contract').getNthSibling(),
             startDate: () => Contract.action.getElementContaining('p', 'Start Date').getNthSibling(),
             endDate: () => Contract.action.getElementContaining('p', 'End Date').getNthSibling(),
-        }
+        },
+        contractUploadSection: {
+            uploadField: () => Contract.action.getElementWithAttribute('type', 'file', 'input'),
+            sowAmountField: () => Contract.action.getElementContaining('p', 'SOW Amount'),
+            startDateField: () => Contract.action.getElementContaining('p', 'Start Date'),
+            endDateField: () => Contract.action.getElementContaining('p', 'End Date'),
+        },
+        createContractButton: () => Contract.action.getElementContaining('button', 'Create Contract'),
     }
 
     visit(clientName) {
@@ -98,11 +105,25 @@ class Contract {
            .clickElement();
     }
 
+    uploadContractFile(fileName) {
+        this
+           .elements
+           .contractUploadSection.uploadField()
+           .uploadFile(fileName);
+    }
+
     expectContractAdded(contractName) {
         this
             .elements
             .contractRecord(contractName)
             .shouldBeVisible();
+    }
+
+    expectContractDeleted(contractName) {
+        this
+            .elements
+            .contractRecord(contractName)
+            .shouldNotExist();
     }
 
     expectContractsHeaderVisible() {
@@ -166,6 +187,27 @@ class Contract {
             .elements
             .existingContractWarning()
             .shouldBeVisible();
+    }
+
+    expectParsedSOWAmountToBe(sowAmount) {
+        this
+            .elements
+            .contractUploadSection.sowAmountField()
+            .shouldContain(sowAmount);
+    }
+
+    expectParsedStartDateToBe(startDate) {
+        this
+            .elements
+            .contractUploadSection.startDateField()
+            .shouldContain(startDate);
+    }
+
+    expectParsedEndDateToBe(endDate) {
+        this
+            .elements
+            .contractUploadSection.endDateField()
+            .shouldContain(endDate);
     }
 }
 

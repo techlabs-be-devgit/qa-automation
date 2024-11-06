@@ -2,6 +2,7 @@
  * @abstract Base class for high level actions.
  * Most functions return an instance of the Action class, allowing chaining of actions.
  */
+import 'cypress-file-upload';
 
 class Action {
 
@@ -159,6 +160,16 @@ class Action {
             throw new Error('No element selected to clear')
         }
     }
+
+    uploadFile(fileName) {
+        if (this.element) {
+            this.element.selectFile(`cypress/fixtures/${fileName}`, {force: true});
+        } else {
+            throw new Error ('No element selected to upload file')
+        }
+    }
+
+
     // Assertions
     shouldBeVisible() {
         if (this.element) {

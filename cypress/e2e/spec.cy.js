@@ -59,7 +59,6 @@ describe("Client Management", () => {
 		testClient.fillContractName(data.orgLevelContract.name);
 		testClient.selectContractType(data.orgLevelContract.type);
 		testClient.fillContractStartDate(data.orgLevelContract.startDate);
-		// testClient.fillContractEndDate(data.orgLevelContract.endDate);
 		testClient.clickNextButton();
 	})
 
