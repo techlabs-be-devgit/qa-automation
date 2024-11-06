@@ -2,6 +2,7 @@
  * @abstract Base class for high level actions.
  * Most functions return an instance of the Action class, allowing chaining of actions.
  */
+import 'cypress-file-upload';
 
 class Action {
 
@@ -73,17 +74,36 @@ class Action {
     /**
      * 
      * Select an element with @attribute that has @value.
+     * Additionally, pass the type of element to select as a string and the index in case of multiple matches as an integer
      */
-    getElementWithAttribute(attribute, value, index = 0) {
-        this.element = cy.get(`[${attribute}="${value}"]`).eq(index);
+    getElementWithAttribute(attribute, value, ...args) {
+        let element = '';
+        let index = 0;
+        args.forEach(arg => {
+            if (typeof arg === 'string') {
+                element = arg;
+            } else if (typeof arg === 'number') {
+                index = arg;
+            }
+        });
+        this.element = cy.get(`${element}[${attribute}="${value}"]`).eq(index);
         return this;
     }
 
-    getElementWithXpath(xpath) {
-        this.element = cy.xpath(xpath);
+    /**
+     *          
+     * Return an element with @xpath
+     * In case of multiple matches, select the @index th match.
+     */
+    getElementWithXpath(xpath, index = 0) {
+        this.element = cy.xpath(xpath).eq(index);
         return this;
     }
 
+    /**
+     * 
+     *  Select the @n th sibling of the selected element.
+     */
     getNthSibling(n = 0){
         this.element = this.element.siblings().eq(n);
         return this;
@@ -133,23 +153,42 @@ class Action {
         return cy.fixture(fixtureName);
     }
 
+    clearField(){
+        if (this.element) {
+            this.element.clear();
+        } else {
+            throw new Error('No element selected to clear')
+        }
+    }
+
+    uploadFile(fileName) {
+        if (this.element) {
+            this.element.selectFile(`cypress/fixtures/${fileName}`, {force: true});
+        } else {
+            throw new Error ('No element selected to upload file')
+        }
+    }
+
+
     // Assertions
     shouldBeVisible() {
         if (this.element) {
-            this.element.should('be.visible');
+            this.element.scrollIntoView().should('be.visible');
         }
         else {
             throw new Error('No element selected')
         }
+        return this;
     }
 
     shouldContain(text) {
         if (this.element) {
-            this.element.should('contain', text);
+            this.element.scrollIntoView().should('contain', text);
         }
         else {
             throw new Error('No element selected')
         }
+        return this;
     }
 
     urlShouldContain(url) {
@@ -159,6 +198,7 @@ class Action {
         else {
             throw new Error('No element selected')
         }
+        return this;
     }
 
     shouldNotExist() {
