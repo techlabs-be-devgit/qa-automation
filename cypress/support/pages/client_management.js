@@ -169,13 +169,13 @@ class ClientManagement {
     deleteClient(clientName){
         ClientManagement.action.waitFor(2000)
         this
-        .elements
-        .clientDeleteButton(clientName)
-        .clickElement();
+            .elements
+            .clientDeleteButton(clientName)
+            .clickElement();
         this
-        .elements
-        .deleteConfirmButton()
-        .clickElement();
+            .elements
+            .deleteConfirmButton()
+            .clickElement();
     }
     
     expectClientAdded(clientName){

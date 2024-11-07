@@ -24,6 +24,11 @@
         "endDate" : "2024-10-31"
     },
 
+    "billing" : {
+        "enterprise" : "Enterprise",
+        "startUp" : "Startup"
+    },
+
     "region" : {
         "ind" : "IND",
         "latam" : "LATAM",
@@ -68,6 +73,12 @@
         "IAMEng" : "IAM Engineer",
         "IAMArch" : "IAM Architect",
         "IAMSME" : "IAM SME"
+    },
+
+    "skill" : {
+        "uxEng" : {
+            
+        }
     },
  
     "pricing" : {

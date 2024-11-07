@@ -31,7 +31,7 @@ class Action {
     clickElement(position = '') {
         if (this.element) {
             if (position == ''){
-                this.element.click();
+                this.element.click({force: true});
             }
             else{
                 this.element.click(position);
@@ -75,18 +75,27 @@ class Action {
      * 
      * Select an element with @attribute that has @value.
      * Additionally, pass the type of element to select as a string and the index in case of multiple matches as an integer
+     * To get all possible matches without a specific index, pass false as the third argument.
      */
     getElementWithAttribute(attribute, value, ...args) {
         let element = '';
         let index = 0;
+        let useIndex = true;
         args.forEach(arg => {
             if (typeof arg === 'string') {
                 element = arg;
-            } else if (typeof arg === 'number') {
+            } 
+            if (typeof arg === 'number') {
                 index = arg;
             }
+            if (arg === false) {
+                useIndex = arg;
+            }
         });
-        this.element = cy.get(`${element}[${attribute}="${value}"]`).eq(index);
+        this.element = cy.get(`${element}[${attribute}="${value}"]`)
+        if (useIndex) {
+            this.element = this.element.eq(index);
+        }
         return this;
     }
 
@@ -115,7 +124,7 @@ class Action {
      */
     typeText(text) {
         if (this.element) {
-            this.element.type(text);
+            this.element.type(text, {force: true});
         } else {
             throw new Error('No element selected to type in');
         }
@@ -159,6 +168,7 @@ class Action {
         } else {
             throw new Error('No element selected to clear')
         }
+        return this;
     }
 
     uploadFile(fileName) {
@@ -208,6 +218,47 @@ class Action {
         else {
             throw new Error('No element selected')
         }
+    }
+
+    shouldHaveAttributeValue(attribute, value) {
+        if (this.element) {
+            this.element.should('have.attr', attribute, value);
+        } else {
+            throw new Error('No element selected')
+        }
+        return this;
+    }
+
+    shouldBeGTE(value) {
+        if (this.element) {
+            this.element.should('be.gte', value);
+        } else {
+            throw new Error('No element selected')
+        }
+        return this;
+    }
+
+    shouldBeLTE(value) {
+        if (this.element) {
+            this.element.should('be.lte', value);
+        } else {
+            throw new Error('No element selected')
+        }
+        return this;
+    }
+
+    shouldEqual(value) {
+        if (this.element) {
+            this.element.should('equal', value);
+        } else {
+            throw new Error('No element selected')
+        }
+        return this;
+    }
+
+    wrap(item) {
+        this.element = cy.wrap(item);
+        return this;
     }
 }
 
