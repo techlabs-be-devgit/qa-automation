@@ -53,6 +53,18 @@
         "name" : "Test pricing",
         "estimationName" : "Test estimation",
         "discount" : 5.5
+    },
+
+    "milestone" : {
+        "contractName" : "contract2",
+        "name" : "abcdfghjk",
+        "amount" : "1000",
+        "milestoneDate" : "2024-10-01",
+        "deliverables" : "item1",
+        "amountTwo" : "200",
+        "deliverablesTwo" : "item2"
+        
+
     }
 }
  
