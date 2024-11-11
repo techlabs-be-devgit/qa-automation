@@ -57,8 +57,11 @@
 
     "milestone" : {
         "contractName" : "contract2",
-        "name" : "abcdfghjk",
+        "name" : "Abcdfghj",
+        "startDate" : "Fri Nov 01 2024",
+        "endDate" :"Fri Nov 29 2024",
         "amount" : "1000",
+        "enteredAmount" :"2000",
         "milestoneDate" : "2024-10-01",
         "deliverables" : "item1",
         "amountTwo" : "200",

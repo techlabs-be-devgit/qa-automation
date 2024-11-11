@@ -143,6 +143,14 @@ class Action {
         }
     }
 
+    shouldBeEnabled() {
+        if (this.element) {
+            this.element.should('be.enabled');
+        } else {
+            throw new Error('No element selected');
+        }
+    }
+
     shouldContain(text) {
         if (this.element) {
             this.element.should('contain', text);
