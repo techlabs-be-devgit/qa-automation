@@ -92,32 +92,3 @@ describe("Milestone Module", () => {
 		milestone.expectMilestoneRows(5);
 	})
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// after(() => {
-//   const client = new ClientManagement();
-//   client.visit();
-//   client.deleteClient(data.client.name)
-//   client.expectClientDeleted(data.client.name);
-// });
-
-
-
