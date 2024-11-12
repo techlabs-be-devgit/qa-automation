@@ -14,6 +14,8 @@ class Action {
         return this;
     }
 
+
+
     /**
      * 
      * Visit page at @url
@@ -23,6 +25,9 @@ class Action {
         return this;
     }
 
+   
+    
+
     /**
      * 
      * Click selected element
@@ -30,7 +35,7 @@ class Action {
     clickElement(position = '') {
         if (this.element) {
             if (position == ''){
-                this.element.click();
+                this.element.click({force:true});
             }
             else{
                 this.element.click(position);
@@ -177,6 +182,17 @@ class Action {
             throw new Error('No element selected')
         }
     }
+
+    shouldHaveLength(length) {
+        if (this.element) {
+            this.element.should('have.length', length);
+        } else {
+            throw new Error('No element selected')
+        }
+        return this;
+    }
+
+   
 }
 
 export { Action };
