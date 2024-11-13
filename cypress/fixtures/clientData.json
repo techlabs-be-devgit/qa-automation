@@ -20,8 +20,17 @@
         "name" : "Test estimation",
         "billing" : "Enterprise",
         "skill" : "User Experience Design",
-        "startDate" : "2024-10-01",
-        "endDate" : "2024-10-31"
+        "startDate" : "2024-01-01",
+        "endDate" : "2024-06-28",
+        "totalWorkingDays" : 130,
+        "monthlyWorkingDays" : {
+            "january" : 23,
+            "february" : 23,
+            "march" : 23,
+            "april" : 22,
+            "may" : 23,
+            "june" : 20
+        }
     },
 
     "billing" : {
@@ -33,6 +42,15 @@
         "ind" : "IND",
         "latam" : "LATAM",
         "usa" : "USA"
+    },
+
+    "contract" : {
+        "name" : "Test contract",
+        "parsedData" : {
+            "sowAmount" : 99720,
+            "startDate" : "2023-08-21",
+            "endDate" : "2024-08-20"
+        }
     },
 
     "paymentTerm" : {
@@ -73,12 +91,6 @@
         "IAMEng" : "IAM Engineer",
         "IAMArch" : "IAM Architect",
         "IAMSME" : "IAM SME"
-    },
-
-    "skill" : {
-        "uxEng" : {
-            
-        }
     },
  
     "pricing" : {

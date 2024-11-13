@@ -4,7 +4,6 @@ class ClientManagement {
     static url = '/dashboard';
     static action = new Action();
     static  streetAddressLeadingTrailingSpacesWarning = 'Street address should not have leading or trailing spaces.';
-    static emptyAddressFieldWarning = 'Street address cannot be empty. Please enter a valid address.';
     static randomCharactersInAddressFieldWarning = 'Address appears to contain random characters. Please enter a valid address.';
     static invalidZipCodeWarning = 'Zip code should be min 5 or max 8 digits (alphanumeric) long.';
 
@@ -22,9 +21,6 @@ class ClientManagement {
         addressLeadingTrailingSpacesWarning : () => ClientManagement
                                                     .action
                                                     .getElementContaining('p', ClientManagement.streetAddressLeadingTrailingSpacesWarning),
-        emptyAddressFieldWarning : () => ClientManagement
-                                            .action
-                                            .getElementMatching('p', ClientManagement.emptyAddressFieldWarning),
         randomCharactersInAddressFieldWarning : () => ClientManagement
                                                     .action
                                                     .getElementMatching('p', ClientManagement.randomCharactersInAddressFieldWarning),
@@ -205,14 +201,7 @@ class ClientManagement {
             .addClientHeader()
             .shouldBeVisible();
     }
-
-    expectEmptyAddressFieldWarning(){
-        this
-            .elements
-            .emptyAddressFieldWarning()
-            .shouldBeVisible();
-    }
-
+    
     expectRandomCharactersInAddressFieldWarning(){
         this
             .elements

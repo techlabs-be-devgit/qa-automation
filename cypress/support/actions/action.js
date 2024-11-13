@@ -29,16 +29,12 @@ class Action {
      * Click selected element
      */
     clickElement(position = '') {
-        if (this.element) {
-            if (position == ''){
-                this.element.click({force: true});
-            }
-            else{
+        if(this.element){
+            if(position == ''){
+                this.element.click();
+            } else {
                 this.element.click(position);
             }
-        }
-        else {
-            throw new Error('No element selected to click.')
         }
         return this;
     }
@@ -124,7 +120,7 @@ class Action {
      */
     typeText(text) {
         if (this.element) {
-            this.element.type(text, {force: true});
+            this.element.type(text);
         } else {
             throw new Error('No element selected to type in');
         }
@@ -137,7 +133,7 @@ class Action {
      */
     inputDate(day, month, year) {
         const dateString = `${String(year)}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        this.element.type(dateString);
+        this.element.scrollIntoView().type(dateString);
         return this;
     }
 
@@ -164,7 +160,7 @@ class Action {
 
     clearField(){
         if (this.element) {
-            this.element.clear();
+            this.element.scrollIntoView().clear();
         } else {
             throw new Error('No element selected to clear')
         }
@@ -176,6 +172,14 @@ class Action {
             this.element.selectFile(`cypress/fixtures/${fileName}`, {force: true});
         } else {
             throw new Error ('No element selected to upload file')
+        }
+    }
+
+    getAttributeValue(attribute) {
+        if (this.element) {
+            return this
+                .element
+                .invoke('attr', attribute)
         }
     }
 
@@ -254,6 +258,43 @@ class Action {
             throw new Error('No element selected')
         }
         return this;
+    }
+
+    shouldHaveLength(length) {
+        if (this.element) {
+            this.element.should('have.length', length);
+        } else {
+            throw new Error('No element selected')
+        }
+        return this;
+    }
+
+    /**
+     * 
+     * Checks if the the selected element has CSS @property with @value
+     */
+    shouldHaveCSSProperty(property, value) {
+        if (property.includes('color') && value.includes('#')) {
+            const rgb = this.hexToRGB(value);
+            value = rgb;
+        }
+        if (this.element) {
+            this.element.should('have.css', property, value);
+        } else {
+            throw new Error('No element selected')
+        }
+        return this;
+    }
+
+    hexToRGB(hex){
+        if (hex.charAt(0) === '#') {
+            hex = hex.substr(1);
+        }
+        const bigint = parseInt(hex, 16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
+        return `rgb(${r}, ${g}, ${b})`;
     }
 
     wrap(item) {

@@ -21,6 +21,13 @@ class Contract {
         contractRecord: (contractName) => Contract.action.getElementContaining('span', contractName),
         contractEditButton: () => Contract.action.getElementContaining('button', 'Edit'),
         existingContractWarning: () => Contract.action.getElementContaining('p', Contract.existingContractWarning),
+        autoPopulatedField: (fieldLabel) => Contract
+                                            .action
+                                            .getElementWithXpath(`//label[contains(text(), "${fieldLabel}")]/following-sibling::div/input`),
+        contractDeleteButton : (contractName) => Contract
+                                        .action
+                                        .getElementWithXpath(`//span[text()="${contractName}"]/ancestor::td/ancestor::tr//td//span//button`),
+        confirmDeleteButton: () => Contract.action.getElementContaining('button', 'Delete'),
         contractDetails: {
             contractName: () => Contract.action.getElementContaining('p', 'Contract Name').getNthSibling(),
             estimationName: () => Contract.action.getElementContaining('p', 'Estimation Name').getNthSibling(),
@@ -35,6 +42,8 @@ class Contract {
             sowAmountField: () => Contract.action.getElementContaining('p', 'SOW Amount'),
             startDateField: () => Contract.action.getElementContaining('p', 'Start Date'),
             endDateField: () => Contract.action.getElementContaining('p', 'End Date'),
+            uploadConfirmationMessage: () => Contract.action.getElementContaining('div', 'Total contract amount'),
+            uploadConfirmButton: () => Contract.action.getElementContaining('button', 'Confirm'),
         },
         createContractButton: () => Contract.action.getElementContaining('button', 'Create Contract'),
     }
@@ -112,6 +121,31 @@ class Contract {
            .uploadFile(fileName);
     }
 
+    deleteContract(contractName) {
+        this
+            .elements
+            .contractDeleteButton(contractName)
+            .clickElement();
+        this
+            .elements
+            .confirmDeleteButton()
+            .clickElement();
+    }
+
+    clickCreateContractButton() {
+        this
+           .elements
+           .createContractButton()
+           .clickElement();
+    }
+
+    clickConfirmUploadButton() {
+        this
+           .elements
+           .contractUploadSection.uploadConfirmButton()
+           .clickElement();
+    }
+
     expectContractAdded(contractName) {
         this
             .elements
@@ -131,6 +165,33 @@ class Contract {
            .elements
            .contractsHeader()
            .shouldBeVisible();
+    }
+
+    expectAddContractHeaderVisible() {
+        this
+           .elements
+           .addContractHeader()
+           .shouldBeVisible();
+    }
+
+    expectPopulatedContractAmountToBe(sowAmount) {
+        this
+           .elements
+           .autoPopulatedField('Total Contract Amount')
+    }
+
+    expectPopulatedStartDateToBe(startDate) {
+        this
+           .elements
+           .autoPopulatedField('Contract Start Date')
+           .shouldContain(startDate);
+    }
+
+    expectPopulatedEndDateToBe(endDate) {
+        this
+           .elements
+           .autoPopulatedField('Contract End Date')
+           .shouldContain(endDate);
     }
 
     expectContractNameToBe(contractName) {
@@ -208,6 +269,20 @@ class Contract {
             .elements
             .contractUploadSection.endDateField()
             .shouldContain(endDate);
+    }
+
+    expectUploadConfirmationMessageVisible() {
+        this
+            .elements
+            .contractUploadSection.uploadConfirmationMessage()
+            .shouldBeVisible();
+    }
+
+    expectUploadConfirmationMessageToHave(contractAmount){
+        this
+           .elements
+           .contractUploadSection.uploadConfirmationMessage()
+           .shouldContain(contractAmount);
     }
 }
 

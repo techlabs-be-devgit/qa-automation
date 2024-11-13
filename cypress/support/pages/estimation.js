@@ -17,7 +17,7 @@ class Estimation {
         estimationsHeader: () => Estimation.action.getElementContaining('p', 'Estimations'),
         effortEstimationHeader: () => Estimation.action.getElementContaining('h4', 'Effort Estimation'),
         addEstimationButton: () => Estimation.action.getElementContaining('button', 'Add Estimation'),
-        estimationNameInput: () => Estimation.action.getElementWithAttribute('type', 'text', 1),
+        estimationNameInput: () => Estimation.action.getElementWithXpath('//div[contains(text(), "Estimation Name")]/parent::*/following-sibling::div//input'),
         billingTypeSelect: () => Estimation.action.getElementWithId('outlined-select-contract-term'),
         clientNameField: (clientName) => Estimation.action.getElementWithAttribute('value', clientName),
         resourceRoleSelect: () => Estimation.action.getElementWithId('tags-outlined'),
@@ -31,6 +31,8 @@ class Estimation {
         addResourceButton: () => Estimation.action.getElementMatching('button', 'Add Resources'),
         createEstimationButton: () => Estimation.action.getElementMatching('button', 'Create Estimation'),
         estimationRecord: (estimationName) => Estimation.action.getElementContaining('span', estimationName),
+        estimationDeleteButton: (estimationName) => Estimation.action.getElementWithXpath(`//span[text()="${estimationName}"]/ancestor::td/ancestor::tr//td//span//button`),
+        deleteConfirmButton: () => Estimation.action.getElementContaining('button', 'Delete'),
         estimationCalendar: {
             icon: () => Estimation.action.getElementWithAttribute('data-testid', 'DateRangeIcon'),
             monthlyTab: () => Estimation.action.getElementMatching('button', 'Monthly'),
@@ -48,6 +50,9 @@ class Estimation {
                                     .getElementWithXpath(`//p[contains(text(), '${option}')]/preceding-sibling::span/*[@type='checkbox']`),
             numericFields: () => Estimation.action.getElementWithAttribute('inputmode', 'numeric'),
             splitButton: () => Estimation.action.getElementMatching('button', 'Split'),
+            invalidSplitWarning: () => Estimation
+                                        .action
+                                        .getElementContaining('h6', 'Cannot distribute'),
         }
     }
 
@@ -78,6 +83,7 @@ class Estimation {
         this
             .elements
             .estimationNameInput()
+            .clickElement()
             .typeText(estimationName);
     }
 
@@ -88,7 +94,7 @@ class Estimation {
             .selectFromDropdown(billingType);
     }
 
-    expectClientNameToBe(clientName) {
+    expectPopulatedClientNameToBe(clientName) {
         this
             .elements
             .clientNameField(clientName)
@@ -156,6 +162,13 @@ class Estimation {
             .clickElement();
     }
 
+    expectMonthlyTabActive() {
+        this
+            .elements
+            .estimationCalendar.monthlyTab()
+            .shouldHaveCSSProperty('background-color', '#8056F7');
+    }
+
     switchToWeeklyTab() {
         this
             .elements
@@ -163,11 +176,26 @@ class Estimation {
             .clickElement();
     }
 
+    expectWeeklyTabActive() {
+        this
+        .elements
+        .estimationCalendar.weeklyTab()
+        .shouldHaveCSSProperty('background-color', '#8056F7');
+    }
+
+
     switchToDailyTab() {
         this
             .elements
             .estimationCalendar.dailyTab()
             .clickElement();
+    }
+
+    expectDailyTabActive() {
+        this
+        .elements
+        .estimationCalendar.dailyTab()
+        .shouldHaveCSSProperty('background-color', '#8056F7');
     }
 
     clickLeftIcon() {
@@ -229,7 +257,7 @@ class Estimation {
             .clickElement()
     }
 
-    exitEstimationCalendar() {
+    closeEstimationCalendar() {
         this
             .elements
             .estimationCalendar.cancelButton()
@@ -248,6 +276,19 @@ class Estimation {
             .elements
             .createEstimationButton()
             .clickElement()
+    }
+
+    deleteEstimation(estimationName) {
+        this
+            .elements
+            .estimationDeleteButton(estimationName)
+            // .clickElement()
+            .clickElement();
+        this
+            .elements
+            .deleteConfirmButton()
+            .clickElement();
+
     }
 
     expectEstimationsHeaderVisible() {
@@ -292,37 +333,60 @@ class Estimation {
             .shouldHaveAttributeValue('value', splitHours);
     }
 
-    validateSplit() {
-        Estimation
-        .action
-        .getElementWithAttribute('inputmode', 'numeric', false)
-        .element
-        .then(($items) => {
-            const splitHours = parseInt($items[0].value);
-            const minHours = parseInt($items[1].value);
-            const maxHours = parseInt($items[2].value);
-            let totalHours = 0;
-            const itemsToCheck = Array.from($items.slice(3));
+    expectMinHoursToBe(minHours) {
+        this
+            .elements
+            .estimationCalendar.minHoursField()
+            .shouldHaveAttributeValue('value', minHours);
+    }
 
-            // Loop over all the items and validate their values
-            itemsToCheck.forEach((item) => {
-            let itemIntegerValue = parseInt(item.value);
-                Estimation
-                    .action
-                    .wrap(itemIntegerValue)
-                    .shouldBeGTE(minHours);
-                Estimation
-                    .action
-                    .wrap(itemIntegerValue)
-                    .shouldBeLTE(maxHours);
-                totalHours += parseInt(itemIntegerValue);
-            });
-            
-            // Check if the total hours in the fields match the Split hours field
-            this
-                .elements
-                .estimationCalendar.splitHoursField()
-                .shouldHaveAttributeValue('value', totalHours)
+    expectMaxHoursToBe(maxHours) {
+        this
+            .elements
+            .estimationCalendar.maxHoursField()
+            .shouldHaveAttributeValue('value', maxHours);
+    }
+
+    expectInvalidSplitWarning() {
+        this
+            .elements
+            .estimationCalendar.invalidSplitWarning()
+            .shouldBeVisible();
+    }
+
+    /**
+     * Asserts that the split hours are within the valid range and add up to the total split hours.
+     */
+    validateSplit(totalHours, minHours, maxHours) {
+        Estimation
+            .action
+            .getElementWithAttribute('inputmode', 'numeric', false)
+            .element
+            .then(($items) => {
+                let totalSplitHours = 0;
+                const itemsToCheck = Array.from($items.slice(3));
+                
+                // Loop over all the items and validate their values
+                itemsToCheck.forEach((item) => {
+                    // In the daily tab, inactive dates have an attribute "disabled" with no value.
+                    if(item.hasAttribute('disabled')) {
+                        return;
+                    }
+                    let itemIntegerValue = parseInt(item.value);
+                        Estimation
+                            .action
+                            .wrap(itemIntegerValue)
+                            .shouldBeGTE(minHours);
+                        Estimation
+                            .action
+                            .wrap(itemIntegerValue)
+                            .shouldBeLTE(maxHours);
+                        totalSplitHours += itemIntegerValue;
+                });
+                
+                // Check if the total hours in the fields match the Split hours field
+                this.expectSplitHoursToBe(totalSplitHours);
+                this.expectSplitHoursToBe(totalHours);
             });
     }
 }
