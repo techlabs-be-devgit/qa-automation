@@ -97,6 +97,28 @@
         "name" : "Test pricing",
         "estimationName" : "Test estimation",
         "discount" : 5.5
+    },
+
+    "milestone" : {
+        "contractName" : "contract2",
+        "name" : "testMilestone",
+        "startDate" : "2024-10-01",
+        "endDate" :"2024-10-31",
+        "amount" : "100",
+        "enteredAmount" :"2000",
+        "milestoneDate" : "2024-10-01",
+        "deliverables" : "item1",
+        "amountTwo" : "200",
+        "deliverablesTwo" : "item2",
+        "totalContractAmount" : "19219.2",
+        "contractStartDate" : "Fri Nov 01 2024",
+        "contractEndDate" : "Fri Nov 29 2024" ,
+        "errorMessage": "The entered amount cannot exceed the remaining contract amount."
+
+
+       
+        
+
     }
 }
  
