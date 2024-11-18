@@ -1,2 +1,4 @@
 cypress.env.json
 screenshots
+node_modules
+package-lock.json

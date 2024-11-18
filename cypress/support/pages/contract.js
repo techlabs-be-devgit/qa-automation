@@ -1,73 +1,84 @@
 import { Action } from '../actions/action';
 
 class Contract {
-    static action = new Action();
-    static existingContractWarning = "This estimation and pricing combination has already "+
-                                    "been assigned to a contract. You cannot create a new contract "+
-                                    "using the same configuration.";
-
     elements = {
-        clientRecord: (clientName) => Contract.action.getElementContaining('span', clientName),
-        sowContractNavigation: () => Contract.action.getElementContaining('div', 'SOWContract'),
-        contractsNavigation: () => Contract.action.getElementContaining('div', 'Contracts'),
-        contractsHeader: () => Contract.action.getElementContaining('p', 'Contracts'),
-        addContractButton: () => Contract.action.getElementContaining('button', 'Add Contract'),
-        addContractHeader: () => Contract.action.getElementContaining('h4', 'Add Contract'),
-        estimationNameSelect: () => Contract.action.getElementWithAttribute('role', 'combobox', 0),
-        pricingNameSelect: () => Contract.action.getElementWithAttribute('role', 'combobox', 1),
-        contractTypeSelect: () => Contract.action.getElementWithAttribute('role', 'combobox', 2),
-        paymentTermsSelect: () => Contract.action.getElementWithAttribute('role', 'combobox', 3),
-        contractNameInput: () => Contract.action.getElementWithXpath('//div[contains(text(), "Contract Name")]/parent::*/parent::*'),
-        contractRecord: (contractName) => Contract.action.getElementContaining('span', contractName),
-        contractEditButton: () => Contract.action.getElementContaining('button', 'Edit'),
-        existingContractWarning: () => Contract.action.getElementContaining('p', Contract.existingContractWarning),
+        clientRecord: (clientName) => this.action.get('span').contains(clientName),
+        sowContractNavigation: () => this.action.get('div').contains('SOWContract'),
+        contractsNavigation: () => this.action.get('div').contains('Contracts'),
+        contractsHeader: () => this.action.get('p').contains('Contracts'),
+        addContractButton: () => this.action.get('button').contains('Add Contract'),
+        addContractHeader: () => this.action.get('h4').contains('Add Contract'),
+        estimationNameSelect: () => this.action.get('[role="combobox"]').eq(0),
+        pricingNameSelect: () => this.action.get('[role="combobox"]').eq(1),
+        contractTypeSelect: () => this.action.get('[role="combobox"]').eq(2),
+        paymentTermsSelect: () => this.action.get('[role="combobox"]').eq(3),
+        contractNameInput: () => this.action.xpath('//label[.//div[contains(text(), "Contract Name")]]/following-sibling::div//input'),
+        contractRecord: (contractName) => this.action.get('span').contains(contractName),
+        contractEditButton: () => this.action.get('button').contains('Edit'),
+        existingContractWarning: () => this.action.get('p').contains(this.existingContractWarning),
+        autoPopulatedField: (fieldLabel) => this
+                                            .action
+                                            .xpath(`//label[contains(text(), "${fieldLabel}")]/following-sibling::div/input`),
+        contractDeleteButton : (contractName) => this
+                                        .action
+                                        .xpath(`//span[text()="${contractName}"]/ancestor::td/ancestor::tr//td//span//button`),
+        confirmDeleteButton: () => this.action.get('button').contains('Delete'),
         contractDetails: {
-            contractName: () => Contract.action.getElementContaining('p', 'Contract Name').getNthSibling(),
-            estimationName: () => Contract.action.getElementContaining('p', 'Estimation Name').getNthSibling(),
-            pricingName: () => Contract.action.getElementContaining('p', 'Pricing Name').getNthSibling(),
-            contractType: () => Contract.action.getElementContaining('p', 'Contract Type').getNthSibling(),
-            paymentTerms: () => Contract.action.getElementContaining('p', 'Payment Terms Contract').getNthSibling(),
-            startDate: () => Contract.action.getElementContaining('p', 'Start Date').getNthSibling(),
-            endDate: () => Contract.action.getElementContaining('p', 'End Date').getNthSibling(),
+            contractName: () => this.action.get('p').contains('Contract Name').siblings().eq(0),
+            estimationName: () => this.action.get('p').contains('Estimation Name').siblings().eq(0),
+            pricingName: () => this.action.get('p').contains('Pricing Name').siblings().eq(0),
+            contractType: () => this.action.get('p').contains('Contract Type').siblings().eq(0),
+            paymentTerms: () => this.action.get('p').contains('Payment Terms Contract').siblings().eq(0),
+            startDate: () => this.action.get('p').contains('Start Date').siblings().eq(0),
+            endDate: () => this.action.get('p').contains('End Date').siblings().eq(0),
         },
         contractUploadSection: {
-            uploadField: () => Contract.action.getElementWithAttribute('type', 'file', 'input'),
-            sowAmountField: () => Contract.action.getElementContaining('p', 'SOW Amount'),
-            startDateField: () => Contract.action.getElementContaining('p', 'Start Date'),
-            endDateField: () => Contract.action.getElementContaining('p', 'End Date'),
+            uploadField: () => this.action.get('input[type="file"]'),
+            sowAmountField: () => this.action.get('p').contains('SOW Amount'),
+            startDateField: () => this.action.get('p').contains('Start Date'),
+            endDateField: () => this.action.get('p').contains('End Date'),
+            uploadConfirmationMessage: () => this.action.get('div').contains('Total contract amount'),
+            uploadConfirmButton: () => this.action.get('button').contains('Confirm'),
         },
-        createContractButton: () => Contract.action.getElementContaining('button', 'Create Contract'),
+        createContractButton: () => this.action.get('button').contains('Create Contract'),
+    }
+    
+    constructor() {
+        this.action = new Action();
+        this.existingContractWarning = "This estimation and pricing combination has already "+
+                                        "been assigned to a contract. You cannot create a new contract "+
+                                        "using the same configuration.";
     }
 
     visit(clientName) {
-        Contract.action.visitPage('/dashboard')
+        this.action.visit('/dashboard')
         this
            .elements
            .clientRecord(clientName)
-           .clickElement();
+           .click();
         this
            .elements
            .sowContractNavigation()
-           .clickElement();
+           .click();
         this
            .elements
            .contractsNavigation()
-           .clickElement();
+           .click();
     }
 
     openAddContractPopup() {
         this
            .elements
            .addContractButton()
-           .clickElement();
+           .click();
     }
 
     fillContractName(contractName) {
         this
             .elements
             .contractNameInput()
-            .clickElement()
-            .typeText(contractName);
+            .click()
+            .type(contractName);
     }
 
     selectEstimationName(estimationName) {
@@ -102,112 +113,179 @@ class Contract {
         this
            .elements
            .contractRecord(contractName)
-           .clickElement();
+           .click();
     }
 
     uploadContractFile(fileName) {
         this
            .elements
            .contractUploadSection.uploadField()
-           .uploadFile(fileName);
+           .uploadFile(fileName, {force: true});
+    }
+
+    deleteContract(contractName) {
+        this
+            .elements
+            .contractDeleteButton(contractName)
+            .click();
+        this
+            .elements
+            .confirmDeleteButton()
+            .click();
+    }
+
+    clickCreateContractButton() {
+        this
+           .elements
+           .createContractButton()
+           .click();
+    }
+
+    clickConfirmUploadButton() {
+        this
+           .elements
+           .contractUploadSection.uploadConfirmButton()
+           .click();
     }
 
     expectContractAdded(contractName) {
         this
             .elements
             .contractRecord(contractName)
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectContractDeleted(contractName) {
         this
             .elements
             .contractRecord(contractName)
-            .shouldNotExist();
+            .should('not.exist');
     }
 
     expectContractsHeaderVisible() {
         this
            .elements
            .contractsHeader()
-           .shouldBeVisible();
+           .should('be.visible');
+    }
+
+    expectAddContractHeaderVisible() {
+        this
+           .elements
+           .addContractHeader()
+           .should('be.visible');
+    }
+
+    expectPopulatedContractAmountToBe(sowAmount) {
+        this
+           .elements
+           .autoPopulatedField('Total Contract Amount')
+           .should('contain', sowAmount);
+    }
+
+    expectPopulatedStartDateToBe(startDate) {
+        this
+           .elements
+           .autoPopulatedField('Contract Start Date')
+           .should('contain', startDate);
+    }
+
+    expectPopulatedEndDateToBe(endDate) {
+        this
+           .elements
+           .autoPopulatedField('Contract End Date')
+           .should('contain', endDate);
     }
 
     expectContractNameToBe(contractName) {
         this
            .elements
            .contractDetails.contractName()
-           .shouldContain(contractName);
+           .should('contain', contractName);
     }
 
     expectEstimationNameToBe(estimationName) {
         this
            .elements
            .contractDetails.estimationName()
-           .shouldContain(estimationName);
+           .should('contain', estimationName);
     }
 
     expectPricingNameToBe(pricingName) {
         this
            .elements
            .contractDetails.pricingName()
-           .shouldContain(pricingName);
+           .should('contain', pricingName);
     }
 
     expectContractTypeToBe(contractType) {
         this
            .elements
            .contractDetails.contractType()
-           .shouldContain(contractType);
+           .should('contain', contractType);
     }
 
     expectPaymentTermsToBe(paymentTerms) {
         this
            .elements
            .contractDetails.paymentTerms()
-           .shouldContain(paymentTerms);
+           .should('contain', paymentTerms);
     }
 
     expectStartDateToBe(startDate) {
         this
            .elements
            .contractDetails.startDate()
-           .shouldContain(startDate);
+           .should('contain', startDate);
     }
 
     expectEndDateToBe(endDate) {
         this
            .elements
            .contractDetails.endDate()
-           .shouldContain(endDate);
+           .should('contain', endDate);
     }
 
     expectExistingContractWarning() {
         this
             .elements
             .existingContractWarning()
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectParsedSOWAmountToBe(sowAmount) {
         this
             .elements
             .contractUploadSection.sowAmountField()
-            .shouldContain(sowAmount);
+            .should('contain', sowAmount);
     }
 
     expectParsedStartDateToBe(startDate) {
         this
             .elements
             .contractUploadSection.startDateField()
-            .shouldContain(startDate);
+            .should('contain', startDate);
     }
 
     expectParsedEndDateToBe(endDate) {
         this
             .elements
             .contractUploadSection.endDateField()
-            .shouldContain(endDate);
+            .should('contain', endDate);
+    }
+
+    expectUploadConfirmationMessageVisible() {
+        this
+            .elements
+            .contractUploadSection.uploadConfirmationMessage()
+            .should('be.visible');
+    }
+
+    expectUploadConfirmationMessageToHave(contractAmount){
+        this
+           .elements
+           .contractUploadSection.uploadConfirmationMessage()
+           .should('contain', contractAmount);
     }
 }
 

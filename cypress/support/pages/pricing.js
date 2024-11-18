@@ -1,61 +1,74 @@
 import { Action } from "../actions/action";
 
 class Pricing {
-    static action = new Action();
-
     elements = {
-        clientRecord: (clientName) => Pricing.action.getElementContaining('span', clientName),
-        effortEstimationTab: () => Pricing.action.getElementMatching('div', 'Estimation'),
-        pricingTab: () => Pricing.action.getElementMatching('div', 'Pricing'),
-        pricingHeader: () => Pricing.action.getElementMatching('p', 'Pricing'),
-        pricingOverviewHeader: (pricingName) => Pricing.action.getElementMatching('p', pricingName + ' Overview'),
-        addPricingButton: () => Pricing.action.getElementMatching('button', 'Add Pricing'),
-        addPricingHeader: () => Pricing.action.getElementMatching('span', 'Add Pricing'),
-        pricingNameInput: () => Pricing.action.getElementWithAttribute('name', 'pricingName'),
-        estimationNameSelect: () => Pricing.action.getElementWithAttribute('role', 'combobox'),
-        discountInput: () => Pricing.action.getElementWithAttribute('name', 'discount'),
-        createPricingButton: () => Pricing.action.getElementMatching('button', 'Create Pricing'),
-        pricingRecord: (pricingName) => Pricing
+        clientRecord: (clientName) => this.action.get('span').contains(clientName),
+        effortEstimationTab: () => this.action.get('div').contains('Estimation'),
+        pricingTab: () => this.action.get('div').contains('Pricing'),
+        pricingHeader: () => this.action.get('p').contains('Pricing'),
+        addPricingHeader: () => this.action.get('p').contains('Add Pricing'),
+        pricingOverviewHeader: (pricingName) => this.action.get('p').contains(pricingName + ' Overview'),
+        addPricingButton: () => this.action.get('button').contains('Add Pricing'),
+        addPricingHeader: () => this.action.get('span').contains('Add Pricing'),
+        pricingNameInput: () => this.action.get('[name="pricingName"]'),
+        estimationNameSelect: () => this.action.get('[role="combobox"]'),
+        discountInput: () => this.action.get('[name="discount"]'),
+        createPricingButton: () => this.action.get('button').contains('Create Pricing'),
+        pricingRecord: (pricingName) => this
                                         .action
-                                        .getElementContaining('span', pricingName),
-        pricingDeleteButton: (pricingName) => Pricing
+                                        .get('span').contains(pricingName),
+        pricingDeleteButton: (pricingName) => this
                                                 .action
-                                                .getElementWithXpath(`//span[text()="${pricingName}"]/ancestor::td/ancestor::tr//td//span//button`),
-        deleteConfirmButton: () => ClientManagement.action.getElementContaining('button', 'Delete'),
+                                                .xpath(`//tr[.//span[text()='${pricingName}']]//span[button]/button`),
+        deleteConfirmButton: () => this.action.get('button').contains('Delete'),
+        addPricing: {
+            prePopulatedField: (fieldLabel) => this.action.xpath(`//label[text()="${fieldLabel}"]/following-sibling::div/input`),
+        },
         pricingDetails: {
-            pricingName: () => Pricing.action.getElementContaining('p', 'Pricing Name').getNthSibling(),
-            estimationName: () => Pricing.action.getElementContaining('p', 'Estimation Name').getNthSibling(),
+            pricingName: () => this.action.get('p').contains('Pricing Name').siblings().eq(0),
+            estimationName: () => this.action.get('p').contains('Estimation Name').siblings.eq(0),
+            totalCostToCompany: () => this.action.get('p').contains('Total Cost to company').siblings.eq(0),
+            totalBillAmount: () => this.action.get('p').contains('Total Bill Amount(Customer)').siblings.eq(0),
+            grossMargin: () => this.action.get('p').contains('Gross Margin').siblings.eq(0),
+            discount: () => this.action.get('p').contains('Discount %').siblings.eq(0),
+            finalOfferPrice: () => this.action.get('p').contains('Final Offer Price').siblings.eq(0),
+            finalOfferGrossMargin: () => this.action.get('p').contains('Final Offer Gross Margin').siblings.eq(0),
+            finalOfferGrossMarginPercent : () => this.action.get('p').contains('Final Offer Gross Margin(%)').siblings.eq(0),
         }
     }
 
+    constructor() {
+        this.action = new Action();
+    }
+
     visit(clientName) {
-        Pricing.action.visitPage('/dashboard')
+        this.action.visit('/dashboard')
         this
             .elements
             .clientRecord(clientName)
-            .clickElement();
+            .click();
         this
             .elements
             .effortEstimationTab()
-            .clickElement();
+            .click();
         this
             .elements
             .pricingTab()
-            .clickElement();
+            .click();
     }
 
-    clickAddPricingButton() {
+    openAddPricingPopup() {
         this
             .elements
             .addPricingButton()
-            .clickElement();
+            .click();
     }
 
     fillPricingName(pricingName) {
         this
             .elements
             .pricingNameInput()
-            .typeText(pricingName);
+            .type(pricingName);
     }
 
     selectEstimationName(estimationName) {
@@ -69,72 +82,130 @@ class Pricing {
         this
             .elements
             .discountInput()
-            .typeText(discount);
+            .type(discount);
     }
 
     clickCreatePricingButton() {
         this
             .elements
             .createPricingButton()
-            .clickElement();
+            .click();
     }
 
     deletePricing(pricingName) {
         this
             .elements
             .pricingDeleteButton(pricingName)
-            .clickElement()
-            .getElementMatching('button', 'Delete')
-            .clickElement()
-    }
-
-    expectPricingHeaderVisible() {
+            .click()
         this
             .elements
-            .pricingHeader()
-            .shouldBeVisible();
-    }
-
-    expectPricingOverviewHeaderVisible(pricingName) {
-        this
-            .elements
-            .pricingOverviewHeader(pricingName)
-            .shouldBeVisible();
-    }
-
-    expectPricingAdded(pricingName) {
-        this
-            .elements
-            .pricingRecord(pricingName)
-            .shouldBeVisible();
-    }
-
-    expectPricingDeleted(pricingName) {
-        this
-            .elements
-            .pricingRecord(pricingName)
-            .shouldNotExist();
+            .deleteConfirmButton()
+            .click()
     }
 
     openPricingDetails(pricingName) {
         this
             .elements
             .pricingRecord(pricingName)
-            .clickElement();
+            .click();
+    }
+
+    expectPricingHeaderVisible() {
+        this
+            .elements
+            .pricingHeader()
+            .should('be.visible');
+    }
+
+    expectAddPricingHeaderVisible() {
+        this
+            .elements
+            .addPricingHeader()
+            .should('be.visible');
+    }
+
+    expectPricingOverviewHeaderVisible(pricingName) {
+        this
+            .elements
+            .pricingOverviewHeader(pricingName)
+            .should('be.visible');
+    }
+
+    expectPricingAdded(pricingName) {
+        this
+            .elements
+            .pricingRecord(pricingName)
+            .should('be.visible');
+    }
+
+    expectPricingDeleted(pricingName) {
+        this
+            .elements
+            .pricingRecord(pricingName)
+            .should('not.exist');
     }
 
     expectPricingNameToBe(pricingName) {
         this
             .elements
             .pricingDetails.pricingName()
-            .shouldContain(pricingName);
+            .should('contain', pricingName);
     }
 
     expectEstimationNameToBe(estimationName) {
         this
             .elements
             .pricingDetails.estimationName()
-            .shouldContain(estimationName);
+            .should('contain', estimationName);
+    }
+
+    expectTotalCostToCompanyToBe(totalCostToCompany) {
+        this
+            .elements
+            .pricingDetails.totalCostToCompany()
+            .should('contain', totalCostToCompany);
+    }
+
+    expectTotalBillAmountToBe(totalBillAmount) {
+        this
+            .elements
+            .pricingDetails.totalBillAmount()
+            .should('contain', totalBillAmount);
+    }
+
+    expectGrossMarginToBe(grossMargin) {
+        this
+            .elements
+            .pricingDetails.grossMargin()
+            .should('contain', grossMargin);
+    }
+
+    expectDiscountToBe(discount) {
+        this
+            .elements
+            .pricingDetails.discount()
+            .should('contain', discount);
+    }
+
+    expectFinalOfferPriceToBe(finalOfferPrice) {
+        this
+            .elements
+            .pricingDetails.finalOfferPrice()
+            .should('contain', finalOfferPrice);
+    }
+
+    expectFinalOfferGrossMarginToBe(finalOfferGrossMargin) {
+        this
+            .elements
+            .pricingDetails.finalOfferGrossMargin()
+            .should('contain', finalOfferGrossMargin);
+    }
+
+    expectFinalOfferGrossMarginPercentToBe(finalOfferGrossMarginPercent) {
+        this
+            .elements
+            .pricingDetails.finalOfferGrossMarginPercent()
+            .should('contain', finalOfferGrossMarginPercent);
     }
 }
 
