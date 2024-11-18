@@ -2,7 +2,8 @@
  * @abstract Base class for high level actions.
  * Most functions return an instance of the Action class, allowing chaining of actions.
  */
-import 'cypress-file-upload';
+
+import { hexToRGB } from "../utils/common";
 
 class Action {
 
@@ -19,8 +20,8 @@ class Action {
      * 
      * Visit page at @url
      */
-    visitPage(url) {
-        this.element = cy.visit(url).wait(2000);
+    visit(url) {
+        this.element = cy.visit(url);
         return this;
     }
 
@@ -28,14 +29,53 @@ class Action {
      * 
      * Click selected element
      */
-    clickElement(position = '') {
-        if(this.element){
-            if(position == ''){
-                this.element.click();
-            } else {
-                this.element.click(position);
-            }
-        }
+    click(...args) {
+        this.element.click(...args);
+        return this;
+    }
+
+    get(...args) {
+        this.element = cy.get(...args);
+        return this;
+    }
+
+    eq(index) {
+        this.element.eq(index);
+        return this;
+    }
+
+    should(...args){
+        this.element.should(...args);
+        return this;
+    }
+
+    contains(...args) {
+        this.element.contains(...args);
+        return this;
+    }
+
+    xpath(...args) {
+        this.element = cy.xpath(...args);
+        return this;
+    }
+
+    type(...args) {
+        this.element.type(...args);
+        return this;
+    }
+
+    clear(...args) {
+        this.element.clear(...args);
+        return this;
+    }
+
+    scrollIntoView(...args) {
+        this.element.scrollIntoView(...args);
+        return this;
+    }
+
+    siblings(...args) {
+        this.element.siblings(...args);
         return this;
     }
 
@@ -53,8 +93,13 @@ class Action {
      * 
      * Select an @element with text @label in it.
      * */
+
     getElementContaining(element, label) {
-        this.element = cy.get(element).contains(label)
+        if(typeof label ==='string'){
+            this.element = cy.get(element).contains(label);
+        } else {
+            this.element = cy.get(element).contains(label.element, label.value);
+        }
         return this;
     }
 
@@ -101,7 +146,12 @@ class Action {
      * In case of multiple matches, select the @index th match.
      */
     getElementWithXpath(xpath, index = 0) {
-        this.element = cy.xpath(xpath).eq(index);
+        if (index == 0){
+            this.element = cy.xpath(xpath);
+        }
+        else {
+            this.element = cy.xpath(xpath).eq(index);
+        }
         return this;
     }
 
@@ -143,7 +193,7 @@ class Action {
      */
     selectFromDropdown(option) {
         this
-            .clickElement()
+            .click()
             .getElementMatching('li', option)
             .element.scrollIntoView().click();
         return this;
@@ -167,12 +217,8 @@ class Action {
         return this;
     }
 
-    uploadFile(fileName) {
-        if (this.element) {
-            this.element.selectFile(`cypress/fixtures/${fileName}`, {force: true});
-        } else {
-            throw new Error ('No element selected to upload file')
-        }
+    uploadFile(fileName, ...args) {
+            this.element.selectFile(`cypress/fixtures/${fileName}`, ...args);
     }
 
     getAttributeValue(attribute) {
@@ -182,7 +228,6 @@ class Action {
                 .invoke('attr', attribute)
         }
     }
-
 
     // Assertions
     shouldBeVisible() {
@@ -284,17 +329,6 @@ class Action {
             throw new Error('No element selected')
         }
         return this;
-    }
-
-    hexToRGB(hex){
-        if (hex.charAt(0) === '#') {
-            hex = hex.substr(1);
-        }
-        const bigint = parseInt(hex, 16);
-        const r = (bigint >> 16) & 255;
-        const g = (bigint >> 8) & 255;
-        const b = bigint & 255;
-        return `rgb(${r}, ${g}, ${b})`;
     }
 
     wrap(item) {

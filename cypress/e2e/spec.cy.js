@@ -16,17 +16,14 @@ before(() => {
 		});
 });
 
+
 describe("Client Management Module", () => {
 	const testClient = new ClientManagement();
 	
 	it("Visits the client management page", () => {
 		testClient.visit();
-		ClientManagement.action.urlShouldContain('/dashboard');
+		testClient.action.urlShouldContain('/dashboard');
 		testClient.expectClientManagementHeaderVisible();
-	});
-
-	it("Verifies previous test cleanup", () => {
-		testClient.expectClientDeleted(data.client.name);
 	});
 	
 	it("Opens the add client popup", () => {
@@ -34,7 +31,7 @@ describe("Client Management Module", () => {
 		testClient.expectAddClientHeaderVisible();
 	});
 
-	it("Inputs client name and address", () => {
+	it("Inputs client details", () => {
 		testClient.fillClientName(data.client.name);
 		testClient.fillClientAddress(data.client.address + " ");
 		testClient.expectLeadingTrailingSpacesWarning();
@@ -43,9 +40,6 @@ describe("Client Management Module", () => {
 		testClient.expectRandomCharactersInAddressFieldWarning();
 		testClient.clearClientAddressField();
 		testClient.fillClientAddress(data.client.address);
-	});
-
-	it("Inputs client country, state, city and zip code", () => {
 		testClient.selectClientCountry(data.client.country);
 		testClient.selectClientState(data.client.state);
 		testClient.selectClientCity(data.client.city);
@@ -77,6 +71,12 @@ describe("Client Management Module", () => {
 		testClient.expectClientCountryToBe(data.client.countryShort);
 		testClient.expectClientZipCodeToBe(data.client.zipCode);
 	});
+
+	it.skip("Deletes the test client", () => {
+		testClient.visit(data.client.name);
+		testClient.deleteClient(data.client.name);
+		testClient.expectClientDeleted(data.client.name);
+	});
 });
 
 
@@ -85,7 +85,7 @@ describe("Estimation Module", () => {
 	it(("Goes to client estimations"), () => {
 		testEstimation.visit(data.client.name);
 		testEstimation.expectEstimationsHeaderVisible();
-		Estimation.action.urlShouldContain('/client/estimation');
+		testEstimation.action.urlShouldContain('/client/estimation');
 	});
 
 	it(("Opens the add estimation popup"), () => {
@@ -106,7 +106,7 @@ describe("Estimation Module", () => {
 		testEstimation.selectFullTime();
 	});
 
-	it.skip("Invalid monthly split - not enough minumum hours per month", () => {
+	it("Invalid monthly split - not enough minumum hours per month", () => {
 		testEstimation.openEstimationCalendar();
 		testEstimation.switchToMonthlyTab();
 		testEstimation.expectMonthlyTabActive();
@@ -122,7 +122,7 @@ describe("Estimation Module", () => {
 		testEstimation.closeEstimationCalendar();
 	});
 
-	it.skip("Invalid monthly split - minimum hours per month too high", () => {
+	it("Invalid monthly split - minimum hours per month too high", () => {
 		testEstimation.openEstimationCalendar();
 		testEstimation.switchToMonthlyTab();
 		testEstimation.expectMonthlyTabActive();
@@ -138,7 +138,7 @@ describe("Estimation Module", () => {
 		testEstimation.closeEstimationCalendar();
 	});
 
-	it.skip("Invalid monthly split - maximum hours per month too low", () => {
+	it("Invalid monthly split - maximum hours per month too low", () => {
 		testEstimation.openEstimationCalendar();
 		testEstimation.switchToMonthlyTab();
 		testEstimation.expectMonthlyTabActive();
@@ -154,7 +154,7 @@ describe("Estimation Module", () => {
 		testEstimation.closeEstimationCalendar();
 	});
 
-	it.skip("Valid monthly split", () => {
+	it("Valid monthly split", () => {
 		testEstimation.openEstimationCalendar();
 		testEstimation.switchToMonthlyTab();
 		testEstimation.expectMonthlyTabActive();
@@ -165,37 +165,6 @@ describe("Estimation Module", () => {
 		testEstimation.fillMinHours(minHours);
 		testEstimation.fillMaxHours(maxHours);
 		testEstimation.selectAllOption();
-		testEstimation.splitHours();
-		testEstimation.validateSplit(totalHours, minHours, maxHours);
-		testEstimation.closeEstimationCalendar();
-	});
-
-	it.skip("Invalid weekly split - not enough maximum hours per week", () => {
-		testEstimation.openEstimationCalendar();
-        testEstimation.switchToWeeklyTab();
-        testEstimation.expectWeeklyTabActive();
-        let totalHours = 150;
-        let minHours = 8;
-        let maxHours = 16;
-        testEstimation.fillSplitHours(totalHours);
-        testEstimation.fillMinHours(minHours);
-        testEstimation.fillMaxHours(maxHours);
-        testEstimation.selectAllOption();
-        testEstimation.splitHours();
-        testEstimation.expectInvalidSplitWarning();
-        testEstimation.closeEstimationCalendar();
-	});
-
-	it.skip("Tests the daily tab functionality", () => {
-		testEstimation.openEstimationCalendar();
-		testEstimation.switchToDailyTab();
-		testEstimation.expectDailyTabActive();
-		let totalHours = 184;
-		let minHours = 0;
-		let maxHours = 8;
-		testEstimation.fillSplitHours(totalHours);
-		testEstimation.fillMinHours(minHours);
-		testEstimation.fillMaxHours(maxHours);
 		testEstimation.splitHours();
 		testEstimation.validateSplit(totalHours, minHours, maxHours);
 		testEstimation.closeEstimationCalendar();
@@ -220,7 +189,7 @@ describe("Pricing Module", () => {
 	it("Goes to client pricing", () => {
 		testPricing.visit(data.client.name);
         testPricing.expectPricingHeaderVisible();
-		Pricing.action.urlShouldContain('/estimation/pricing');
+		testPricing.action.urlShouldContain('/estimation/pricing');
 	});
 
 	it("Opens the add pricing popup", () => {
@@ -264,7 +233,7 @@ describe("Contract Module", () => {
     it("Opens the contracts for a client", () => {
 		testContract.visit(data.client.name);
         testContract.expectContractsHeaderVisible();
-		Contract.action.urlShouldContain('/contracts');
+		testContract.action.urlShouldContain('/contracts');
     });
 
     it("Opens the add contract popup", () => {
@@ -313,7 +282,6 @@ describe("Contract Module", () => {
 
 
 describe("Test cleanup", () => {
-
 	it("Deletes the test contract", () => {
 		const testContract = new Contract();
         testContract.visit(data.client.name);

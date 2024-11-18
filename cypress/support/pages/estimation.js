@@ -1,90 +1,87 @@
 import { Action } from '../actions/action';
+import { hexToRGB } from '../utils/common';
 
 class Estimation {
-    static action = new Action();
-
-
-    /**
-     * Define the elements for the Estimations Module
-     * Input parameters are the elements that are text boxes
-     * Select parameters are the elements that are dropdowns
-     */
-
     elements = {
-        clientRecord: (clientName) => Estimation.action.getElementContaining('span', clientName),
-        effortEstimationNavigation: () => Estimation.action.getElementMatching('div', 'Estimation'),
-        estimationNavigation: () => Estimation.action.getElementMatching('div', 'Effort Estimation'),
-        estimationsHeader: () => Estimation.action.getElementContaining('p', 'Estimations'),
-        effortEstimationHeader: () => Estimation.action.getElementContaining('h4', 'Effort Estimation'),
-        addEstimationButton: () => Estimation.action.getElementContaining('button', 'Add Estimation'),
-        estimationNameInput: () => Estimation.action.getElementWithXpath('//div[contains(text(), "Estimation Name")]/parent::*/following-sibling::div//input'),
-        billingTypeSelect: () => Estimation.action.getElementWithId('outlined-select-contract-term'),
-        clientNameField: (clientName) => Estimation.action.getElementWithAttribute('value', clientName),
-        resourceRoleSelect: () => Estimation.action.getElementWithId('tags-outlined'),
-        skillSelect: () => Estimation.action.getElementWithId('demo-multiple-checkbox'),
-        invisibleOverlay: () => Estimation.action.getElementWithId('menu-'),
-        resourceRegionSelect: (IND) => Estimation.action.getElementWithAttribute('role', 'combobox', -1),
-        resourceStartDateInput: () => Estimation.action.getElementWithAttribute('placeholder', 'yyyy-mm-dd', 0),
-        resourceEndDateInput: () => Estimation.action.getElementWithAttribute('placeholder', 'yyyy-mm-dd', 1),
-        estimationHoursField: (estimatedHours) => Estimation.action.getElementWithAttribute('value', estimatedHours),
-        fullTimeSelect: () => Estimation.action.getElementMatching('p', 'Full Time').getNthSibling(),
-        addResourceButton: () => Estimation.action.getElementMatching('button', 'Add Resources'),
-        createEstimationButton: () => Estimation.action.getElementMatching('button', 'Create Estimation'),
-        estimationRecord: (estimationName) => Estimation.action.getElementContaining('span', estimationName),
-        estimationDeleteButton: (estimationName) => Estimation.action.getElementWithXpath(`//span[text()="${estimationName}"]/ancestor::td/ancestor::tr//td//span//button`),
-        deleteConfirmButton: () => Estimation.action.getElementContaining('button', 'Delete'),
+        clientRecord: (clientName) => this.action.get('span').contains(clientName),
+        effortEstimationNavigation: () => this.action.get('div').contains('Effort Estimation'),
+        estimationNavigation: () => this.action.get('div').contains('Estimation'),
+        estimationsHeader: () => this.action.get('p').contains('Estimations'),
+        effortEstimationHeader: () => this.action.get('h4').contains('Effort Estimation'),
+        addEstimationButton: () => this.action.get('button').contains('Add Estimation'),
+        estimationNameInput: () => this.action.xpath('//div[contains(text(), "Estimation Name")]/parent::*/following-sibling::div//input'),
+        billingTypeSelect: () => this.action.get('#outlined-select-contract-term'),
+        clientNameField: (clientName) => this.action.get(`[value="${clientName}"]`),
+        resourceRoleSelect: () => this.action.get('#tags-outlined'),
+        skillSelect: () => this.action.get('#demo-multiple-checkbox'),
+        invisibleOverlay: () => this.action.get('#menu-'),
+        resourceRegionSelect: (IND) => this.action.getElementWithAttribute('role', 'combobox', -1),
+        resourceStartDateInput: () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(0),
+        resourceEndDateInput: () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(1),
+        estimationHoursField: (estimatedHours) => this.action.get(`[value="${estimatedHours}"]`),
+        fullTimeSelect: () => this.action.get('p').contains('Full Time').siblings().eq(0),
+        addResourceButton: () => this.action.get('button').contains('Add Resources'),
+        createEstimationButton: () => this.action.get('button').contains('Create Estimation'),
+        estimationRecord: (estimationName) => this.action.get('span').contains(estimationName),
+        estimationDeleteButton: (estimationName) => this.action.xpath(`//span[text()="${estimationName}"]/ancestor::td/ancestor::tr//td//span//button`),
+        deleteConfirmButton: () => this.action.get('button').contains('Delete'),
         estimationCalendar: {
-            icon: () => Estimation.action.getElementWithAttribute('data-testid', 'DateRangeIcon'),
-            monthlyTab: () => Estimation.action.getElementMatching('button', 'Monthly'),
-            weeklyTab: () => Estimation.action.getElementMatching('button', 'Weekly'),
-            dailyTab: () => Estimation.action.getElementMatching('button', 'Daily'),
-            navLeftIcon: () => Estimation.action.getElementWithAttribute('data-testid', 'ChevronLeftIcon'),
-            navRightIcon: () => Estimation.action.getElementWithAttribute('data-testid', 'ChevronRightIcon'),
-            splitHoursField: () => Estimation.action.getElementWithAttribute('inputmode', 'numeric', 0),
-            minHoursField: () => Estimation.action.getElementWithAttribute('inputmode', 'numeric', 1),
-            maxHoursField: () => Estimation.action.getElementWithAttribute('inputmode', 'numeric', 2),
-            cancelButton: () => Estimation.action.getElementMatching('button', 'Cancel'),
-            submitButton: () => Estimation.action.getElementMatching('button', 'Submit'),
-            checkBox: (option) => Estimation
+            icon: () => this.action.get('[data-testid="DateRangeIcon"]'),
+            monthlyTab: () => this.action.get('button').contains('Monthly'),
+            weeklyTab: () => this.action.get('button').contains('Weekly'),
+            dailyTab: () => this.action.get('button').contains('Daily'),
+            navLeftIcon: () => this.action.get('[data-testid="ChevronLeftIcon"]'),
+            navRightIcon: () => this.action.get('[data-testid="ChevronRightIcon"]'),
+            splitHoursField: () => this.action.get('[inputmode="numeric"]').eq(0),
+            minHoursField: () => this.action.get('[inputmode="numeric"]').eq(1),
+            maxHoursField: () => this.action.get('[inputmode="numeric"]').eq(2),
+            cancelButton: () => this.action.get('button').contains('Cancel'),
+            submitButton: () => this.action.get('button').contains('Submit'),
+            checkBox: (option) => this
                                     .action
-                                    .getElementWithXpath(`//p[contains(text(), '${option}')]/preceding-sibling::span/*[@type='checkbox']`),
-            numericFields: () => Estimation.action.getElementWithAttribute('inputmode', 'numeric'),
-            splitButton: () => Estimation.action.getElementMatching('button', 'Split'),
-            invalidSplitWarning: () => Estimation
+                                    .xpath(`//p[contains(text(), '${option}')]/preceding-sibling::span/*[@type='checkbox']`),
+            numericFields: () => this.action.get('[inputmode="numeric"]'),
+            splitButton: () => this.action.get('button').contains('Split'),
+            invalidSplitWarning: () => this
                                         .action
-                                        .getElementContaining('h6', 'Cannot distribute'),
+                                        .get('h6').contains('Cannot distribute'),
         }
+    
+    }
+
+    constructor() {
+        this.action = new Action();
     }
 
     visit(clientName) {
-        Estimation.action.visitPage('/dashboard')
+        this.action.visit('/dashboard')
         this
             .elements
             .clientRecord(clientName)
-            .clickElement();
-        this
-            .elements
-            .effortEstimationNavigation()
-            .clickElement();
+            .click();
         this
             .elements
             .estimationNavigation()
-            .clickElement();
+            .click();
+        this
+            .elements
+            .effortEstimationNavigation()
+            .click();
     }
 
     openAddEstimationPopup() {
         this
             .elements
             .addEstimationButton()
-            .clickElement();
+            .click();
     }
 
     fillEstimationName(estimationName) {
         this
             .elements
             .estimationNameInput()
-            .clickElement()
-            .typeText(estimationName);
+            .click()
+            .type(estimationName);
     }
 
     selectBillingType(billingType) {
@@ -98,7 +95,7 @@ class Estimation {
         this
             .elements
             .clientNameField(clientName)
-            .shouldHaveAttributeValue('value', clientName);
+            .should('have.attr', 'value', clientName);
     }
 
     selectResourceRole(resourceRole) {
@@ -116,7 +113,7 @@ class Estimation {
         this
             .elements
             .invisibleOverlay()
-            .clickElement('top');
+            .click('top');
     }
 
 
@@ -131,56 +128,56 @@ class Estimation {
         this
             .elements
             .resourceStartDateInput()
-            .typeText(startDate);
+            .type(startDate);
     }
 
     fillResourceEndDate(endDate) {
         this
             .elements
             .resourceEndDateInput()
-            .typeText(endDate);
+            .type(endDate);
     }
 
     selectFullTime(fullTime) {
         this
             .elements
             .fullTimeSelect()
-            .clickElement()
+            .click()
     }
 
     openEstimationCalendar() {
         this
             .elements
             .estimationCalendar.icon()
-            .clickElement();
+            .click();
     }
 
     switchToMonthlyTab() {
         this
             .elements
             .estimationCalendar.monthlyTab()
-            .clickElement();
+            .click();
     }
 
     expectMonthlyTabActive() {
         this
             .elements
             .estimationCalendar.monthlyTab()
-            .shouldHaveCSSProperty('background-color', '#8056F7');
+            .should('have.css', 'background-color', hexToRGB('#8056F7'));
     }
 
     switchToWeeklyTab() {
         this
             .elements
             .estimationCalendar.weeklyTab()
-            .clickElement();
+            .click();
     }
 
     expectWeeklyTabActive() {
         this
         .elements
         .estimationCalendar.weeklyTab()
-        .shouldHaveCSSProperty('background-color', '#8056F7');
+        .should('have.css', 'background-color', hexToRGB('#8056F7'));
     }
 
 
@@ -188,179 +185,178 @@ class Estimation {
         this
             .elements
             .estimationCalendar.dailyTab()
-            .clickElement();
+            .click();
     }
 
     expectDailyTabActive() {
         this
         .elements
         .estimationCalendar.dailyTab()
-        .shouldHaveCSSProperty('background-color', '#8056F7');
+        .should('have.css', 'background-color', hexToRGB('#8056F7'));
     }
 
     clickLeftIcon() {
         this
             .elements
             .estimationCalendar.navLeftIcon()
-            .clickElement();
+            .click();
     }
 
     clickRightIcon() {
         this
             .elements
             .estimationCalendar.navRightIcon()
-            .clickElement();
+            .click();
     }
 
     fillSplitHours(splitHours) {
         this
             .elements
             .estimationCalendar.splitHoursField()
-            .clearField()
-            .typeText(splitHours);
+            .clear()
+            .type(splitHours);
     }
 
     fillMinHours(minHours) {
         this
             .elements
             .estimationCalendar.minHoursField()
-            .clearField()
-            .typeText(minHours);
+            .clear()
+            .type(minHours);
     }
 
     fillMaxHours(maxHours) {
         this
             .elements
             .estimationCalendar.maxHoursField()
-            .clearField()
-            .typeText(maxHours);
+            .clear()
+            .type(maxHours);
     }
 
     selectAllOption() {
         this
             .elements
             .estimationCalendar.checkBox('Select All')
-            .clickElement()
+            .click()
     }
 
     splitHours() {
         this
             .elements
             .estimationCalendar.splitButton()
-            .clickElement()
+            .click()
     }
 
     submitEstimation() {
         this
             .elements
             .estimationCalendar.submitButton()
-            .clickElement()
+            .click()
     }
 
     closeEstimationCalendar() {
         this
             .elements
             .estimationCalendar.cancelButton()
-            .clickElement()
+            .click()
     }
 
     clickAddResourceButton() {
         this
             .elements
             .addResourceButton()
-            .clickElement()
+            .click()
     }
 
     clickCreateEstimationButton() {
         this
             .elements
             .createEstimationButton()
-            .clickElement()
+            .click()
     }
 
     deleteEstimation(estimationName) {
         this
             .elements
             .estimationDeleteButton(estimationName)
-            // .clickElement()
-            .clickElement();
+            .click();
         this
             .elements
             .deleteConfirmButton()
-            .clickElement();
-
+            .click();
     }
 
     expectEstimationsHeaderVisible() {
         this
             .elements
             .estimationsHeader()
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectEfforEstimationHeaderVisible() {
         this
             .elements
             .effortEstimationHeader()
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectEstimationCreated(estimationName) {
         this
             .elements
             .estimationRecord(estimationName)
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectEstimationDeleted(estimationName) {
         this
             .elements
             .estimationRecord(estimationName)
-            .shouldNotExist();
+            .should('not.exist');
     }
 
     expectEstimatedHoursToBe(estimatedHours) {
         this
             .elements
             .estimationHoursField(estimatedHours)
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectSplitHoursToBe(splitHours) {
         this
             .elements
             .estimationCalendar.splitHoursField()
-            .shouldHaveAttributeValue('value', splitHours);
+            .should('have.attr', 'value', splitHours);
     }
 
     expectMinHoursToBe(minHours) {
         this
             .elements
             .estimationCalendar.minHoursField()
-            .shouldHaveAttributeValue('value', minHours);
+            .should('have.attr', 'value', minHours);
     }
 
     expectMaxHoursToBe(maxHours) {
         this
             .elements
             .estimationCalendar.maxHoursField()
-            .shouldHaveAttributeValue('value', maxHours);
+            .should('have.attr', 'value', maxHours);
     }
 
     expectInvalidSplitWarning() {
         this
             .elements
             .estimationCalendar.invalidSplitWarning()
-            .shouldBeVisible();
+            .scrollIntoView()
+            .should('be.visible');
     }
 
     /**
      * Asserts that the split hours are within the valid range and add up to the total split hours.
      */
     validateSplit(totalHours, minHours, maxHours) {
-        Estimation
+        this
             .action
-            .getElementWithAttribute('inputmode', 'numeric', false)
+            .get('[inputmode="numeric"]')
             .element
             .then(($items) => {
                 let totalSplitHours = 0;
@@ -373,14 +369,14 @@ class Estimation {
                         return;
                     }
                     let itemIntegerValue = parseInt(item.value);
-                        Estimation
+                        this
                             .action
                             .wrap(itemIntegerValue)
-                            .shouldBeGTE(minHours);
-                        Estimation
+                            .should('be.gte', minHours);
+                        this
                             .action
                             .wrap(itemIntegerValue)
-                            .shouldBeLTE(maxHours);
+                            .should('be.lte', maxHours);
                         totalSplitHours += itemIntegerValue;
                 });
                 
