@@ -23,7 +23,7 @@ require('cypress-xpath')
 // cypress/support/e2e.ts
 
 Cypress.on('uncaught:exception', (err, runnable) => {
-  // returning false here prevents Cypress from
-  // failing the test
-  return false
+	// returning false here prevents Cypress from
+	// failing the test
+	return false
 })

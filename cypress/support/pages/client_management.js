@@ -1,91 +1,84 @@
 import { Action } from '../actions/action';
 
 class ClientManagement {
-    static url = '/dashboard';
-    static action = new Action();
-    static  streetAddressLeadingTrailingSpacesWarning = 'Street address should not have leading or trailing spaces.';
-    static emptyAddressFieldWarning = 'Street address cannot be empty. Please enter a valid address.';
-    static randomCharactersInAddressFieldWarning = 'Address appears to contain random characters. Please enter a valid address.';
-    static invalidZipCodeWarning = 'Zip code should be min 5 or max 8 digits (alphanumeric) long.';
-
-    /**
-     * Define the elements for the Client Management page
-     * *Input parameters are the elements that are text boxes
-     * *Select parameters are the elements that are dropdowns
-     */
     elements = {
-        clientManagementHeader : () => ClientManagement.action.getElementMatching('p', 'Client Management'),
-        addClientHeader : () => ClientManagement.action.getElementMatching('span', 'Add Client'),
-        addClientPopupButton : () => ClientManagement.action.getElementMatching('button', 'Add Client'),
-        clientNameInput : () => ClientManagement.action.getElementWithId('outlined-adornment-clientname'),
-        clientAddressInput : () => ClientManagement.action.getElementWithId('outlined-adornment-clientaddress'),
-        addressLeadingTrailingSpacesWarning : () => ClientManagement
+        clientManagementHeader : () => this.action.get('p').contains('Client Management'),
+        addClientHeader : () => this.action.get('span').contains('Add Client'),
+        addClientPopupButton : () => this.action.get('button').contains( 'Add Client'),
+        clientNameInput : () => this.action.get('#outlined-adornment-clientname'),
+        clientAddressInput : () => this.action.get('#outlined-adornment-clientaddress'),
+        addressLeadingTrailingSpacesWarning : () => this
                                                     .action
-                                                    .getElementContaining('p', ClientManagement.streetAddressLeadingTrailingSpacesWarning),
-        emptyAddressFieldWarning : () => ClientManagement
-                                            .action
-                                            .getElementMatching('p', ClientManagement.emptyAddressFieldWarning),
-        randomCharactersInAddressFieldWarning : () => ClientManagement
+                                                    .get('p').contains(this.streetAddressLeadingTrailingSpacesWarning),
+        randomCharactersInAddressFieldWarning : () => this
                                                     .action
-                                                    .getElementMatching('p', ClientManagement.randomCharactersInAddressFieldWarning),
-        countrySelect : () => ClientManagement.action.getElementWithId('country-select'),
-        stateSelect : () => ClientManagement.action.getElementWithId('state-select'),
-        citySelect : () => ClientManagement.action.getElementWithId('city-select'),
-        clientZipCodeInput : () => ClientManagement.action.getElementWithId('outlined-adornment-zipcode'),
-        invalidZipCodeWarning : () => ClientManagement
+                                                    .get('p').contains(this.randomCharactersInAddressFieldWarning),
+        countrySelect : () => this.action.get('#country-select'),
+        stateSelect : () => this.action.get('#state-select'),
+        citySelect : () => this.action.get('#city-select'),
+        clientZipCodeInput : () => this.action.get('#outlined-adornment-zipcode'),
+        invalidZipCodeWarning : () => this
                                         .action
-                                        .getElementContaining('p', ClientManagement.invalidZipCodeWarning),
-        nextButton : () => ClientManagement.action.getElementMatching('button', 'Next'),
-        contractNameInput : () => ClientManagement.action.getElementWithId('outlined-adornment-contractname'),
-        contractTypeSelect : () => ClientManagement.action.getElementWithId('demo-simple-select'),
-        contractStartDateInput : () => ClientManagement.action.getElementWithAttribute('placeholder', 'yyyy-mm-dd'),
-        contractEndDateInput : () => ClientManagement.action.getElementWithAttribute('placeholder', 'yyyy-mm-dd', 1),
-        createClientButton : () => ClientManagement.action.getElementMatching('button', 'Create Client'),
-        clientDeleteButton : (clientName) => ClientManagement
+                                        .get('p').contains(this.invalidZipCodeWarning),
+        nextButton : () => this.action.get('button').contains('Next'),
+        contractNameInput : () => this.action.get('#outlined-adornment-contractname'),
+        contractTypeSelect : () => this.action.get('#demo-simple-select'),
+        contractStartDateInput : () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(0),
+        contractEndDateInput : () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(1),
+        createClientButton : () => this.action.get('button').contains('Create Client'),
+        clientDeleteButton : (clientName) => this
                                             .action
-                                            .getElementWithXpath(`//span[text()="${clientName}"]/ancestor::td/ancestor::tr//td//span//button`),
-        deleteConfirmButton : () => ClientManagement.action.getElementContaining('button', 'Delete'),
-        clientRecord : (clientName) => ClientManagement.action.getElementContaining('span', clientName),
+                                            .xpath(`//span[text()="${clientName}"]/ancestor::td/ancestor::tr//td//span//button`),
+        deleteConfirmButton : () => this.action.get('button').contains('Delete'),
+        clientRecord : (clientName) => this.action.get('span').contains(clientName),
         clientDetails : {
-            clientName : () => ClientManagement.action.getElementContaining('p', 'Client Name').getNthSibling(),
-            clientAddress : () => ClientManagement.action.getElementContaining('p', 'Client Address').getNthSibling(),
-            clientCity : () => ClientManagement.action.getElementContaining('p', 'City').getNthSibling(),
-            clientState : () => ClientManagement.action.getElementContaining('p', 'State').getNthSibling(),
-            clientCountry : () => ClientManagement.action.getElementContaining('p', 'Country').getNthSibling(),
-            clientZipCode : () => ClientManagement.action.getElementContaining('p', 'ZipCode').getNthSibling(),
+            clientName : () => this.action.get('p').contains('Client Name').siblings().eq(0),
+            clientAddress : () => this.action.get('p').contains('Client Address').siblings().eq(0),
+            clientCity : () => this.action.get('p').contains('City').siblings().eq(0),
+            clientState : () => this.action.get('p').contains('State').siblings().eq(0),
+            clientCountry : () => this.action.get('p').contains('Country').siblings().eq(0),
+            clientZipCode : () => this.action.get('p').contains('ZipCode').siblings().eq(0),
         }
     }
 
+    constructor() {
+        this.url = '/dashboard';
+        this.action = new Action();
+        this.streetAddressLeadingTrailingSpacesWarning = 'Street address should not have leading or trailing spaces.';
+        this.randomCharactersInAddressFieldWarning = 'Address appears to contain random characters. Please enter a valid address.';
+        this.invalidZipCodeWarning = 'Zip code should be min 5 or max 8 digits (alphanumeric) long.';
+    }
+
     visit(){
-        ClientManagement.action.visitPage(ClientManagement.url);
+        this.action.visit(this.url);
     }
 
     openAddClientPopup(){
         this
             .elements
             .addClientPopupButton()
-            .clickElement();
+            .click();
     }
 
     fillClientName(clientName){
         this
             .elements
             .clientNameInput()
-            .typeText(clientName);
+            .type(clientName);
     }
 
     fillClientAddress(clientAddress){
         this
             .elements
             .clientAddressInput()
-            .typeText(clientAddress);
+            .type(clientAddress);
     }
 
     clearClientAddressField() {
         this
             .elements
             .clientAddressInput()
-            .clearField();
+            .clear();
     }
 
     selectClientCountry(clientCountry){
@@ -113,28 +106,28 @@ class ClientManagement {
         this
             .elements
             .clientZipCodeInput()
-            .typeText(clientZipCode);
+            .type(clientZipCode);
     }
 
     clearZipCodeField() {
         this
             .elements
             .clientZipCodeInput()
-            .clearField();
+            .clear();
     }
 
     clickNextButton(){
         this
             .elements
             .nextButton()
-            .clickElement();
+            .click();
     }
 
     fillContractName(orgLevelContractName){
         this
             .elements
             .contractNameInput()
-            .typeText(orgLevelContractName);
+            .type(orgLevelContractName);
     }
 
     selectContractType(contractType){
@@ -148,91 +141,84 @@ class ClientManagement {
         this
             .elements
             .contractStartDateInput()
-            .typeText(date);
+            .type(date);
     }
 
     fillContractEndDate(date){
         this
             .elements
             .contractEndDateInput()
-            .typeText(date);
+            .type(date);
     }
 
     clickCreateClientButton(){
         this
             .elements
             .createClientButton()
-            .clickElement();
+            .click();
     }
 
     
     deleteClient(clientName){
-        ClientManagement.action.waitFor(2000)
+        this.action.waitFor(2000)
         this
-        .elements
-        .clientDeleteButton(clientName)
-        .clickElement();
+            .elements
+            .clientDeleteButton(clientName)
+            .click();
         this
-        .elements
-        .deleteConfirmButton()
-        .clickElement();
+            .elements
+            .deleteConfirmButton()
+            .click();
     }
     
     expectClientAdded(clientName){
         this
             .elements
             .clientRecord(clientName)
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectClientDeleted(clientName){
         this
             .elements
             .clientRecord(clientName)
-            .shouldNotExist();
+            .should('not.exist');
     }
 
     expectClientManagementHeaderVisible(){
         this
             .elements
             .clientManagementHeader()
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectAddClientHeaderVisible(){
         this
             .elements
             .addClientHeader()
-            .shouldBeVisible();
+            .should('be.visible');
     }
-
-    expectEmptyAddressFieldWarning(){
-        this
-            .elements
-            .emptyAddressFieldWarning()
-            .shouldBeVisible();
-    }
-
+    
     expectRandomCharactersInAddressFieldWarning(){
         this
             .elements
             .randomCharactersInAddressFieldWarning()
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectLeadingTrailingSpacesWarning(){
         this
             .elements
             .addressLeadingTrailingSpacesWarning()
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectInvalidZipCodeWarning() {
-        ClientManagement.action.waitFor(2000);
+        this.action.waitFor(2000);
         this
             .elements
             .invalidZipCodeWarning()
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     openClientDetails(clientName){
@@ -240,49 +226,49 @@ class ClientManagement {
         this
             .elements
             .clientRecord(clientName)
-            .clickElement();
+            .click();
     }
 
     expectClientNameToBe(clientName){
         this
             .elements
             .clientDetails.clientName()
-            .shouldContain(clientName);
+            .should('contain', clientName);
     }
 
     expectClientAddressToBe(clientAddress){
         this
             .elements
             .clientDetails.clientAddress()
-            .shouldContain(clientAddress);
+            .should('contain', clientAddress);
     }
 
     expectClientCityToBe(clientCity){
         this
             .elements
             .clientDetails.clientCity()
-            .shouldContain(clientCity);
+            .should('contain', clientCity);
     }
 
     expectClientStateToBe(clientState){
         this
             .elements
             .clientDetails.clientState()
-            .shouldContain(clientState);
+            .should('contain', clientState);
     }
 
     expectClientCountryToBe(clientCountry){
         this
             .elements
             .clientDetails.clientCountry()
-            .shouldContain(clientCountry);
+            .should('contain', clientCountry);
     }
 
     expectClientZipCodeToBe(clientZipCode){
         this
             .elements
             .clientDetails.clientZipCode()
-            .shouldContain(clientZipCode);
+            .should('contain', clientZipCode);
     }
 }
 
