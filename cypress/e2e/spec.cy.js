@@ -1,105 +1,94 @@
 import { Action } from "../support/actions/action";
 import { ClientManagement } from "../support/pages/client_management";
 import { Estimation } from "../support/pages/estimation";
-import { Contract } from "../support/pages/contract";
+import { Milestone } from "../support/pages/milestone";
+import { Pricing } from "../support/pages/pricing";
 
-describe("Client Management", () => {
-	const action = new Action();
-	let data;
+let data;
 
-	before(() => {
-		action.c2cLogin();
-		action
-			.loadFixture('clientData.json')
-			.then((clientData) => {
-				data = clientData;
-			});
+const action = new Action();
+
+before(() => {
+	action.c2cLogin();
+	action
+		.loadFixture('clientData.json')
+		.then((clientData) => {
+			data = clientData;
+
+		});
+
+});
+
+describe("Milestone Module", () => {
+	const milestone = new Milestone();
+	it("should display milestone header", () => {
+		milestone.visit('Client 2');
+		Milestone.action.urlShouldContain('/milestone');
 	});
 
-	it("Visits the client management page", () => {
-		const testClient = new ClientManagement();
-		testClient.visit();
-		ClientManagement.action.urlShouldContain('/dashboard');
-		testClient.expectClientManagementHeaderVisible();
+	it('should display the Add Milestone button ', () => {
+			milestone.expectAddMilestoneButtonVisible();
 	});
 
-	it("Opens the add client popup", () => {
-		const testClient = new ClientManagement();
-		testClient.openAddClientPopup();
-		testClient.expectAddClientHeaderVisible();
+	it('should display the Add Milestone Header ', () => {
+		milestone.expectAddmilestoneHeaderVisible
+	});
+	it(("Visits the Milestone page"), () => {
+		milestone.visit("Client 2");
+		milestone.clickAddMilestoneButton();
 	});
 
-	it("Inputs client name and address", () => {
-		const testClient = new ClientManagement();
-		testClient.fillClientName(data.client.name);
-		testClient.fillClientAddress(data.client.address + " ");
-		testClient.expectLeadingTrailingSpacesWarning();
-		testClient.clearClientAddressField();
-		testClient.expectEmptyAddressFieldWarning();
-		testClient.fillClientAddress("qwerty");
-		testClient.expectRandomCharactersInAddressFieldWarning();
-		testClient.clearClientAddressField();
-		testClient.fillClientAddress(data.client.address);
+	it(("select contract2 from dropdown"), () => {
+		
+		milestone.selectContractName(data.milestone.contractName);
+		milestone.expectContractNameVisible("contract2");
+    });
+
+	it(("fill milestone name"), () => {
+		milestone.fillMilestoneName(data.milestone.name);
+
+    });
+
+	it(("check start date "), () => {
+		milestone.expectContractStartDateToBe(data.milestone.contractStartDate);
 	});
 
-	it("Inputs client country, state, city and zip code", () => {
-		const testClient = new ClientManagement();
-		testClient.selectClientCountry(data.client.country);
-		testClient.selectClientState(data.client.state);
-		testClient.selectClientCity(data.client.city);
-		testClient.fillClientZipCode(data.client.zipCode + "1234567890");
-		testClient.expectInvalidZipCodeWarning();
-		testClient.clearZipCodeField();
-		testClient.fillClientZipCode(data.client.zipCode);
-		testClient.clickNextButton();
+    it(("check total contract amount "), () => {
+		milestone.fillMilestoneAmount(data.milestone.amount);
+		milestone.expectTotalContractAmountToBe(data.milestone.totalContractAmount);
 	});
 
-	it("Inputs Organisation-level contract Details", () => {
-		const testClient = new ClientManagement();
-		testClient.fillContractName(data.orgLevelContract.name);
-		testClient.selectContractType(data.orgLevelContract.type);
-		testClient.fillContractStartDate(data.orgLevelContract.startDate);
-		testClient.clickNextButton();
+    it(("check  end dates"), () => {
+		milestone.expectContractEndDateToBe(data.milestone.contractEndDate);
+	});
+
+    it(("click on manual tab and fills milestone amount"), () => {
+		milestone.clickOnManualTab();
+		Milestone.action.waitFor(5000);
+		milestone.fillMilestoneAmount(data.milestone.amount);
+		milestone.expectMilestoneAmountErrorMessageVisible(data.milestone.errorMessage);
+	});
+
+    it(("fill milestoneDate and deliverables"), () => {
+		milestone.fillMilestoneDate(data.milestone.milestoneDate);
+		milestone.fillMilestoneDeliverables(data.milestone.deliverables);
+	});
+
+	it(("click on Add button and switch to auto fill"), () => {
+		milestone.clickOnAddMilestoneButton();
+		milestone.switchToAutoFill();
+		milestone.fillMilestoneAmountTwo(data.milestone.amountTwo);
+		milestone.clickOnEveryWeek();
+		milestone.clickOnSplitAmount();
+		milestone.expectSplitRows(5);
+		milestone.clickOnCreateMilestoneButton();
 	})
 
-	it("Creates new client", () => {
-		const testClient = new ClientManagement();
-		testClient.clickCreateClientButton();
-		testClient.expectClientAdded(data.client.name);
+	it(("verify milestone details page"), () => {
+		milestone.openMilestoneDetails();
+		milestone.expectMilestoneNameToBe(data.milestone.name);
+		milestone.expectContractNameToBe(data.milestone.contractName);
+		milestone.expectMilestoneAmountToBe(data.milestone.amountTwo);
+		milestone.expectMilestoneRows(5);
 	})
-
-	it("Verifies client details", () => {
-		const testClient = new ClientManagement();
-		testClient.openClientDetails(data.client.name);
-        testClient.expectClientNameToBe(data.client.name);
-		testClient.expectClientAddressToBe(data.client.address);
-		testClient.expectClientCityToBe(data.client.city);
-		testClient.expectClientStateToBe(data.client.state);
-		testClient.expectClientCountryToBe(data.client.countryShort);
-		testClient.expectClientZipCodeToBe(data.client.zipCode);
-	})
-
-	it(("Creates a new Estimation"), () => {
-		const estimation = new Estimation();
-		estimation.visit(data.client.name);
-		estimation.clickAddEstimationButton();
-		estimation.fillEstimationName(data.estimation.name);
-		estimation.selectBillingType(data.estimation.billing);
-		estimation.checkClientName(data.client.name);
-		estimation.selectResourceRole(data.resourceRole.uxEng);
-		estimation.selectResourceSkill(data.estimation.skill);
-		estimation.selectResourceRegion(data.region.ind);
-		estimation.fillContractStartDate(data.estimation.startDate);
-		estimation.fillContractEndDate(data.estimation.endDate);
-		estimation.selectFullTime();
-		estimation.clickAddResource();
-		estimation.clickCreateEstimation();
-	})	
-
-	after(() => {
-		const testClient = new ClientManagement();
-		testClient.visit();
-		testClient.deleteClient(data.client.name)
-		testClient.expectClientDeleted(data.client.name);
-	});
 });
