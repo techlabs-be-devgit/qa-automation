@@ -16,19 +16,11 @@ class Action {
         return this;
     }
     
-    /**
-     * 
-     * Visit page at @url
-     */
     visit(url) {
         this.element = cy.visit(url);
         return this;
     }
 
-    /**
-     * 
-     * Click selected element
-     */
     click(...args) {
         this.element.click(...args);
         return this;
