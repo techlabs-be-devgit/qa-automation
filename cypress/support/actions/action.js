@@ -120,7 +120,7 @@ class Action {
      */
     typeText(text) {
         if (this.element) {
-            this.element.type(text);
+            this.element.type(text,{ force: true });
         } else {
             throw new Error('No element selected to type in');
         }
@@ -145,7 +145,9 @@ class Action {
         this
             .clickElement()
             .getElementMatching('li', option)
-            .element.scrollIntoView().click();
+            .element
+            //.scrollIntoView()
+            .click();
         return this;
     }
 
@@ -231,6 +233,19 @@ class Action {
         }
         return this;
     }
+
+    shouldHaveAttributeValue(attribute, value) {
+        if (this.element) {
+            this.element.should('have.attr', attribute, value);
+        } else {
+            throw new Error('No element selected')
+        }
+        return this;
+    }
+
+   
+  
+    
 
    
 }

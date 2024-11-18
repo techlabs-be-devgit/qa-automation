@@ -1,8 +1,10 @@
 import { Action } from "../support/actions/action";
 import { ClientManagement } from "../support/pages/client_management";
 import { Estimation } from "../support/pages/estimation";
-import { Milestone } from "../support/pages/milestone";
+//import { Milestone } from "../support/pages/milestone";
 import { Pricing } from "../support/pages/pricing";
+import { PurchaseOrder } from "../support/pages/purchase-order";  // Corrected typo here
+import {Allocations} from "../support/pages/allocations";  // Corrected typo here
 
 let data;
 
@@ -14,81 +16,174 @@ before(() => {
 		.loadFixture('clientData.json')
 		.then((clientData) => {
 			data = clientData;
+		});
+});
+
+
+// describe("PurchaseOrder Module", () => {
+// 	const purchaseOrder = new PurchaseOrder();  // Corrected typo here
+// 	it("visits purchase order page", () => {
+// 		purchaseOrder.visit("Client 2");
+// 	});
+
+// 	it("opens purchase order popup", () => {
+// 		purchaseOrder.clickAddPurchaseOrderButton();
+// 	});
+
+// 	it("check assert message is visible", () => {
+// 		purchaseOrder.expectPoAlertMessage();
+
+// 	});
+
+// 	it("uploads invalid po document",() => {
+// 		purchaseOrder.uploadPurchaseOrderFile('purchaseorder-document.pdf');
+// 		PurchaseOrder.action.waitFor(10000);
+// 	});
+
+// 	it("uploads Po document",() => {
+// 		purchaseOrder.clickOnProceedButton();
+// 		PurchaseOrder.action.waitFor(10000);
+// 	});
+
+// 	it("it inputs PO name ",() => {
+// 		purchaseOrder.fillPoName(data.purchaseOrder.name);
+// 		PurchaseOrder.action.waitFor(5000);
+		
+// 	});
+
+// 	it("it inputs Po id",() => {
+//         purchaseOrder.fillPoOrder(data.purchaseOrder.orderID);
+//     });
+
+// 	it("input po amount",() => {
+// 		purchaseOrder.fillPoAmount(data.purchaseOrder.amount);
+// 	});
+
+	
+//      it("inputs po start date",() => {
+// 		purchaseOrder.fillPoStartDate(data.purchaseOrder.startDate);
+// 	 });
+
+// 	 it("inputs po end date",() => {
+// 		purchaseOrder.fillPoEndDate(data.purchaseOrder.endDate);
+// 		purchaseOrder.clickOnCreatePurchaseOrderButton
+// 	 });
+
+// 	 it("creates Purchase order",() => {
+// 		purchaseOrder.clickOnCreatePurchaseOrderButton();
+// 	 });
+	
+// 	 it("Verifies purchase order details", () => {
+		
+// 		purchaseOrder.clickOnEditIcon();
+//       purchaseOrder.expectedContractNameToBe(data.purchaseOrder.contractName);
+// 		purchaseOrder.expectedPoNameToBe(data.purchaseOrder.name);
+// 		purchaseOrder.expectedpurchaseOrderToBe(data.purchaseOrder.orderID);
+// 		purchaseOrder.expectedpoAmountToBe(data.purchaseOrder.amount);
+// 		purchaseOrder.expectedOrderDateToBe(data.purchaseOrder.startDate);
+// 		purchaseOrder.expectedPrintDateToBe(data.purchaseOrder.endDate);
+// 		purchaseOrder.clickOnBackIcon();
+// 		PurchaseOrder.action.waitFor(5000);
+		
+// 	})
+
+
+//       //assign purchase order test cases
+
+// 	it("it assigns purchase order",() => {
+// 		purchaseOrder.clickOnAssignPurchaseOrderButton();
+// 		purchaseOrder.selectContractNameFromDropDown(data.purchaseOrder.assignContractName);
+// 		purchaseOrder.selectPoNameFromDropDown(data.purchaseOrder.poName);
+// 		purchaseOrder.fillAssignAmount(data.purchaseOrder.assignPoAmount);
+
+// 	});
+
+
+	// /assign purchase order test cases
+
+//allocations
+
+describe("allocations Module", () => {
+	const allocations = new Allocations();  // Corrected typo here
+	it("visits allocations page", () => {
+		allocations.visit("Client 2");
+	});
+
+it("selects allocations button",() => {
+			allocations.clickAddAllocationButton()
+		});
+
+		
+		
+		it("selects contract from dropdown",() => {
+			allocations.selectAllocationContractOption()
+		});
+
+		it("it inputs allocation name",() => {
+			allocations.fillAllocationName(data.allocation.allocationName);
+		});
+
+		it("it clicks on resource select ",() => {
+			allocations.clickOnSelectResource();
+		});
+
+		it("it selects resource from dropdown",() => {
+			allocations.selectResourceFromDropdown(data.allocation.ResourceName);
+		});
+
+		it("it creates allocations",() => {
+			allocations.clickOnCreateAllocationButton();
+		});
+
+		it("click on edit icon",() => {
+			allocations.clickOnEditIcon();
+		});
+
+		it("verify Allocation details", () => {
+
+			allocations.expectedAllocationContractNameToBe(data.allocation.allocationContractName);
+			allocations.expectedAllocationEstimationNameToBe(data.allocation.estimationName);
+			allocations.expectedAllocationNameToBe(data.allocation.allocationName);
+			allocations.expectedAllocationCountToBe(data.allocation.allocationCount);
+			allocations.expectedAllocationStartDateToBe(data.allocation.startDate);
+			allocations.expectedAllocationEndDateToBe(data.allocation.endDate);
+			allocations.expectedTotalBillHrsToBe(data.allocation.totalBillableHours);
 
 		});
 
-});
 
-describe("Milestone Module", () => {
-	const milestone = new Milestone();
-	it("should display milestone header", () => {
-		milestone.visit('Client 2');
-		Milestone.action.urlShouldContain('/milestone');
-	});
 
-	it('should display the Add Milestone button ', () => {
-			milestone.expectAddMilestoneButtonVisible();
-	});
 
-	it('should display the Add Milestone Header ', () => {
-		milestone.expectAddmilestoneHeaderVisible
-	});
-	it(("Visits the Milestone page"), () => {
-		milestone.visit("Client 2");
-		milestone.clickAddMilestoneButton();
-	});
+			
+			
 
-	it(("select contract2 from dropdown"), () => {
-		
-		milestone.selectContractName(data.milestone.contractName);
-		milestone.expectContractNameVisible("contract2");
-    });
+			
 
-	it(("fill milestone name"), () => {
-		milestone.fillMilestoneName(data.milestone.name);
+			
+			
 
-    });
+			
+			
 
-	it(("check start date "), () => {
-		milestone.expectContractStartDateToBe(data.milestone.contractStartDate);
-	});
+			
 
-    it(("check total contract amount "), () => {
-		milestone.fillMilestoneAmount(data.milestone.amount);
-		milestone.expectTotalContractAmountToBe(data.milestone.totalContractAmount);
-	});
+			
 
-    it(("check  end dates"), () => {
-		milestone.expectContractEndDateToBe(data.milestone.contractEndDate);
-	});
 
-    it(("click on manual tab and fills milestone amount"), () => {
-		milestone.clickOnManualTab();
-		Milestone.action.waitFor(5000);
-		milestone.fillMilestoneAmount(data.milestone.amount);
-		milestone.expectMilestoneAmountErrorMessageVisible(data.milestone.errorMessage);
-	});
+			
 
-    it(("fill milestoneDate and deliverables"), () => {
-		milestone.fillMilestoneDate(data.milestone.milestoneDate);
-		milestone.fillMilestoneDeliverables(data.milestone.deliverables);
-	});
+			
 
-	it(("click on Add button and switch to auto fill"), () => {
-		milestone.clickOnAddMilestoneButton();
-		milestone.switchToAutoFill();
-		milestone.fillMilestoneAmountTwo(data.milestone.amountTwo);
-		milestone.clickOnEveryWeek();
-		milestone.clickOnSplitAmount();
-		milestone.expectSplitRows(5);
-		milestone.clickOnCreateMilestoneButton();
-	})
 
-	it(("verify milestone details page"), () => {
-		milestone.openMilestoneDetails();
-		milestone.expectMilestoneNameToBe(data.milestone.name);
-		milestone.expectContractNameToBe(data.milestone.contractName);
-		milestone.expectMilestoneAmountToBe(data.milestone.amountTwo);
-		milestone.expectMilestoneRows(5);
-	})
-});
+	
+
+
+
+});	
+
+	
+
+	
+	 
+
+
