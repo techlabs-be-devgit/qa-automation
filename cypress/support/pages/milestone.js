@@ -1,73 +1,73 @@
 import { Action } from "../actions/action";
 
 class Milestone {
-    static action = new Action();
-
     elements = {
-        clientRecord: (clientName) => Milestone.action.getElementContaining('span', clientName),
-        sowContractTab: () => Milestone.action.getElementContaining('div', 'SOWContract'),
-        milestoneTab: () => Milestone.action.getElementContaining('div', 'Milestones'),
-        addMilestoneButton: () => Milestone.action.getElementContaining('button', 'Add Milestone'),
-        addMilestoneHeader: () => Milestone.action.getElementContaining('h5', 'Add Milestone'),
-        contractNameSelect: () => Milestone.action.getElementWithAttribute('role', 'combobox'),
-        contractOption: (contractName) => Milestone.action.getElementContaining('li', contractName),
-        totalContractAmount: () => Milestone.action.getElementContaining('p', 'Total Contract Amount:'),
-        contractStartDate: () => Milestone.action.getElementContaining('p', 'Start Date :'),
-        contractEndDate: () => Milestone.action.getElementContaining('p', 'End Date :'),
-        addMilestoneName: () => Milestone.action.getElementWithAttribute('type', 'text', 0),
-        selectManualTab: () => Milestone.action.getElementContaining('button', 'Manual'),
-        milestoneAmountInput: () => Milestone.action.getElementWithAttribute('type', 'number'),
-        errorMessage: () => Milestone.action.getElementContaining('p', 'The entered amount cannot exceed the remaining contract amount.'),
-        milestoneDateInput: () => Milestone.action.getElementWithAttribute('placeholder', 'yyyy-mm-dd'),
-        addMilestoneDeliverables: () => Milestone.action.getElementWithAttribute('type', 'text', 1),
-        selectAddButton: () => Milestone.action.getElementContaining('button', 'ADD'),
-        selectAutofillTab: () => Milestone.action.getElementContaining('button', 'Autofill'),
-        milestoneAmountInputTwo: () => Milestone.action.getElementWithAttribute('type', 'number'),
-        addMilestoneDeliverablesTwo: () => Milestone.action.getElementContaining('div', 'Milestone Deliverables'),//.find('input').eq(5),
-        selectEveryWeek: () => Milestone.action.getElementContaining('span', 'Every Week'),
-        selectSplitAmountButton: () => Milestone.action.getElementContaining('button', 'Split Amount'),
-        getMilestoneRows: (itemName) => Milestone.action.getElementContaining('p', itemName),
-        selectCreateMilestoneButton: () => Milestone.action.getElementContaining('button', 'Create Milestone'),
-        // Assertions
-        milestonesHeader: () => Milestone.action.getElementContaining('p', 'Milestones'),
-        milestoneExistsMessage: () => Milestone.action.getElementContaining('p', 'For this contract the milestone is already exists.'),
-        milestoneAmountError: () => Milestone.action.getElementContaining('p', 'Milestone amount must be non-negative'),
-        milestoneDeleteButton: (milestoneName) => Milestone.action.getElementWithXpath(`//span[text()="${milestoneName}"]/ancestor::td/ancestor::tr//td//span//button`),
-        deleteConfirmButton: () => Milestone.action.getElementContaining('button', 'Delete'),
-        selectMilestoneRows: () => Milestone.action.getElementWithXpath("//p[text()='item1']"),
-        selectEditIcon: () => Milestone.action.getElementWithAttribute('data-testid', 'ArrowForwardIosIcon'),
-        
+        clientRecord: (clientName) => this.action.get('span').contains(clientName),
+        sowContractTab: () => this.action.get('div').contains('SOWContract'),
+        milestoneTab: () => this.action.get('div').contains('Milestones'),
+        addMilestoneButton: () => this.action.get('button').contains('Add Milestone'),
+        addMilestoneHeader: () => this.action.get('h5').contains('Add Milestone'),
+        contractNameSelect: () => this.action.get('[role="combobox"]').eq(0),
+        contractOption: (contractName) => this.action.get('li').contains(contractName),
+        totalContractAmount: () => this.action.get('p').contains('Total Contract Amount:'),
+        contractStartDate: () => this.action.get('p').contains('Start Date :'),
+        contractEndDate: () => this.action.get('p').contains('End Date :'),
+        addMilestoneName: () => this.action.get('[type="text"]').eq(0),
+        selectManualTab: () => this.action.get('button').contains('Manual'),
+        milestoneAmountInput: () => this.action.get('[type="number"]').eq(0),
+        errorMessage: () => this.action.get('p').contains(this.milestoneAmountTooHighWarning),
+        milestoneDateInput: () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(0),
+        addMilestoneDeliverables: () => this.action.get('[type="text"]').eq(1),
+        selectAddButton: () => this.action.get('button').contains('ADD'),
+        selectAutofillTab: () => this.action.get('button').contains('Autofill'),
+        milestoneAmountInputTwo: () => this.action.get('[type="number"]').eq(0),
+        addMilestoneDeliverablesTwo: () => this.action.get('div').contains('Milestone Deliverables'),
+        selectEveryWeek: () => this.action.get('span').contains('Every Week'),
+        selectSplitAmountButton: () => this.action.get('button').contains('Split Amount'),
+        getMilestoneRows: (itemName) => this.action.get('p').contains(itemName),
+        selectCreateMilestoneButton: () => this.action.get('button').contains('Create Milestone'),
+        milestonesHeader: () => this.action.get('p').contains('Milestones'),
+        milestoneExistsMessage: () => this.action.get('p').contains('For this contract the milestone is already exists.'),
+        milestoneAmountError: () => this.action.get('p').contains('Milestone amount must be non-negative'),
+        milestoneDeleteButton: (milestoneName) => this.action.xpath(`//span[text()="${milestoneName}"]/ancestor::td/ancestor::tr//td//span//button`),
+        deleteConfirmButton: () => this.action.get('button').contains('Delete'),
+        selectMilestoneRows: () => this.action.xpath("//p[text()='item1']"),
+        selectEditIcon: () => this.action.get('[data-testid="ArrowForwardIosIcon"]'),
         milestoneDetails: {
-        milestoneName: () => Milestone.action.getElementContaining('p', 'Milestone Name').getNthSibling(),
-        contractName: () => Milestone.action.getElementContaining('p', 'Contract Name').getNthSibling(),
-        milestoneAmount: () => Milestone.action.getElementContaining('p', 'Milestone Amount').getNthSibling(),
-        verifyMilestoneRows: () => Milestone.action.getElementWithXpath("//p[text()='item1']"),
-
+            milestoneName: () => this.action.get('p').contains('Milestone Name').siblings().eq(0),
+            contractName: () => this.action.get('p').contains('Contract Name').siblings().eq(0),
+            milestoneAmount: () => this.action.get('p').contains('Milestone Amount').siblings().eq(0),
+            verifyMilestoneRows: () => this.action.xpath("//p[text()='item1']"),
     }
 }
+
+constructor() {
+    this.action = new Action();
+    this.milestoneAmountTooHighWarning =  'The entered amount cannot exceed the remaining contract amount.';
+}
+
 visit(clientName) {
-    Milestone.action.visitPage('/dashboard');
+    this.action.visit('/dashboard');
     this
         .elements
         .clientRecord(clientName)
-        .clickElement();
+        .click();
 
     this
        .elements
        .sowContractTab()
-       .clickElement();
-
+       .click();
     this
         .elements
         .milestoneTab()
-        .clickElement();
+        .click();
 }
 
     clickAddMilestoneButton() {
         this
             .elements
             .addMilestoneButton()
-            .clickElement();
+            .click();
     }
 
     selectContractName(contractName) {
@@ -81,146 +81,146 @@ visit(clientName) {
         this
             .elements
             .addMilestoneName()
-            .typeText(milestoneName);
+            .type(milestoneName);
     }
 
     clickOnManualTab() {
         this
             .elements
             .selectManualTab()
-            .clickElement();
+            .click();
     }
 
     fillMilestoneAmount(milestoneAmount) {
         this
             .elements
             .milestoneAmountInput()
-            .typeText(milestoneAmount);
+            .type(milestoneAmount);
     }
 
     fillMilestoneDate(date) {
         this
             .elements
             .milestoneDateInput()
-            .typeText(date);
+            .type(date);
     }
 
     fillMilestoneDeliverables(milestoneDeliverables) {
         this
             .elements
             .addMilestoneDeliverables()
-            .typeText(milestoneDeliverables);
+            .type(milestoneDeliverables);
     }
 
     clickOnAddMilestoneButton() {
         this
             .elements
             .selectAddButton()
-            .clickElement();
+            .click();
     }
 
     switchToAutoFill() {
         this
             .elements
             .selectAutofillTab()
-            .clickElement();
+            .click();
     }
 
     fillMilestoneAmountTwo(milestoneAmountTwo) {
         this
             .elements
             .milestoneAmountInputTwo()
-            .typeText(milestoneAmountTwo);
+            .type(milestoneAmountTwo);
     }
     clickOnEveryWeek() {
         this
             .elements
             .selectEveryWeek()
-            .clickElement();
+            .click();
     }
 
     clickOnSplitAmount() {
         this
             .elements
             .selectSplitAmountButton()
-            .clickElement();
+            .click();
     }
 
     clickOnCreateMilestoneButton() {
         this
             .elements
             .selectCreateMilestoneButton()
-            .clickElement();
+            .click();
     }
     // Assertions
     expectMilestonesHeaderVisible() {
         this
             .elements
             .milestonesHeader()
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectAddMilestoneButtonVisible() {
         this
             .elements
             .addMilestoneButton()
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectAddMilestoneHeaderVisible() {
         this
             .elements
             .addMilestoneHeader()
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     openContractNameDropdown() {
         this
             .elements
             .contractNameSelect()
-            .clickElement();
+            .click();
     }
 
     expectContractNameVisible(contractName) {
         this
             .elements
             .contractOption(contractName)
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectTotalContractAmountToBe(contractAmount) {
         this
             .elements
             .totalContractAmount()
-            .shouldContain(contractAmount);
+            .should('contain', contractAmount);
     }
 
     expectContractStartDateToBe(startDate) {
         this
             .elements
             .contractStartDate()
-            .shouldContain(startDate);
+            .should('contain', startDate);
     }
 
     expectContractEndDateToBe(endDate) {
         this
             .elements
             .contractEndDate()
-            .shouldContain(endDate);
+            .should('contain', endDate);
     }
 
     expectMilestoneAmountErrorMessageVisible() {
         this
             .elements
             .errorMessage()
-            .shouldBeVisible();
+            .should('be.visible');
     }
 
     expectSplitRows(length) {
         this
             .elements
             .selectMilestoneRows()
-            .shouldHaveLength(length);
+            .should('have.length', length);
 
     }
 
@@ -228,28 +228,35 @@ visit(clientName) {
         this
             .elements
             .selectEditIcon()
-            .clickElement();
+            .click();
 
     }
     expectMilestoneNameToBe(milestoneName) {
         this
             .elements
-            .milestoneDetails.milestoneName().shouldContain(milestoneName);
+            .milestoneDetails.milestoneName()
+            .should('contain', milestoneName);
     }
 
     expectContractNameToBe(contractName) {
         this
-        .elements.milestoneDetails.contractName().shouldContain(contractName);
+            .elements
+            .milestoneDetails.contractName()
+            .should('contain', contractName);
     }
 
     expectMilestoneAmountToBe(milestoneAmount) {
         this
-        .elements.milestoneDetails.milestoneAmount().shouldContain(milestoneAmount);
+            .elements
+            .milestoneDetails.milestoneAmount()
+            .should('contain', milestoneAmount);
     }
 
     expectMilestoneRows(length) {
         this
-        .elements.milestoneDetails.verifyMilestoneRows().shouldHaveLength(length);
+            .elements
+            .milestoneDetails.verifyMilestoneRows()
+            .should('have.length', length);
     }
 }
 
