@@ -12,8 +12,8 @@
     "orgLevelContract" : {
         "name" : "Test contract",
         "type" : "MSA",
-        "startDate" : "2022-01-01",
-        "endDate" : ""
+        "startDate" : "2024-01-01",
+        "endDate" : "2024-06-28"
     },
  
     "estimation" : {

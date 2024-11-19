@@ -15,6 +15,16 @@ class Action {
         this.element = cy.login();
         return this;
     }
+
+    reload() {
+        this.element = cy.reload();
+        return this;
+    }
+
+    url() {
+        this.element = cy.url();
+        return this;
+    }
     
     visit(url) {
         this.element = cy.visit(url);
