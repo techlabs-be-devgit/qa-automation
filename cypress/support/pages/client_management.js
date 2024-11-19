@@ -31,14 +31,27 @@ class ClientManagement {
                                             .xpath(`//span[text()="${clientName}"]/ancestor::td/ancestor::tr//td//span//button`),
         deleteConfirmButton : () => this.action.get('button').contains('Delete'),
         clientRecord : (clientName) => this.action.get('span').contains(clientName),
+        updateClientButton : () => this.action.get('button').contains('Update Client'),
         clientDetails : {
+            overviewHeader: () => this.action.get('p').contains('Overview'),
             clientName : () => this.action.get('p').contains('Client Name').siblings().eq(0),
             clientAddress : () => this.action.get('p').contains('Client Address').siblings().eq(0),
             clientCity : () => this.action.get('p').contains('City').siblings().eq(0),
             clientState : () => this.action.get('p').contains('State').siblings().eq(0),
             clientCountry : () => this.action.get('p').contains('Country').siblings().eq(0),
             clientZipCode : () => this.action.get('p').contains('ZipCode').siblings().eq(0),
-        }
+        },
+        contractDetails : {
+            contractName : () => this.action.get('p').contains('Contract Name').siblings().eq(0),
+            contractType : () => this.action.get('p').contains('Contract Type').siblings().eq(0),
+            startDate : () => this.action.get('p').contains('Contract Start Date').siblings().eq(0),
+            endDate : () => this.action.get('p').contains('Contract End Date').siblings().eq(0),
+        },
+        globalPaymentDetails : {
+            clientPaymentTerms : () => this.action.get('p').contains('Client Payment Terms'),
+        },
+        editButton : () => this.action.get('button').contains('Edit'),
+        editClientHeader: () => this.action.get('span').contains('Edit Client'),
     }
 
     constructor() {
@@ -130,6 +143,13 @@ class ClientManagement {
             .type(orgLevelContractName);
     }
 
+    clearContractNameField() {
+        this
+            .elements
+            .contractNameInput()
+            .clear();
+    }
+
     selectContractType(contractType){
         this
             .elements
@@ -144,6 +164,13 @@ class ClientManagement {
             .type(date);
     }
 
+    clearStartDateField() {
+        this
+            .elements
+            .contractStartDateInput()
+            .clear();
+    }
+
     fillContractEndDate(date){
         this
             .elements
@@ -151,10 +178,24 @@ class ClientManagement {
             .type(date);
     }
 
+    clearEndDateField() {
+        this
+            .elements
+            .contractEndDateInput()
+            .clear();
+    }
+
     clickCreateClientButton(){
         this
             .elements
             .createClientButton()
+            .click();
+    }
+
+    updateClient() {
+        this
+            .elements
+            .updateClientButton()
             .click();
     }
 
@@ -169,6 +210,20 @@ class ClientManagement {
             .elements
             .deleteConfirmButton()
             .click();
+    }
+
+    openEditClientPopup(clientName){
+        this
+            .elements
+            .editButton()
+            .click();
+    }
+
+    expectEditClientHeaderVisible(){
+        this
+            .elements
+            .editClientHeader()
+            .should('be.visible');
     }
     
     expectClientAdded(clientName){
@@ -269,6 +324,41 @@ class ClientManagement {
             .elements
             .clientDetails.clientZipCode()
             .should('contain', clientZipCode);
+    }
+
+    expectContractNameToBe(orgLevelContractName){
+        this
+            .elements
+            .contractDetails.contractName()
+            .should('contain', orgLevelContractName);
+    }
+
+    expectContractTypeToBe(contractType){
+        this
+            .elements
+            .contractDetails.contractType()
+            .should('contain', contractType);
+    }
+
+    expectContractStartDateToBe(startDate){
+        this
+            .elements
+            .contractDetails.startDate()
+            .should('contain', startDate);
+    }
+
+    expectContractEndDateToBe(endDate){
+        this
+            .elements
+            .contractDetails.endDate()
+            .should('contain', endDate);
+    }
+
+    expectOverviewHeaderVisible() {
+        this
+            .elements
+            .clientDetails.overviewHeader()
+            .should('be.visible');
     }
 }
 
