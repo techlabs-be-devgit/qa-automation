@@ -127,7 +127,11 @@
     "contractName" : "NA",
     "assignContractName" : "contract2",
     "poName" : "PO",
-    "assignPoAmount" :"19219.20"
+    "assignPoAmount" :"19219.20",
+    "purchaseOrderNumber" : "12465751111",
+    "validPoAmount" : "99720.00",
+    "validPoOrderDate" : "2023-08-21",
+    "validPoPrintDate" : "2023-08-21"
    },
 
    "allocation" :{
