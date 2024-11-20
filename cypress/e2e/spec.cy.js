@@ -21,7 +21,7 @@ before(() => {
 });
 
 describe("PurchaseOrder Module", () => {
-	const purchaseOrder = new PurchaseOrder();  // Corrected typo here
+	const purchaseOrder = new PurchaseOrder(); 
 	it("visits purchase order page", () => {
 		purchaseOrder.visit("Client 2");
 	});
@@ -90,7 +90,7 @@ describe("PurchaseOrder Module", () => {
 	it("Deletes the purchase order", () => {
 
 		purchaseOrder.deletePurchaseOrder(data.purchaseOrder.name);
-		//purchaseOrder.expectClientDeleted(data.purchaseOrder.name);
+		
 	});
 
 	it("verify valid po document", () => {
@@ -193,12 +193,3 @@ describe("allocations Module", () => {
 	})
 
 });
-
-
-
-
-
-
-
-
-

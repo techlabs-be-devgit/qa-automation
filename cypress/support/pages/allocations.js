@@ -121,9 +121,7 @@ deleteAllocation(AllocationName) {
         .deleteConfirmButton()
         .click();
 }
-
 } 
-
 export { Allocations };
 
 

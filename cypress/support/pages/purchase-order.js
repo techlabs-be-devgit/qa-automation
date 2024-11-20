@@ -1,9 +1,7 @@
 import { Action } from "../actions/action";
 
 class PurchaseOrder {
-    
-
-    elements = {
+     elements = {
         clientRecord: (clientName) => this.action.get('span').contains(clientName),
         sowContractTab: () => this.action.get('div').contains('SOWContract'),
         purchaseOrderTab: () => this.action.get('div').contains('Purchase Orders'),
@@ -18,24 +16,15 @@ class PurchaseOrder {
         poStartDateInput: () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(0),
         poEndDateInput: () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(1),
         selectPurchaseOrderButton: () => this.action.get('button').contains('Create Purchase Order'),
-
         purchaseOrderDeleteButton : (purchaseOrderName) => this
                                                           .action
                                                           .xpath(`//span[text()="${purchaseOrderName}"]/ancestor::td/ancestor::tr//td//span//button`),
-       deleteConfirmButton : () => this.action.get('button').contains('Delete'),
-
-       
-
-       // Assign purchase order code
+        deleteConfirmButton : () => this.action.get('button').contains('Delete'),
         selectAssignPurchaseOrderButton: () => this.action.get('button').contains('Assign Purchase Order'),
         selectContractName: () => this.action.get('[role="combobox"]').eq(0),
         selectPoName: () => this.action.get('[role="combobox"]').eq(1),
         assignAmount : () => this.action.get('input[type="number"]'),
-
-            
-            
-
-        purchaseOrderDetails: {
+purchaseOrderDetails: {
             editIcon: () => this.action.get('[data-testid="ArrowForwardIosIcon"]'),
             contractName: () => this.action.get('p').contains('Contract Name').siblings().eq(0),
             poName: () => this.action.get('p').contains('PO Name').siblings().eq(0),
@@ -45,97 +34,73 @@ class PurchaseOrder {
             printDate: () => this.action.get('p').contains('Print Date').siblings().eq(0),
             backIcon: () => this.action.get('[alt="BackIcon"]'),
         },
-
-       
-    };
-
+};
     constructor(){
         this.action = new Action();
     }
-
     visit(clientName) {
         this.action.visit('/dashboard');
         this.elements.clientRecord(clientName).click();
         this.elements.sowContractTab().click();
         this.elements.purchaseOrderTab().click();
     }
-
     clickAddPurchaseOrderButton() {
         this.elements.addPurchaseOrderButton().click();
     }
-
     expectPoAlertMessage() {
         this.elements.checkPoAlertMessage().should('be.visible');
     }
-
     uploadPurchaseOrderFile(filePath) {
         this.elements.uploadField().uploadFile(filePath,{ force: true });
     }
     uploadValidPurchaseOrderFile(filePath) {
         this.elements.uploadFieldTwo().uploadFile(filePath,{ force: true });
     }
-
     clickOnProceedButton() {
         this.elements.selectProceedButton().click();
     }
-
     fillPoName(purchaseOrderName) {
         this.elements.poNameInput().type(purchaseOrderName, { force: true });
     }
-
     fillPoOrder(purchaseOrderNumber) {
         this.elements.poOrderInput().type(purchaseOrderNumber, { force: true });
     }
-
     fillPoAmount(poAmount) {
         this.elements.poAmountInput().should('be.visible').type(poAmount, { force: true });
     }
-
     fillPoStartDate(date) {
         this.elements.poStartDateInput().type(date);
     }
-
     fillPoEndDate(date1) {
         this.elements.poEndDateInput().type(date1);
     }
-
     clickOnCreatePurchaseOrderButton() {
         this.elements.selectPurchaseOrderButton().click();
     }
-
     clickOnEditIcon() {
         this.elements.purchaseOrderDetails.editIcon().click();
     }
-
     expectedContractNameToBe(poCntractName) {
         this.elements.purchaseOrderDetails.contractName().should("contain", poCntractName);
     }
-
     expectedPoNameToBe(purchaseOrderName) {
         this.elements.purchaseOrderDetails.poName().should('contain', purchaseOrderName);
     }
-
     expectedpurchaseOrderToBe(POorder) {
         this.elements.purchaseOrderDetails.purchaseOrder().should('contain', POorder);
     }
-
     expectedpoAmountToBe(POAmount) {
         this.elements.purchaseOrderDetails.poAmount().should('contain', POAmount);
     }
-
     expectedOrderDateToBe(poOrderDate) {
         this.elements.purchaseOrderDetails.orderDate().should('contain', poOrderDate);
     }
-
     expectedPrintDateToBe(PoPrintDate) {
         this.elements.purchaseOrderDetails.printDate().should('contain', PoPrintDate);
     }
-
     clickOnBackIcon() {
         this.elements.purchaseOrderDetails.backIcon().click();
     }
-
-    
     deletePurchaseOrder(purchaseOrderName) {
         this
             .elements
@@ -146,41 +111,5 @@ class PurchaseOrder {
             .deleteConfirmButton()
             .click();
     }
-
-    //creating PO /asserting po details from valid document
-    
- 
-
-
-//    // assign purchase order methods
-//     clickOnAssignPurchaseOrderButton() {
-//         this.elements.selectAssignPurchaseOrderButton().click();
-//     }
-
-//     selectContractNameFromDropDown(contractName) {
-//         this.elements.selectContractName().click({ force: true });
-//         cy.wait(500);
-//         cy.contains(contractName).click({ force: true });
-//     }
-
-//         selectPoNameFromDropDown(purchaseName) {
-//             this.elements.selectPoName().click({ force: true });
-//             cy.wait(500);
-//             cy.get('li') 
-//                 .contains(purchaseName)
-//                 .should('be.visible')
-//                 .click({ force: true });
-//         }
-
-      
-//     fillAssignAmount(totalContractAmount) {
-//      const amount = totalContractAmount.toString();
-//     this.elements.assignAmount().type(amount,{force: true});
-    
-//     }
-
 }
- 
-
-
 export { PurchaseOrder };
