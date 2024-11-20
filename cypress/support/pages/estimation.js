@@ -15,7 +15,7 @@ class Estimation {
         resourceRoleSelect: () => this.action.get('#tags-outlined'),
         skillSelect: () => this.action.get('#demo-multiple-checkbox'),
         invisibleOverlay: () => this.action.get('#menu-'),
-        resourceRegionSelect: (IND) => this.action.getElementWithAttribute('role', 'combobox', -1),
+        resourceRegionSelect: (IND) => this.action.get('[role="combobox"]').eq(-1),
         resourceStartDateInput: () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(0),
         resourceEndDateInput: () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(1),
         estimationHoursField: (estimatedHours) => this.action.get(`[value="${estimatedHours}"]`),

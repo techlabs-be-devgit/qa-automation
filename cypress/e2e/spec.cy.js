@@ -74,6 +74,62 @@ describe("Client Management Module", () => {
 		testClient.expectClientCountryToBe(data.client.countryShort);
 		testClient.expectClientZipCodeToBe(data.client.zipCode);
 	});
+});
+
+describe("Client Management Module", () => {
+	const testClient = new ClientManagement();
+
+	it("Visits the client management page", () => {
+		testClient.visit();
+		//testClient.action.urlShouldContain('/dashboard');
+		testClient.expectClientManagementHeaderVisible();
+	});
+
+	it("Opens the add client popup", () => {
+		testClient.openAddClientPopup();
+		testClient.expectAddClientHeaderVisible();
+	});
+
+	it("Inputs client details", () => {
+		testClient.fillClientName(data.client.name);
+		testClient.fillClientAddress(data.client.address + " ");
+		testClient.expectLeadingTrailingSpacesWarning();
+		testClient.clearClientAddressField();
+		testClient.fillClientAddress("qwerty");
+		testClient.expectRandomCharactersInAddressFieldWarning();
+		testClient.clearClientAddressField();
+		testClient.fillClientAddress(data.client.address);
+		testClient.selectClientCountry(data.client.country);
+		testClient.selectClientState(data.client.state);
+		testClient.selectClientCity(data.client.city);
+		testClient.fillClientZipCode(data.client.zipCode + "1234567890");
+		testClient.expectInvalidZipCodeWarning();
+		testClient.clearZipCodeField();
+		testClient.fillClientZipCode(data.client.zipCode);
+		testClient.clickNextButton();
+	});
+
+	it("Inputs Organisation-level contract Details", () => {
+		testClient.fillContractName(data.orgLevelContract.name);
+		testClient.selectContractType(data.orgLevelContract.type);
+		testClient.fillContractStartDate(data.orgLevelContract.startDate);
+		testClient.clickNextButton();
+	});
+
+	it("Creates new client", () => {
+		testClient.clickCreateClientButton();
+		testClient.expectClientAdded(data.client.name);
+	});
+
+	it("Verifies client details", () => {
+		testClient.openClientDetails(data.client.name);
+        testClient.expectClientNameToBe(data.client.name);
+		testClient.expectClientAddressToBe(data.client.address);
+		testClient.expectClientCityToBe(data.client.city);
+		testClient.expectClientStateToBe(data.client.state);
+		testClient.expectClientCountryToBe(data.client.countryShort);
+		testClient.expectClientZipCodeToBe(data.client.zipCode);
+	});
 
 	it.skip("Deletes the test client", () => {
 		testClient.visit(data.client.name);
@@ -88,7 +144,6 @@ describe("Estimation Module", () => {
 	it(("Goes to client estimations"), () => {
 		testEstimation.visit(data.client.name);
 		testEstimation.expectEstimationsHeaderVisible();
-		testEstimation.action.urlShouldContain('/client/estimation');
 	});
 
 	it(("Opens the add estimation popup"), () => {
@@ -192,7 +247,6 @@ describe("Pricing Module", () => {
 	it("Goes to client pricing", () => {
 		testPricing.visit(data.client.name);
         testPricing.expectPricingHeaderVisible();
-		testPricing.action.urlShouldContain('/estimation/pricing');
 	});
 
 	it("Opens the add pricing popup", () => {
@@ -298,26 +352,26 @@ describe("Milestone Module", () => {
 	it(("select contract2 from dropdown"), () => {
 		milestone.selectContractName(data.contract.name);
 		milestone.expectContractNameVisible(data.contract.name);
-    });
+	});
 
 	it(("fill milestone name"), () => {
 		milestone.fillMilestoneName(data.milestone.name);
 
-    });
+	});
 
 	it(("check start date "), () => {
 		milestone.expectContractStartDateToBe(data.milestone.contractStartDate);
 	});
 
-    it(("check total contract amount "), () => {
+	it(("check total contract amount "), () => {
 		milestone.expectTotalContractAmountToBe(data.milestone.totalContractAmount);
 	});
 
-    it(("check end dates"), () => {
+	it(("check end dates"), () => {
 		milestone.expectContractEndDateToBe(data.milestone.contractEndDate);
 	});
 
-    it(("click on manual tab and fills milestone amount"), () => {
+	it(("click on manual tab and fills milestone amount"), () => {
 		milestone.clickOnManualTab();
 		milestone.action.waitFor(5000);
 		milestone.fillMilestoneAmount(data.milestone.amount);

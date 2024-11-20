@@ -119,6 +119,12 @@ class Action {
         this.element = cy.wrap(item);
         return this;
     }
+
+    filter(...args) {
+       this.element = this.element.filter(...args);
+        return this; 
+    }
+    
 }
 
 export { Action };
