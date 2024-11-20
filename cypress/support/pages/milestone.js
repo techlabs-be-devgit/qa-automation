@@ -14,7 +14,7 @@ class Milestone {
         contractEndDate: () => this.action.get('p').contains('End Date :'),
         addMilestoneName: () => this.action.get('[type="text"]').eq(0),
         selectManualTab: () => this.action.get('button').contains('Manual'),
-        milestoneAmountInput: () => this.action.get('[type="number"]').eq(0),
+        milestoneAmountInput: () => this.action.get('input[type="number"]'),
         errorMessage: () => this.action.get('p').contains(this.milestoneAmountTooHighWarning),
         milestoneDateInput: () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(0),
         addMilestoneDeliverables: () => this.action.get('[type="text"]').eq(1),
@@ -30,38 +30,56 @@ class Milestone {
         milestoneExistsMessage: () => this.action.get('p').contains('For this contract the milestone is already exists.'),
         milestoneAmountError: () => this.action.get('p').contains('Milestone amount must be non-negative'),
         milestoneDeleteButton: (milestoneName) => this.action.xpath(`//span[text()="${milestoneName}"]/ancestor::td/ancestor::tr//td//span//button`),
+        backNavigation: () => this.action.get('img[alt="BackIcon"]'),
+
         deleteConfirmButton: () => this.action.get('button').contains('Delete'),
-        selectMilestoneRows: () => this.action.xpath("//p[text()='item1']"),
+
         selectEditIcon: () => this.action.get('[data-testid="ArrowForwardIosIcon"]'),
+        startDateInput: () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(0),
+        endDateInput: () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(1),
+        scrollwindow: () => this.action.xpath("//div[@class='MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-gt9ru7']"),
+        selectMilestoneRows: (itemName) => {
+            return this.action
+                .get('p')
+                .filter(`:contains(${itemName})`);
+        },
+
+        errorMessage: () => this.action.get('p').contains('For this contract the milestone is already exists.'),
+        milestoneDeleteButton: () => this.action.get('button[aria-label="delete"]'),
+        confirmDeleteButton: () => this.action.get('button').contains('Delete'),
+        addMilestonePopUpCloseButton: () => this.action.get('svg[data-testid="HighlightOffIcon"]'),
+
+
+
         milestoneDetails: {
             milestoneName: () => this.action.get('p').contains('Milestone Name').siblings().eq(0),
             contractName: () => this.action.get('p').contains('Contract Name').siblings().eq(0),
             milestoneAmount: () => this.action.get('p').contains('Milestone Amount').siblings().eq(0),
-            verifyMilestoneRows: () => this.action.xpath("//p[text()='item1']"),
+            verifyMilestoneRows: (itemName) => this.action.get('p').contains(itemName),
+        }
     }
-}
 
-constructor() {
-    this.action = new Action();
-    this.milestoneAmountTooHighWarning =  'The entered amount cannot exceed the remaining contract amount.';
-}
+    constructor() {
+        this.action = new Action();
+        this.milestoneAmountTooHighWarning = 'The entered amount cannot exceed the remaining contract amount.';
+    }
 
-visit(clientName) {
-    this.action.visit('/dashboard');
-    this
-        .elements
-        .clientRecord(clientName)
-        .click();
+    visit(clientName) {
+        this.action.visit('/dashboard');
+        this
+            .elements
+            .clientRecord(clientName)
+            .click();
 
-    this
-       .elements
-       .sowContractTab()
-       .click();
-    this
-        .elements
-        .milestoneTab()
-        .click();
-}
+        this
+            .elements
+            .sowContractTab()
+            .click();
+        this
+            .elements
+            .milestoneTab()
+            .click();
+    }
 
     clickAddMilestoneButton() {
         this
@@ -126,12 +144,30 @@ visit(clientName) {
             .click();
     }
 
-    fillMilestoneAmountTwo(milestoneAmountTwo) {
+    fillStartDate(startDate) {
         this
             .elements
-            .milestoneAmountInputTwo()
-            .type(milestoneAmountTwo);
+            .startDateInput().clear();
+
+        this
+            .elements
+            .startDateInput()
+            .type(startDate)
     }
+
+    fillEndDate(endDate) {
+
+        this
+            .elements
+            .endDateInput().clear();
+
+        this
+            .elements
+            .endDateInput()
+            .type(endDate)
+    }
+
+
     clickOnEveryWeek() {
         this
             .elements
@@ -146,10 +182,48 @@ visit(clientName) {
             .click();
     }
 
+    scrollIntowindow(bottom) {
+        this
+            .elements
+            .scrollwindow()
+            .scrollIntoView(bottom);
+    }
+
     clickOnCreateMilestoneButton() {
         this
             .elements
             .selectCreateMilestoneButton()
+            .click();
+    }
+
+    clickBackIcon() {
+        this
+            .elements
+            .backNavigation()
+            .click();
+
+    }
+    checkErrorMessage() {
+        this
+            .elements
+            .errorMessage()
+            .should('be.visible');
+    }
+    clickOnPopUpIcon(){
+        this
+            .elements
+            .addMilestonePopUpCloseButton()
+            .click();
+    }
+
+    deleteMilestone(milestoneName) {
+        this
+            .elements
+            .milestoneDeleteButton(milestoneName)
+            .click();
+        this
+            .elements
+            .confirmDeleteButton(milestoneName)
             .click();
     }
     // Assertions
@@ -216,13 +290,14 @@ visit(clientName) {
             .should('be.visible');
     }
 
-    expectSplitRows(length) {
-        this
-            .elements
-            .selectMilestoneRows()
-            .should('have.length', length);
+   
 
+    expectSplitRows(itemName, length) {
+        this.elements
+            .selectMilestoneRows(itemName) // Get all matching rows
+            .should('have.length', length); // Assert the length matches the expected value
     }
+
 
     openMilestoneDetails() {
         this
@@ -252,10 +327,10 @@ visit(clientName) {
             .should('contain', milestoneAmount);
     }
 
-    expectMilestoneRows(length) {
+    expectMilestoneRows(itemName, length) {
         this
             .elements
-            .milestoneDetails.verifyMilestoneRows()
+            .milestoneDetails.verifyMilestoneRows(itemName)
             .should('have.length', length);
     }
 }

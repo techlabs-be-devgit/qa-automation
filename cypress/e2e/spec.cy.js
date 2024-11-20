@@ -18,268 +18,269 @@ before(() => {
 });
 
 
-// describe("Client Management Module", () => {
-// 	const testClient = new ClientManagement();
-	
-// 	it("Visits the client management page", () => {
-// 		testClient.visit();
-// 		testClient.action.urlShouldContain('/dashboard');
-// 		testClient.expectClientManagementHeaderVisible();
-// 	});
-	
-// 	it("Opens the add client popup", () => {
-// 		testClient.openAddClientPopup();
-// 		testClient.expectAddClientHeaderVisible();
-// 	});
+describe("Client Management Module", () => {
+	const testClient = new ClientManagement();
 
-// 	it("Inputs client details", () => {
-// 		testClient.fillClientName(data.client.name);
-// 		testClient.fillClientAddress(data.client.address + " ");
-// 		testClient.expectLeadingTrailingSpacesWarning();
-// 		testClient.clearClientAddressField();
-// 		testClient.fillClientAddress("qwerty");
-// 		testClient.expectRandomCharactersInAddressFieldWarning();
-// 		testClient.clearClientAddressField();
-// 		testClient.fillClientAddress(data.client.address);
-// 		testClient.selectClientCountry(data.client.country);
-// 		testClient.selectClientState(data.client.state);
-// 		testClient.selectClientCity(data.client.city);
-// 		testClient.fillClientZipCode(data.client.zipCode + "1234567890");
-// 		testClient.expectInvalidZipCodeWarning();
-// 		testClient.clearZipCodeField();
-// 		testClient.fillClientZipCode(data.client.zipCode);
-// 		testClient.clickNextButton();
-// 	});
+	it("Visits the client management page", () => {
+		testClient.visit();
+		//testClient.action.urlShouldContain('/dashboard');
+		testClient.expectClientManagementHeaderVisible();
+	});
 
-// 	it("Inputs Organisation-level contract Details", () => {
-// 		testClient.fillContractName(data.orgLevelContract.name);
-// 		testClient.selectContractType(data.orgLevelContract.type);
-// 		testClient.fillContractStartDate(data.orgLevelContract.startDate);
-// 		testClient.clickNextButton();
-// 	});
+	it("Opens the add client popup", () => {
+		testClient.openAddClientPopup();
+		testClient.expectAddClientHeaderVisible();
+	});
 
-// 	it("Creates new client", () => {
-// 		testClient.clickCreateClientButton();
-// 		testClient.expectClientAdded(data.client.name);
-// 	});
+	it("Inputs client details", () => {
+		testClient.fillClientName(data.client.name);
+		testClient.fillClientAddress(data.client.address + " ");
+		testClient.expectLeadingTrailingSpacesWarning();
+		testClient.clearClientAddressField();
+		testClient.fillClientAddress("qwerty");
+		testClient.expectRandomCharactersInAddressFieldWarning();
+		testClient.clearClientAddressField();
+		testClient.fillClientAddress(data.client.address);
+		testClient.selectClientCountry(data.client.country);
+		testClient.selectClientState(data.client.state);
+		testClient.selectClientCity(data.client.city);
+		testClient.fillClientZipCode(data.client.zipCode + "1234567890");
+		testClient.expectInvalidZipCodeWarning();
+		testClient.clearZipCodeField();
+		testClient.fillClientZipCode(data.client.zipCode);
+		testClient.clickNextButton();
+	});
 
-// 	it("Verifies client details", () => {
-// 		testClient.openClientDetails(data.client.name);
-//         testClient.expectClientNameToBe(data.client.name);
-// 		testClient.expectClientAddressToBe(data.client.address);
-// 		testClient.expectClientCityToBe(data.client.city);
-// 		testClient.expectClientStateToBe(data.client.state);
-// 		testClient.expectClientCountryToBe(data.client.countryShort);
-// 		testClient.expectClientZipCodeToBe(data.client.zipCode);
-// 	});
+	it("Inputs Organisation-level contract Details", () => {
+		testClient.fillContractName(data.orgLevelContract.name);
+		testClient.selectContractType(data.orgLevelContract.type);
+		testClient.fillContractStartDate(data.orgLevelContract.startDate);
+		testClient.clickNextButton();
+	});
 
-// 	it.skip("Deletes the test client", () => {
-// 		testClient.visit(data.client.name);
-// 		testClient.deleteClient(data.client.name);
-// 		testClient.expectClientDeleted(data.client.name);
-// 	});
-// });
+	it("Creates new client", () => {
+		testClient.clickCreateClientButton();
+		testClient.expectClientAdded(data.client.name);
+	});
+
+	it("Verifies client details", () => {
+		testClient.openClientDetails(data.client.name);
+        testClient.expectClientNameToBe(data.client.name);
+		testClient.expectClientAddressToBe(data.client.address);
+		testClient.expectClientCityToBe(data.client.city);
+		testClient.expectClientStateToBe(data.client.state);
+		testClient.expectClientCountryToBe(data.client.countryShort);
+		testClient.expectClientZipCodeToBe(data.client.zipCode);
+	});
+
+	it.skip("Deletes the test client", () => {
+		testClient.visit(data.client.name);
+		testClient.deleteClient(data.client.name);
+		testClient.expectClientDeleted(data.client.name);
+	});
+});
 
 
-// describe("Estimation Module", () => {
-// 	const testEstimation = new Estimation();
-// 	it(("Goes to client estimations"), () => {
-// 		testEstimation.visit(data.client.name);
-// 		testEstimation.expectEstimationsHeaderVisible();
-// 		testEstimation.action.urlShouldContain('/client/estimation');
-// 	});
+describe("Estimation Module", () => {
+	const testEstimation = new Estimation();
+	it(("Goes to client estimations"), () => {
+		testEstimation.visit(data.client.name);
+		testEstimation.expectEstimationsHeaderVisible();
+		//testEstimation.action.urlShouldContain('/client/estimation');
+	});
 
-// 	it(("Opens the add estimation popup"), () => {
-//         testEstimation.openAddEstimationPopup();
-//         testEstimation.expectEfforEstimationHeaderVisible();
-// 	});
+	it(("Opens the add estimation popup"), () => {
+        testEstimation.openAddEstimationPopup();
+        testEstimation.expectEfforEstimationHeaderVisible();
+	});
 
-// 	it("Fills out estimation data", () => {
-//         testEstimation.fillEstimationName(data.estimation.name);
-//         testEstimation.selectBillingType(data.billing.enterprise);
-// 		testEstimation.expectPopulatedClientNameToBe(data.client.name);
-// 		testEstimation.selectResourceRole(data.resourceRole.uxEng);
-// 		testEstimation.selectResourceSkill(data.estimation.skill);
-// 		testEstimation.selectResourceRegion(data.region.ind);
-// 		testEstimation.fillResourceStartDate(data.estimation.startDate);
-// 		testEstimation.fillResourceEndDate(data.estimation.endDate);
-// 		testEstimation.expectEstimatedHoursToBe(data.estimation.totalWorkingDays * 8);
-// 		testEstimation.selectFullTime();
-// 	});
+	it("Fills out estimation data", () => {
+        testEstimation.fillEstimationName(data.estimation.name);
+        testEstimation.selectBillingType(data.billing.enterprise);
+		testEstimation.expectPopulatedClientNameToBe(data.client.name);
+		testEstimation.selectResourceRole(data.resourceRole.uxEng);
+		testEstimation.selectResourceSkill(data.estimation.skill);
+		testEstimation.selectResourceRegion(data.region.ind);
+		testEstimation.fillResourceStartDate(data.estimation.startDate);
+		testEstimation.fillResourceEndDate(data.estimation.endDate);
+		testEstimation.expectEstimatedHoursToBe(data.estimation.totalWorkingDays * 8);
+		testEstimation.selectFullTime();
+	});
 
-// 	it("Invalid monthly split - not enough minumum hours per month", () => {
-// 		testEstimation.openEstimationCalendar();
-// 		testEstimation.switchToMonthlyTab();
-// 		testEstimation.expectMonthlyTabActive();
-// 		let totalHours = data.estimation.totalWorkingDays * 8;
-// 		let minHours = 0;
-// 		let maxHours = 175;
-// 		testEstimation.fillSplitHours(totalHours);
-// 		testEstimation.fillMinHours(minHours);
-// 		testEstimation.fillMaxHours(maxHours);
-// 		testEstimation.selectAllOption();
-// 		testEstimation.splitHours();
-// 		testEstimation.expectInvalidSplitWarning();
-// 		testEstimation.closeEstimationCalendar();
-// 	});
+	it("Invalid monthly split - not enough minumum hours per month", () => {
+		testEstimation.openEstimationCalendar();
+		testEstimation.switchToMonthlyTab();
+		testEstimation.expectMonthlyTabActive();
+		let totalHours = data.estimation.totalWorkingDays * 8;
+		let minHours = 0;
+		let maxHours = 175;
+		testEstimation.fillSplitHours(totalHours);
+		testEstimation.fillMinHours(minHours);
+		testEstimation.fillMaxHours(maxHours);
+		testEstimation.selectAllOption();
+		testEstimation.splitHours();
+		testEstimation.expectInvalidSplitWarning();
+		testEstimation.closeEstimationCalendar();
+	});
 
-// 	it("Invalid monthly split - minimum hours per month too high", () => {
-// 		testEstimation.openEstimationCalendar();
-// 		testEstimation.switchToMonthlyTab();
-// 		testEstimation.expectMonthlyTabActive();
-// 		let totalHours = data.estimation.totalWorkingDays * 8;
-// 		let minHours = 176;
-// 		let maxHours = 250;
-// 		testEstimation.fillSplitHours(totalHours);
-// 		testEstimation.fillMinHours(minHours);
-// 		testEstimation.fillMaxHours(maxHours);
-// 		testEstimation.selectAllOption();
-// 		testEstimation.splitHours();
-// 		testEstimation.expectInvalidSplitWarning();
-// 		testEstimation.closeEstimationCalendar();
-// 	});
+	it("Invalid monthly split - minimum hours per month too high", () => {
+		testEstimation.openEstimationCalendar();
+		testEstimation.switchToMonthlyTab();
+		testEstimation.expectMonthlyTabActive();
+		let totalHours = data.estimation.totalWorkingDays * 8;
+		let minHours = 176;
+		let maxHours = 250;
+		testEstimation.fillSplitHours(totalHours);
+		testEstimation.fillMinHours(minHours);
+		testEstimation.fillMaxHours(maxHours);
+		testEstimation.selectAllOption();
+		testEstimation.splitHours();
+		testEstimation.expectInvalidSplitWarning();
+		testEstimation.closeEstimationCalendar();
+	});
 
-// 	it("Invalid monthly split - maximum hours per month too low", () => {
-// 		testEstimation.openEstimationCalendar();
-// 		testEstimation.switchToMonthlyTab();
-// 		testEstimation.expectMonthlyTabActive();
-// 		let totalHours = data.estimation.totalWorkingDays * 8;
-// 		let minHours = 175;
-// 		let maxHours = 176;
-// 		testEstimation.fillSplitHours(totalHours);
-// 		testEstimation.fillMinHours(minHours);
-// 		testEstimation.fillMaxHours(maxHours);
-// 		testEstimation.selectAllOption();
-// 		testEstimation.splitHours();
-// 		testEstimation.expectInvalidSplitWarning();
-// 		testEstimation.closeEstimationCalendar();
-// 	});
+	it("Invalid monthly split - maximum hours per month too low", () => {
+		testEstimation.openEstimationCalendar();
+		testEstimation.switchToMonthlyTab();
+		testEstimation.expectMonthlyTabActive();
+		let totalHours = data.estimation.totalWorkingDays * 8;
+		let minHours = 175;
+		let maxHours = 176;
+		testEstimation.fillSplitHours(totalHours);
+		testEstimation.fillMinHours(minHours);
+		testEstimation.fillMaxHours(maxHours);
+		testEstimation.selectAllOption();
+		testEstimation.splitHours();
+		testEstimation.expectInvalidSplitWarning();
+		testEstimation.closeEstimationCalendar();
+	});
 
-// 	it("Valid monthly split", () => {
-// 		testEstimation.openEstimationCalendar();
-// 		testEstimation.switchToMonthlyTab();
-// 		testEstimation.expectMonthlyTabActive();
-// 		let totalHours = 900;
-// 		let minHours = 0;
-// 		let maxHours = 184;
-// 		testEstimation.fillSplitHours(totalHours);
-// 		testEstimation.fillMinHours(minHours);
-// 		testEstimation.fillMaxHours(maxHours);
-// 		testEstimation.selectAllOption();
-// 		testEstimation.splitHours();
-// 		testEstimation.validateSplit(totalHours, minHours, maxHours);
-// 		testEstimation.closeEstimationCalendar();
-// 	});
+	it("Valid monthly split", () => {
+		testEstimation.openEstimationCalendar();
+		testEstimation.switchToMonthlyTab();
+		testEstimation.expectMonthlyTabActive();
+		let totalHours = 900;
+		let minHours = 0;
+		let maxHours = 184;
+		testEstimation.fillSplitHours(totalHours);
+		testEstimation.fillMinHours(minHours);
+		testEstimation.fillMaxHours(maxHours);
+		testEstimation.selectAllOption();
+		testEstimation.splitHours();
+		testEstimation.validateSplit(totalHours, minHours, maxHours);
+		testEstimation.closeEstimationCalendar();
+	});
 
-// 	it("Adds the new estimation.", () => {
-// 		testEstimation.clickAddResourceButton();
-// 		testEstimation.clickCreateEstimationButton();
-// 		testEstimation.expectEstimationCreated(data.estimation.name);
-// 	});
-// });
+	it("Adds the new estimation.", () => {
+		testEstimation.clickAddResourceButton();
+		testEstimation.clickCreateEstimationButton();
+		testEstimation.expectEstimationCreated(data.estimation.name);
+	});
+});
 
-// describe("Pricing Module", () => {
-// 	const testPricing = new Pricing();
-// 	let totalCostToCompany;
-// 	let totalBillAmount;
-// 	let grossMarginPercent;
-// 	let finalOfferPrice;
-// 	let finalOfferGrossMargin;
-// 	let finalOfferGrossMarginPercent;
+describe("Pricing Module", () => {
+	const testPricing = new Pricing();
+	let totalCostToCompany;
+	let totalBillAmount;
+	let grossMarginPercent;
+	let finalOfferPrice;
+	let finalOfferGrossMargin;
+	let finalOfferGrossMarginPercent;
 
-// 	it("Goes to client pricing", () => {
-// 		testPricing.visit(data.client.name);
-//         testPricing.expectPricingHeaderVisible();
-// 		testPricing.action.urlShouldContain('/estimation/pricing');
-// 	});
+	it("Goes to client pricing", () => {
+		testPricing.visit(data.client.name);
+        testPricing.expectPricingHeaderVisible();
+		//testPricing.action.urlShouldContain('/estimation/pricing');
+	});
 
-// 	it("Opens the add pricing popup", () => {
-// 		testPricing.openAddPricingPopup();
-//         testPricing.expectAddPricingHeaderVisible();
-// 	});
+	it("Opens the add pricing popup", () => {
+		testPricing.openAddPricingPopup();
+        testPricing.expectAddPricingHeaderVisible();
+	});
 
-// 	it("Enters pricing name", () => {
-// 		testPricing.fillPricingName(data.pricing.name);
-// 	});
-	
-// 	it("Selects estimation name", () => {
-// 		testPricing.selectEstimationName(data.estimation.name);
-// 		testPricing.fillDiscount(data.pricing.discount);
-// 	});
+	it("Enters pricing name", () => {
+		testPricing.fillPricingName(data.pricing.name);
+	});
 
-// 	it("Creates new pricing", () => {
-// 		testPricing.clickCreatePricingButton();
-// 		testPricing.expectPricingAdded(data.pricing.name);
-// 	});
+	it("Selects estimation name", () => {
+		testPricing.selectEstimationName(data.estimation.name);
+		testPricing.fillDiscount(data.pricing.discount);
+	});
 
-// 	it("Opens pricing details", () => {
-// 		testPricing.openPricingDetails(data.pricing.name);
-//         testPricing.expectPricingOverviewHeaderVisible(data.pricing.name);
-// 	});
+	it("Creates new pricing", () => {
+		testPricing.clickCreatePricingButton();
+		testPricing.expectPricingAdded(data.pricing.name);
+	});
 
-// 	it.skip("Verifies pricing details", () => {
-// 		testPricing.expectPricingNameToBe(data.pricing.name);
-//         testPricing.expectEstimationNameToBe(data.estimation.name);
-// 		testPricing.expectTotalCostToCompanyToBe(totalCostToCompany);
-// 		testPricing.expectTotalBillAmountToBe(totalBillAmount);
-// 		testPricing.expectDiscountToBe(data.pricing.discount);
-// 		testPricing.expectFinalOfferPriceToBe(finalOfferPrice);
-// 		testPricing.expectFinalOfferGrossMarginToBe(finalOfferGrossMargin);
-// 		testPricing.expectFinalOfferGrossMarginPercentToBe(finalOfferGrossMarginPercent);
-// 	});
-// });
+	it("Opens pricing details", () => {
+		testPricing.openPricingDetails(data.pricing.name);
+        testPricing.expectPricingOverviewHeaderVisible(data.pricing.name);
+	});
 
-// describe("Contract Module", () => {
-// 	const testContract = new Contract();
-//     it("Opens the contracts for a client", () => {
-// 		testContract.visit(data.client.name);
-//         testContract.expectContractsHeaderVisible();
-// 		testContract.action.urlShouldContain('/contracts');
-//     });
+	it.skip("Verifies pricing details", () => {
+		testPricing.expectPricingNameToBe(data.pricing.name);
+        testPricing.expectEstimationNameToBe(data.estimation.name);
+		testPricing.expectTotalCostToCompanyToBe(totalCostToCompany);
+		testPricing.expectTotalBillAmountToBe(totalBillAmount);
+		testPricing.expectDiscountToBe(data.pricing.discount);
+		testPricing.expectFinalOfferPriceToBe(finalOfferPrice);
+		testPricing.expectFinalOfferGrossMarginToBe(finalOfferGrossMargin);
+		testPricing.expectFinalOfferGrossMarginPercentToBe(finalOfferGrossMarginPercent);
+	});
+});
 
-//     it("Opens the add contract popup", () => {
-//         testContract.openAddContractPopup();
-// 		testContract.expectAddContractHeaderVisible();
-//     });
+describe("Contract Module", () => {
+	const testContract = new Contract();
+    it("Opens the contracts for a client", () => {
+		testContract.visit(data.client.name);
+        testContract.expectContractsHeaderVisible();
+		//testContract.action.urlShouldContain('/contracts');
+    });
 
-//     it("Selects estimation and pricing", () => {
-// 		testContract.selectEstimationName(data.estimation.name);
-// 		testContract.selectPricingName(data.pricing.name);
-//     });
+    it("Opens the add contract popup", () => {
+        testContract.openAddContractPopup();
+		testContract.expectAddContractHeaderVisible();
+    });
 
-//     it("Fills out contract details", () => {
-//         testContract.fillContractName(data.contract.name);
-// 		testContract.selectContractType(data.contractType.fixed);
-// 		testContract.selectPaymentTerms(data.paymentTerm.net45);
-//     });
+    it("Selects estimation and pricing", () => {
+		testContract.selectEstimationName(data.estimation.name);
+		testContract.selectPricingName(data.pricing.name);
+    });
 
-// 	it.skip("Verifies contract amount, start and end dates", () => {
-// 		testContract.expectPopulatedContractAmountToBe('');
-// 		testContract.expectPopulatedStartDateToBe(data.estimation.startDate);
-// 		testContract.expectPopulatedEndDateToBe(data.estimation.endDate);
-// 	});
+    it("Fills out contract details", () => {
+        testContract.fillContractName(data.contract.name);
+		testContract.selectContractType(data.contractType.fixed);
+		testContract.selectPaymentTerms(data.paymentTerm.net45);
+    });
 
-// 	it("Uploads the SOW Contract file", () => {
-// 		testContract.uploadContractFile('sowContractFile.pdf');
-// 	});
+	it.skip("Verifies contract amount, start and end dates", () => {
+		testContract.expectPopulatedContractAmountToBe('');
+		testContract.expectPopulatedStartDateToBe(data.estimation.startDate);
+		testContract.expectPopulatedEndDateToBe(data.estimation.endDate);
+	});
 
-// 	it("Confirms success SOW Contract file upload", () => {
-// 		testContract.expectUploadConfirmationMessageVisible();
-// 		testContract.expectUploadConfirmationMessageToHave(data.contract.parsedData.sowAmount);
-// 		testContract.clickConfirmUploadButton();
-// 	});
+	it("Uploads the SOW Contract file", () => {
+		testContract.uploadContractFile('sowContractFile.pdf');
+	});
 
-// 	it("Verifies the parsed details for SOW Contract file", () => {
-// 		testContract.expectParsedSOWAmountToBe(data.contract.parsedData.sowAmount);
-// 		testContract.expectParsedStartDateToBe(data.contract.parsedData.startDate);
-// 		testContract.expectParsedEndDateToBe(data.contract.parsedData.endDate);
-// 	});
+	it("Confirms success SOW Contract file upload", () => {
+		testContract.expectUploadConfirmationMessageVisible();
+		testContract.expectUploadConfirmationMessageToHave(data.contract.parsedData.sowAmount);
+		testContract.clickConfirmUploadButton();
+	});
 
-//     it("Creates new contract", () => {
-//         testContract.clickCreateContractButton();
-// 		testContract.expectContractAdded(data.contract.name);
-//     });
-// });
+	it("Verifies the parsed details for SOW Contract file", () => {
+		testContract.expectParsedSOWAmountToBe(data.contract.parsedData.sowAmount);
+		testContract.expectParsedStartDateToBe(data.contract.parsedData.startDate);
+		testContract.expectParsedEndDateToBe(data.contract.parsedData.endDate);
+	});
+
+    it("Creates new contract", () => {
+        testContract.clickCreateContractButton();
+		testContract.expectContractAdded(data.contract.name);
+    });
+});
+
 
 
 describe("Milestone Module", () => {
@@ -296,32 +297,32 @@ describe("Milestone Module", () => {
 	it(("select contract2 from dropdown"), () => {
 		milestone.selectContractName(data.contract.name);
 		milestone.expectContractNameVisible(data.contract.name);
-    });
+	});
 
 	it(("fill milestone name"), () => {
 		milestone.fillMilestoneName(data.milestone.name);
 
-    });
+	});
 
 	it(("check start date "), () => {
 		milestone.expectContractStartDateToBe(data.milestone.contractStartDate);
 	});
 
-    it(("check total contract amount "), () => {
+	it(("check total contract amount "), () => {
 		milestone.expectTotalContractAmountToBe(data.milestone.totalContractAmount);
 	});
 
-    it(("check end dates"), () => {
+	it(("check end dates"), () => {
 		milestone.expectContractEndDateToBe(data.milestone.contractEndDate);
 	});
 
-    it(("click on manual tab and fills milestone amount"), () => {
+	it(("click on manual tab and fills milestone amount"), () => {
 		milestone.clickOnManualTab();
 		milestone.action.waitFor(5000);
 		milestone.fillMilestoneAmount(data.milestone.amount);
 	});
 
-    it(("fill milestoneDate and deliverables"), () => {
+	it(("fill milestoneDate and deliverables"), () => {
 		milestone.fillMilestoneDate(data.milestone.milestoneDate);
 		milestone.fillMilestoneDeliverables(data.milestone.deliverables);
 	});
@@ -329,10 +330,16 @@ describe("Milestone Module", () => {
 	it(("click on Add button and switch to auto fill"), () => {
 		milestone.clickOnAddMilestoneButton();
 		milestone.switchToAutoFill();
-		milestone.fillMilestoneAmountTwo(data.milestone.amountTwo);
+		milestone.fillMilestoneAmount(data.milestone.amount);
+		milestone.fillStartDate(data.milestone.startDate);
+		milestone.fillEndDate(data.milestone.endDate);
+		milestone.fillMilestoneDeliverables(data.milestone.deliverablesTwo);
 		milestone.clickOnEveryWeek();
 		milestone.clickOnSplitAmount();
-		milestone.expectSplitRows(5);
+		milestone.action.waitFor(5000);
+		milestone.scrollIntowindow();
+		milestone.expectSplitRows(data.milestone.manualDeliverable, 1);
+		milestone.expectSplitRows(data.milestone.autoFillDeliverable, 5);
 		milestone.clickOnCreateMilestoneButton();
 	})
 
@@ -341,8 +348,28 @@ describe("Milestone Module", () => {
 		milestone.expectMilestoneNameToBe(data.milestone.name);
 		milestone.expectContractNameToBe(data.milestone.contractName);
 		milestone.expectMilestoneAmountToBe(data.milestone.amountTwo);
-		milestone.expectMilestoneRows(5);
-	})
+		milestone.expectSplitRows(data.milestone.manualDeliverable, 1);
+		milestone.expectSplitRows(data.milestone.autoFillDeliverable, 5);
+		milestone.clickBackIcon();
+
+	});
+
+	it(("Verify alert message"), () => {
+		milestone.clickAddMilestoneButton();
+		milestone.selectContractName('contract2');
+		milestone.checkErrorMessage();
+		milestone.clickOnPopUpIcon();
+
+	});
+
+
+
+	it("Deletes the milestone", () => {
+
+		milestone.deleteMilestone(data.milestone.name);
+
+
+	});
 });
 
 
