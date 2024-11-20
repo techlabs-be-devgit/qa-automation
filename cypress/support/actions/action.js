@@ -97,7 +97,8 @@ class Action {
         this
             .click()
             .getElementMatching('li', option)
-            .element.scrollIntoView().click();
+            .element
+            .click();
         return this;
     }
 
