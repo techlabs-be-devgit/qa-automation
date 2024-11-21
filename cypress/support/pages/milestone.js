@@ -31,9 +31,7 @@ class Milestone {
         milestoneAmountError: () => this.action.get('p').contains('Milestone amount must be non-negative'),
         milestoneDeleteButton: (milestoneName) => this.action.xpath(`//span[text()="${milestoneName}"]/ancestor::td/ancestor::tr//td//span//button`),
         backNavigation: () => this.action.get('img[alt="BackIcon"]'),
-
         deleteConfirmButton: () => this.action.get('button').contains('Delete'),
-
         selectEditIcon: () => this.action.get('[data-testid="ArrowForwardIosIcon"]'),
         startDateInput: () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(0),
         endDateInput: () => this.action.get('[placeholder="yyyy-mm-dd"]').eq(1),
@@ -43,14 +41,10 @@ class Milestone {
                 .get('p')
                 .filter(`:contains(${itemName})`);
         },
-
         errorMessage: () => this.action.get('p').contains('For this contract the milestone is already exists.'),
         milestoneDeleteButton: () => this.action.get('button[aria-label="delete"]'),
         confirmDeleteButton: () => this.action.get('button').contains('Delete'),
         addMilestonePopUpCloseButton: () => this.action.get('svg[data-testid="HighlightOffIcon"]'),
-
-
-
         milestoneDetails: {
             milestoneName: () => this.action.get('p').contains('Milestone Name').siblings().eq(0),
             contractName: () => this.action.get('p').contains('Contract Name').siblings().eq(0),
@@ -70,7 +64,6 @@ class Milestone {
             .elements
             .clientRecord(clientName)
             .click();
-
         this
             .elements
             .sowContractTab()
@@ -167,7 +160,6 @@ class Milestone {
             .type(endDate)
     }
 
-
     clickOnEveryWeek() {
         this
             .elements
@@ -203,13 +195,15 @@ class Milestone {
             .click();
 
     }
+
     checkErrorMessage() {
         this
             .elements
             .errorMessage()
             .should('be.visible');
     }
-    clickOnPopUpIcon(){
+
+    clickOnPopUpIcon() {
         this
             .elements
             .addMilestonePopUpCloseButton()
@@ -226,6 +220,7 @@ class Milestone {
             .confirmDeleteButton(milestoneName)
             .click();
     }
+
     // Assertions
     expectMilestonesHeaderVisible() {
         this
@@ -290,14 +285,11 @@ class Milestone {
             .should('be.visible');
     }
 
-   
-
     expectSplitRows(itemName, length) {
         this.elements
-            .selectMilestoneRows(itemName) // Get all matching rows
-            .should('have.length', length); // Assert the length matches the expected value
+            .selectMilestoneRows(itemName)
+            .should('have.length', length);
     }
-
 
     openMilestoneDetails() {
         this
