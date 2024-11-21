@@ -24,7 +24,7 @@ class PurchaseOrder {
         selectContractName: () => this.action.get('[role="combobox"]').eq(0),
         selectPoName: () => this.action.get('[role="combobox"]').eq(1),
         assignAmount : () => this.action.get('input[type="number"]'),
-purchaseOrderDetails: {
+        purchaseOrderDetails: {
             editIcon: () => this.action.get('[data-testid="ArrowForwardIosIcon"]'),
             contractName: () => this.action.get('p').contains('Contract Name').siblings().eq(0),
             poName: () => this.action.get('p').contains('PO Name').siblings().eq(0),
@@ -38,69 +38,90 @@ purchaseOrderDetails: {
     constructor(){
         this.action = new Action();
     }
+
     visit(clientName) {
         this.action.visit('/dashboard');
         this.elements.clientRecord(clientName).click();
         this.elements.sowContractTab().click();
         this.elements.purchaseOrderTab().click();
     }
+
     clickAddPurchaseOrderButton() {
         this.elements.addPurchaseOrderButton().click();
     }
+
     expectPoAlertMessage() {
         this.elements.checkPoAlertMessage().should('be.visible');
     }
+
     uploadPurchaseOrderFile(filePath) {
         this.elements.uploadField().uploadFile(filePath,{ force: true });
     }
+
     uploadValidPurchaseOrderFile(filePath) {
         this.elements.uploadFieldTwo().uploadFile(filePath,{ force: true });
     }
+
     clickOnProceedButton() {
         this.elements.selectProceedButton().click();
     }
+
     fillPoName(purchaseOrderName) {
         this.elements.poNameInput().type(purchaseOrderName, { force: true });
     }
+
     fillPoOrder(purchaseOrderNumber) {
         this.elements.poOrderInput().type(purchaseOrderNumber, { force: true });
     }
+
     fillPoAmount(poAmount) {
         this.elements.poAmountInput().should('be.visible').type(poAmount, { force: true });
     }
+
     fillPoStartDate(date) {
         this.elements.poStartDateInput().type(date);
     }
+
     fillPoEndDate(date1) {
         this.elements.poEndDateInput().type(date1);
     }
+
     clickOnCreatePurchaseOrderButton() {
         this.elements.selectPurchaseOrderButton().click();
     }
+
     clickOnEditIcon() {
         this.elements.purchaseOrderDetails.editIcon().click();
     }
+
     expectedContractNameToBe(poCntractName) {
         this.elements.purchaseOrderDetails.contractName().should("contain", poCntractName);
     }
+
     expectedPoNameToBe(purchaseOrderName) {
         this.elements.purchaseOrderDetails.poName().should('contain', purchaseOrderName);
     }
+
     expectedpurchaseOrderToBe(POorder) {
         this.elements.purchaseOrderDetails.purchaseOrder().should('contain', POorder);
     }
+    
     expectedpoAmountToBe(POAmount) {
         this.elements.purchaseOrderDetails.poAmount().should('contain', POAmount);
     }
+
     expectedOrderDateToBe(poOrderDate) {
         this.elements.purchaseOrderDetails.orderDate().should('contain', poOrderDate);
     }
+
     expectedPrintDateToBe(PoPrintDate) {
         this.elements.purchaseOrderDetails.printDate().should('contain', PoPrintDate);
     }
+
     clickOnBackIcon() {
         this.elements.purchaseOrderDetails.backIcon().click();
     }
+
     deletePurchaseOrder(purchaseOrderName) {
         this
             .elements
