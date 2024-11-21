@@ -15,20 +15,22 @@ class Action {
         this.element = cy.login();
         return this;
     }
+
+    reload() {
+        this.element = cy.reload();
+        return this;
+    }
+
+    url() {
+        this.element = cy.url();
+        return this;
+    }
     
-    /**
-     * 
-     * Visit page at @url
-     */
     visit(url) {
         this.element = cy.visit(url);
         return this;
     }
 
-    /**
-     * 
-     * Click selected element
-     */
     click(...args) {
         this.element.click(...args);
         return this;
@@ -127,6 +129,12 @@ class Action {
         this.element = cy.wrap(item);
         return this;
     }
+
+    filter(...args) {
+       this.element = this.element.filter(...args);
+        return this; 
+    }
+    
 }
 
 export { Action };

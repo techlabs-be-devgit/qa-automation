@@ -12,8 +12,8 @@
     "orgLevelContract" : {
         "name" : "Test contract",
         "type" : "MSA",
-        "startDate" : "2022-01-01",
-        "endDate" : ""
+        "startDate" : "2024-01-01",
+        "endDate" : "2024-06-28"
     },
  
     "estimation" : {
@@ -100,54 +100,48 @@
     },
 
     "milestone" : {
-        "contractName" : "contract2",
-        "name" : "testMilestone",
+        "name" : "Test Milestone",
         "startDate" : "2024-10-01",
         "endDate" :"2024-10-31",
         "amount" : "100",
         "enteredAmount" :"2000",
         "milestoneDate" : "2024-10-01",
-        "deliverables" : "item1",
+        "manualDeliverable" : "Manual Deliverable",
         "amountTwo" : "200",
-        "deliverablesTwo" : "item2",
+        "autoFillDeliverable" : "AutoFill Deliverable",
         "totalContractAmount" : "19219.2",
-        "contractStartDate" : "Fri Nov 01 2024",
-        "contractEndDate" : "Fri Nov 29 2024" ,
+        "contractStartDate" : "Mon Jan 01 2024",
+        "contractEndDate" : "Fri Jun 28 2024" ,
         "errorMessage": "The entered amount cannot exceed the remaining contract amount."
     },
 
    "purchaseOrder" : {
-
-    "clientName" : "Client 2",
-    "name": "PO",
-    "orderID" : "PO123456789",
-    "startDate" : "2022-01-01",
-    "endDate" : "2022-01-31",
-    "amount" : "2000",
-    "contractName" : "NA",
-    "assignContractName" : "contract2",
-    "poName" : "PO",
-    "assignPoAmount" :"19219.20",
-    "purchaseOrderNumber" : "12465751111",
-    "validPoAmount" : "99720.00",
-    "validPoOrderDate" : "2023-08-21",
-    "validPoPrintDate" : "2023-08-21"
+        "clientName" : "Client 2",
+        "name": "PO",
+        "orderID" : "PO123456789",
+        "startDate" : "2022-01-01",
+        "endDate" : "2022-01-31",
+        "amount" : "2000",
+        "contractName" : "NA",
+        "assignContractName" : "contract2",
+        "poName" : "PO",
+        "assignPoAmount" :"19219.20",
+        "purchaseOrderNumber" : "12465751111",
+        "validPoAmount" : "99720.00",
+        "validPoOrderDate" : "2023-08-21",
+        "validPoPrintDate" : "2023-08-21"
    },
 
-   "allocation" :{
-
-    "allocationContractName" : "contract2",
-    "allocationName" : "Allocation",
-    "ResourceName"  : "Suhani Mittal",
-    "estimationName" : "est3",
-    "allocationCount" : "1",
-    "startDate" : "2024-11-01",
-    "endDate" : "2024-11-29",
-    "totalBillableHours" : "168"
-    
-
-
-   }
+   "allocation" : {
+        "allocationContractName" : "contract2",
+        "allocationName" : "Allocation",
+        "ResourceName"  : "Suhani Mittal",
+        "estimationName" : "est3",
+        "allocationCount" : "1",
+        "startDate" : "2024-11-01",
+        "endDate" : "2024-11-29",
+        "totalBillableHours" : "168"
+    }
 }
  
  
