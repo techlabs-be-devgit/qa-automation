@@ -12,7 +12,11 @@ let data;
 const action = new Action();
 
 before(() => {
-	action.c2cLogin();
+	let user = {
+		email : Cypress.env('username'),
+		password : Cypress.env('password')
+	}
+	action.c2cLogin(user);
 	action
 		.loadFixture('clientData.json')
 		.then((clientData) => {

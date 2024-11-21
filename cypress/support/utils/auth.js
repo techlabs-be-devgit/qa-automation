@@ -5,8 +5,8 @@ import { decode } from 'jsonwebtoken';
 const authority = Cypress.env("authBaseUrl") + "/" + Cypress.env("tenantId");
 const clientId = Cypress.env("clientId");
 const clientSecret = Cypress.env("clientSecret");
-const password = Cypress.env("password");
-const username = Cypress.env("username");
+let username;
+let password;
 const apiScopes = ["user.read", "openid", "profile", "email"];
 const tenantId = Cypress.env("tenantId");
 const registerUrl = Cypress.env("registerUrl");
@@ -71,7 +71,6 @@ const buildAccessTokenEntity = (
 		clientId: clientId,
 		realm: realm,
 		target: scopes,
-		// Scopes _must_ be lowercase or the token won't be found
 		tokenType: "Bearer"
 	};
 };
@@ -177,9 +176,10 @@ const injectTokens = (tokenResponse) => {
 };
 
 
-export const login = () => {
+export const login = (user) => {
+	username = user.email;
+	password = user.password;
 	return cy.session('auth-session', () => {
-
 		return cy.visit("/login").request({
 			url: authority + "/oauth2/v2.0/token",
 			method: "POST",

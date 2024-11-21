@@ -2,14 +2,17 @@ import { ClientManagement } from "../support/pages/client_management";
 import { registerCommand } from 'cypress-wait-for-stable-dom'
 
 registerCommand()
-
 let data;
 
 before(() => {
     const client = new ClientManagement();
+    let user = {
+        email : Cypress.env('users')[0].username,
+        password : Cypress.env('users')[0].password,
+    }
     client
         .action
-        .c2cLogin();
+        .c2cLogin(user);
     client
        .action
        .loadFixture('clientData.json')
