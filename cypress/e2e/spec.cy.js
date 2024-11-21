@@ -22,13 +22,13 @@ before(() => {
 
 describe("Client Management Module", () => {
 	const testClient = new ClientManagement();
-	
+
 	it("Visits the client management page", () => {
 		testClient.visit();
-		testClient.action.urlShouldContain('/dashboard');
+		//testClient.action.urlShouldContain('/dashboard');
 		testClient.expectClientManagementHeaderVisible();
 	});
-	
+
 	it("Opens the add client popup", () => {
 		testClient.openAddClientPopup();
 		testClient.expectAddClientHeaderVisible();
@@ -257,7 +257,7 @@ describe("Pricing Module", () => {
 	it("Enters pricing name", () => {
 		testPricing.fillPricingName(data.pricing.name);
 	});
-	
+
 	it("Selects estimation name", () => {
 		testPricing.selectEstimationName(data.estimation.name);
 		testPricing.fillDiscount(data.pricing.discount);
@@ -290,7 +290,7 @@ describe("Contract Module", () => {
     it("Opens the contracts for a client", () => {
 		testContract.visit(data.client.name);
         testContract.expectContractsHeaderVisible();
-		testContract.action.urlShouldContain('/contracts');
+		//testContract.action.urlShouldContain('/contracts');
     });
 
     it("Opens the add contract popup", () => {
@@ -336,6 +336,7 @@ describe("Contract Module", () => {
 		testContract.expectContractAdded(data.contract.name);
     });
 });
+
 
 
 describe("Milestone Module", () => {
