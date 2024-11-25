@@ -10,7 +10,11 @@ export const removeSpecialCharacters = (input) => {
     return input.replace(/[$,]/g, '').split('.')[0];
 };
 
-
+/**
+ * Converts a hexadecimal color code to RGB format.
+ * @param {*} hex 
+ * @returns 
+ */
 export const hexToRGB = (hex) => {
     if (hex.charAt(0) === '#') {
         hex = hex.substr(1);

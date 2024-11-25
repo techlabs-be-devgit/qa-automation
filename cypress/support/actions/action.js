@@ -9,7 +9,7 @@ class Action {
         this.element = null;
     }
 
-    c2cLogin(user) {
+    login(user) {
         this.element = cy.login(user);
         return this;
     }
@@ -131,6 +131,11 @@ class Action {
     filter(...args) {
        this.element = this.element.filter(...args);
         return this; 
+    }
+
+    getUserRoles(...args) {
+        this.element = cy.getUserRoles(...args);
+        return this;
     }
     
 }

@@ -9,8 +9,11 @@
   "dependencies": {
     "@azure/msal-browser": "^3.26.1",
     "@azure/msal-node": "^1.18.4",
+    "csv-parser": "^3.0.0",
+    "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
-    "msal": "^1.4.18"
+    "msal": "^1.4.18",
+    "papaparse": "^5.4.1"
   },
   "scripts": {
     "cy:open": "cypress open",

@@ -1,16 +1,17 @@
 /// <reference types="Cypress" />
 
 import { decode } from 'jsonwebtoken';
+import { getUserRoles } from './roleBasedAccess';
 
 const authority = Cypress.env("authBaseUrl") + "/" + Cypress.env("tenantId");
 const clientId = Cypress.env("clientId");
 const clientSecret = Cypress.env("clientSecret");
-let username;
-let password;
 const apiScopes = ["user.read", "openid", "profile", "email"];
 const tenantId = Cypress.env("tenantId");
 const registerUrl = Cypress.env("registerUrl");
 const environment = "login.windows.net";
+let username;
+let password;
 
 // Functions to build the required entities for authentication
 const buildAccountEntity = (
@@ -94,6 +95,10 @@ const buildUserDataEntity = (
 	userInfo,
 	userRoles
 ) => {
+	cy.getUserRoles(userRoles)
+	.then((perms) => {
+		console.log(JSON.stringify(perms));
+	})
 	return {
 		user_info: userInfo,
 		user_roles: userRoles
@@ -179,7 +184,6 @@ const injectTokens = (tokenResponse) => {
 export const login = (user) => {
 	username = user.email;
 	password = user.password;
-	return cy.session('auth-session', () => {
 		return cy.visit("/login").request({
 			url: authority + "/oauth2/v2.0/token",
 			method: "POST",
@@ -195,7 +199,6 @@ export const login = (user) => {
 		}).then((response) => {
 			injectTokens(response.body);
 		}).reload();
-	});
 };
 
 export const userData = (accessToken) => {

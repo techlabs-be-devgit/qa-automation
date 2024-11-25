@@ -6,13 +6,9 @@ let data;
 
 before(() => {
     const client = new ClientManagement();
-    let user = {
-        email : Cypress.env('users')[0].username,
-        password : Cypress.env('users')[0].password,
-    }
     client
         .action
-        .c2cLogin(user);
+        .login(Cypress.env('users')[0]);
     client
        .action
        .loadFixture('clientData.json')
