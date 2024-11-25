@@ -3,16 +3,14 @@
  * Most functions return an instance of the Action class, allowing chaining of actions.
  */
 
-import { hexToRGB } from "../utils/common";
-
 class Action {
 
     constructor() {
         this.element = null;
     }
 
-    c2cLogin() {
-        this.element = cy.login();
+    login(user) {
+        this.element = cy.login(user);
         return this;
     }
 
@@ -133,6 +131,11 @@ class Action {
     filter(...args) {
        this.element = this.element.filter(...args);
         return this; 
+    }
+
+    getUserRoles(...args) {
+        this.element = cy.getUserRoles(...args);
+        return this;
     }
     
 }
