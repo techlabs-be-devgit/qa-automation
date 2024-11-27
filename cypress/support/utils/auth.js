@@ -1,7 +1,6 @@
 /// <reference types="Cypress" />
 
 import { decode } from 'jsonwebtoken';
-import { getUserRoles } from './roleBasedAccess';
 
 const authority = Cypress.env("authBaseUrl") + "/" + Cypress.env("tenantId");
 const clientId = Cypress.env("clientId");
@@ -95,10 +94,6 @@ const buildUserDataEntity = (
 	userInfo,
 	userRoles
 ) => {
-	cy.getUserRoles(userRoles)
-	.then((perms) => {
-		console.log(JSON.stringify(perms));
-	})
 	return {
 		user_info: userInfo,
 		user_roles: userRoles

@@ -137,6 +137,26 @@ class Action {
         this.element = cy.getUserRoles(...args);
         return this;
     }
+
+    then(...args) {
+        this.element = this.element.then(...args);
+        return this;
+    }
+
+    log(...args) {
+        this.element = cy.log(...args);
+        return this;
+    }
+
+    as(...args) {
+        this.element = this.element.as(...args);
+        return this;
+    }
+
+    window(...args) {
+        this.element = cy.window(...args);
+        return this;
+    }
     
 }
 
